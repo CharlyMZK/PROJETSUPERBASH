@@ -1,179 +1,127 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define MAX(X,Y) ((X)>(Y)?(X):(Y))
 
-typedef int T;
-
-typedef struct sArbre
+typedef struct sNode
 {
-	T label;
-	struct sArbre* fg;
-	struct sArbre* fd;	
-} Arbre;
+	char* command;
+	bool success;
+	char* result;
+	char* separator;
+	char* inputValue;
+	struct sNode* leftChild;
+	struct sNode* rightChild;	
+} Node;
 
-Arbre* enracine(T v, Arbre* fg, Arbre* fd)
+Node* create_root(char* v, Node* leftChild, Node* rightChild)
 {
-	Arbre* a =malloc(sizeof(Arbre));
-	a->label = v;
-	a->fg = fg;
-	a->fd = fd;
+	Node* a =malloc(sizeof(Node));
+	a->command = v;
+	a->leftChild = leftChild;
+	a->rightChild = rightChild;
 	return a;
 }
 
-Arbre* creer_feuille(T v)
+Node* create_child(char* v)
 {
-	return enracine(v,NULL,NULL);
+	return create_root(v,NULL,NULL);
 }
 
-Arbre* fils_gauche(Arbre* a)
+Node* create_left_child(Node* a)
 {
-	return a->fg;
-}
-
-
-Arbre* fils_droit(Arbre* a)
-{
-	return a->fd;
+	return a->leftChild;
 }
 
 
-T racine(Arbre* a)
+Node* create_right_child(Node* a)
 {
-	return a->label;
+	return a->rightChild;
 }
 
 
-int est_vide(Arbre* a)
+char* root(Node* a)
+{
+	return a->command;
+}
+
+
+int is_empty(Node* a)
 {
 	return a == NULL;
 }
 
 
-int est_feuille(Arbre* a)
+int is_child(Node* a)
 {
-	return (a->fg==NULL)&&(a->fd==NULL);
+	return (a->leftChild==NULL)&&(a->rightChild==NULL);
 }
 
 
-int hauteur(Arbre* a)
+int height(Node* a)
 {
-	if (est_vide(a))
+	if (is_empty(a))
 		return 0;
-	return 1+ MAX(hauteur(fils_gauche(a)),hauteur(fils_droit(a)));
+	return 1+ MAX(height(create_left_child(a)),height(create_right_child(a)));
 }
 
-int taille(Arbre* a)
+int size(Node* a)
 {
-	if (est_vide(a))
+	if (is_empty(a))
 		return 0;
-	return 1+ taille(fils_gauche(a)) + taille(fils_droit(a));
+	return 1+ size(create_left_child(a)) + size(create_right_child(a));
 }
 
 
-void print_prefix(Arbre* a)
+void print_prefix(Node* a)
 {	
-	if (!est_vide(a))
+	if (!is_empty(a))
 	{
-		printf("%d /",racine(a));
-		print_prefix(fils_gauche(a));
-		print_prefix(fils_droit(a));		
+		printf("%s /",root(a));
+		print_prefix(create_left_child(a));
+		print_prefix(create_right_child(a));		
 	}
 }
 
-void print_infix(Arbre* a)
+void print_infix(Node* a)
 {
-	if (!est_vide(a))
+	if (!is_empty(a))
 	{
-		print_infix(fils_gauche(a));
-		printf("%d /",racine(a));
-		print_infix(fils_droit(a));		
+		print_infix(create_left_child(a));
+		printf("%s /",root(a));
+		print_infix(create_right_child(a));		
 	}
 }
 
-void print_postfix(Arbre* a)
+void print_postfix(Node* a)
 {
-	if (!est_vide(a))
+	if (!is_empty(a))
 	{
-		print_postfix(fils_gauche(a));
-		print_postfix(fils_droit(a));		
-		printf("%d /",racine(a));
+		print_postfix(create_left_child(a));
+		print_postfix(create_right_child(a));		
+		printf("%s /",root(a));
 	}
 }
 
-
-void rec_save_dot(Arbre* a, FILE* f)
+void clean(Node* a)
 {
-	Arbre *g = fils_gauche(a); 
-	if (!est_vide(g))
+	if  (!is_empty(a))
 	{
-		fprintf(f,"%d -> %d \n",racine(a),racine(g));
-		rec_save_dot(g,f);
-	}
-	Arbre *d = fils_droit(a); 
-	if (!est_vide(d))
-	{
-		fprintf(f,"%d -> %d \n",racine(a),racine(d));
-		rec_save_dot(d,f);
-	}
-}
-
-
-void affiche_dot(Arbre* a, char* nom)
-{
-	// buffer pour chaine de car
-	char* buffer = malloc(512);
-
-	// nom du fichier .dot
-	sprintf(buffer,"%s.dot",nom);
-
-	// ouvre le fichier
-	FILE* f = fopen(buffer,"w");
-
-	// ecrit dans le fichier
-	if (!est_vide(a))
-	{
-		fprintf(f,"Digraph {\n");
-		rec_save_dot(a,f);
-		fprintf(f,"}\n");
-	}
-	fclose(f);
-
-	// commande dans la chaine buffer
-	sprintf(buffer, "dot -Tpdf -o %s.pdf %s.dot",nom,nom);
-
-	//  execution de la commande
-	system(buffer);
-
-	// commande dans la chaine buffer
-	sprintf(buffer, "evince %s.pdf",nom);
-
-	//  execution de la commande
-	system(buffer);
-
-
-	free(buffer);
-}
-
-
-void clean(Arbre* a)
-{
-	if  (!est_vide(a))
-	{
-		clean(fils_gauche(a));
-		clean(fils_droit(a));
+		clean(create_left_child(a));
+		clean(create_right_child(a));
 		free(a);
 	}
 }
 
 int main()
 {
-	Arbre * a = enracine(1,enracine(2,creer_feuille(4),creer_feuille(5)),enracine(3,creer_feuille(6),enracine(7,creer_feuille(8),NULL)));
+	Node * a = create_root("test",create_root("ad",create_child("adz"),create_child("azd")),create_root("adz",create_child("adaz"),create_root("azd",create_child("adzd"),NULL)));
 
-	printf("Hauteur %d\n",hauteur(a));
+	printf("Hauteur %d\n",height(a));
 
-	printf("Taille %d\n",taille(a));
+	printf("Taille %d\n",size(a));
 
 	printf ("Prefix: ");
 	print_prefix(a);
@@ -186,8 +134,6 @@ int main()
 	printf ("Postfix: ");
 	print_postfix(a);
 	printf("\n");
-
-	affiche_dot(a,"arbre1");
 
 	return 0;
 }
