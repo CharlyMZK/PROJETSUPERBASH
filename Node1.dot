@@ -1,9 +1,0 @@
-Digraph {
-test -> ad 
-ad -> adz 
-ad -> azd 
-test -> adz 
-adz -> adaz 
-adz -> azd 
-azd -> adzd 
-}

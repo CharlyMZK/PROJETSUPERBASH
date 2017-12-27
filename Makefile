@@ -1,13 +1,9 @@
 
-all: arbre_bin1
+all: superbash
 
 clean:
-	rm *.o arbre_bin1
+	rm *.o superbash
 
 
-arbre_bin1: arbre_bin1.c 
-	gcc arbre_bin1.c -o arbre_bin1
-
-file.o: file.h file.c
-	gcc -c file.c
-
+superbash: superbash.c 
+	gcc superbash.c -o superbash
