@@ -103,7 +103,61 @@ void clean(Node* a)
 	}
 }
 
-int main()
+
+void rec_save_dot(Node* a, FILE* f)
+{
+	Node *g = create_left_child(a); 
+	if (!is_empty(g))
+	{
+		fprintf(f,"%s -> %s \n",root(a),root(g));
+		rec_save_dot(g,f);
+	}
+	Node *d = create_right_child(a); 
+	if (!is_empty(d))
+	{
+		fprintf(f,"%s -> %s \n",root(a),root(d));
+		rec_save_dot(d,f);
+	}
+
+}
+
+void save_dot(Node* a, char* nom)
+{
+	// buffer pour chaine de car
+	char* buffer = malloc(512);
+
+	// nom du fichier .dot
+	sprintf(buffer,"%s.dot",nom);
+
+	// ouvre le fichier
+	FILE* f = fopen(buffer,"w");
+
+	// ecrit dans le fichier
+	if (!is_empty(a))
+	{
+		fprintf(f,"Digraph {\n");
+		rec_save_dot(a,f);
+		fprintf(f,"}\n");
+	}
+	fclose(f);
+
+	// commande dans la chaine buffer
+	sprintf(buffer, "dot -Tpdf -o %s.pdf %s.dot",nom,nom);
+
+	//  execution de la commande
+	system(buffer);
+
+	// commande dans la chaine buffer
+	sprintf(buffer, "evince %s.pdf",nom);
+
+	//  execution de la commande
+	system(buffer);
+
+	free(buffer);
+}
+
+
+int main(int argc, char *argv[])
 {
 	Node * a = create_root("test",create_root("ad",create_child("adz"),create_child("azd")),create_root("adz",create_child("adaz"),create_root("azd",create_child("adzd"),NULL)));
 
@@ -122,6 +176,19 @@ int main()
 	printf ("Postfix: ");
 	print_postfix(a);
 	printf("\n");
+
+	
+
+	Node* b = create_root("Root");
+	int i;
+	
+	for (i=0; i < argc; i++)
+	{
+		printf("Argument %d : %s \n", i+1, argv[i]);
+		create_child(argv[i])
+	}
+
+	save_dot(b,"arbre1");
 
 	return 0;
 }
