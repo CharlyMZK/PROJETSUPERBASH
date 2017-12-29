@@ -1,4 +1,4 @@
 Digraph {
 Root -> ls 
-ls -> l 
+Root -> grep 
 }

@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
 #include "superbash.h"
 
@@ -170,48 +171,43 @@ void save_dot(Node* a, char* nom)
 	free(buffer);
 }
 
+bool is_separator(char* s){
+	return strcmp(s,"||") == 0;
+}
 
-int main(int argc, char *argv[])
-{
-	/*Node * a = create_root("test",create_root("ad",create_child("adz"),create_child("azd")),create_root("adz",create_child("adaz"),create_root("azd",create_child("adzd"),NULL)));
-
-	printf("Hauteur %d\n",height(a));
-
-	printf("Taille %d\n",size(a));
-
-	printf ("Prefix: ");
-	print_prefix(a);
-	printf("\n");
-
-	printf ("Infix: ");
-	print_infix(a);
-	printf("\n");
-
-	printf ("Postfix: ");
-	print_postfix(a);
-	printf("\n");*/
-
-	
-
+void create_tree_from_command(int commandSize, char *commandString[]){
 	Node* root = create_child("Root");
 	Node* actualUsedNode = root;
 	int i;
-	
-	for (i=1; i < argc; i++)
+	for (i=1; i < commandSize; i++)
 	{
-		printf("Argument %d : %s \n", i+1, argv[i]);
-		actualUsedNode = create_and_return_left_child(actualUsedNode,argv[i]);
+		printf("Argument %d : %s \n", i+1, commandString[i]);
+		if(is_separator(commandString[i])){
+			printf("Getting back on root..\n");
+			actualUsedNode = root;
+		}else{
+			printf("Continuing the tree..\n");
+			if(get_left_child(actualUsedNode) == NULL){
+				printf("Creating a new left child..\n");
+				actualUsedNode = create_and_return_left_child(actualUsedNode,commandString[i]);
+			}else if(get_right_child(actualUsedNode) == NULL){
+				printf("Creating a new right child..\n");
+				actualUsedNode = create_and_return_right_child(actualUsedNode,commandString[i]);
+			}
+		}
 	}
 
 	printf("Hauteur %d\n",height(root));
-
 	printf("Taille %d\n",size(root));
-
 	printf ("Prefix: ");
 	print_prefix(root);
 	printf("\n");
 		
 	save_dot(root,"arbre1");
+}
 
+int main(int argc, char *argv[])
+{
+	create_tree_from_command(argc,argv);
 	return 0;
 }
