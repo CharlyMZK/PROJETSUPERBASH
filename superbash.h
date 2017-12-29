@@ -20,9 +20,13 @@ Node* create_root(char* v, Node* leftChild, Node* rightChild);
 
 Node* create_child(char* v);
 
-Node* create_left_child(Node* a);
+Node* get_left_child(Node* a);
 
-Node* create_right_child(Node* a);
+Node* get_right_child(Node* a);
+
+Node* create_and_return_left_child(Node* a, char* v);
+
+Node* create_and_return_right_child(Node* a, char* v);
 
 char* root(Node* a);
 

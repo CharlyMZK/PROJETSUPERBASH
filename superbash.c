@@ -18,13 +18,27 @@ Node* create_child(char* v)
 	return create_root(v,NULL,NULL);
 }
 
-Node* create_left_child(Node* a)
+Node* create_and_return_left_child(Node* a,char* v)
+{
+	a->leftChild = create_root(v,NULL,NULL);
+	return a->leftChild;
+}
+
+Node* create_and_return_right_child(Node* a,char* v)
+{
+	a->rightChild = create_root(v,NULL,NULL);
+	return a->rightChild;
+}
+
+
+
+Node* get_left_child(Node* a)
 {
 	return a->leftChild;
 }
 
 
-Node* create_right_child(Node* a)
+Node* get_right_child(Node* a)
 {
 	return a->rightChild;
 }
@@ -52,14 +66,14 @@ int height(Node* a)
 {
 	if (is_empty(a))
 		return 0;
-	return 1+ MAX(height(create_left_child(a)),height(create_right_child(a)));
+	return 1+ MAX(height(get_left_child(a)),height(get_right_child(a)));
 }
 
 int size(Node* a)
 {
 	if (is_empty(a))
 		return 0;
-	return 1+ size(create_left_child(a)) + size(create_right_child(a));
+	return 1+ size(get_left_child(a)) + size(get_right_child(a));
 }
 
 
@@ -68,8 +82,8 @@ void print_prefix(Node* a)
 	if (!is_empty(a))
 	{
 		printf("%s /",root(a));
-		print_prefix(create_left_child(a));
-		print_prefix(create_right_child(a));		
+		print_prefix(get_left_child(a));
+		print_prefix(get_right_child(a));		
 	}
 }
 
@@ -77,9 +91,9 @@ void print_infix(Node* a)
 {
 	if (!is_empty(a))
 	{
-		print_infix(create_left_child(a));
+		print_infix(get_left_child(a));
 		printf("%s /",root(a));
-		print_infix(create_right_child(a));		
+		print_infix(get_right_child(a));		
 	}
 }
 
@@ -87,8 +101,8 @@ void print_postfix(Node* a)
 {
 	if (!is_empty(a))
 	{
-		print_postfix(create_left_child(a));
-		print_postfix(create_right_child(a));		
+		print_postfix(get_left_child(a));
+		print_postfix(get_right_child(a));		
 		printf("%s /",root(a));
 	}
 }
@@ -97,8 +111,8 @@ void clean(Node* a)
 {
 	if  (!is_empty(a))
 	{
-		clean(create_left_child(a));
-		clean(create_right_child(a));
+		clean(get_left_child(a));
+		clean(get_right_child(a));
 		free(a);
 	}
 }
@@ -106,13 +120,13 @@ void clean(Node* a)
 
 void rec_save_dot(Node* a, FILE* f)
 {
-	Node *g = create_left_child(a); 
+	Node *g = get_left_child(a); 
 	if (!is_empty(g))
 	{
 		fprintf(f,"%s -> %s \n",root(a),root(g));
 		rec_save_dot(g,f);
 	}
-	Node *d = create_right_child(a); 
+	Node *d = get_right_child(a); 
 	if (!is_empty(d))
 	{
 		fprintf(f,"%s -> %s \n",root(a),root(d));
@@ -159,7 +173,7 @@ void save_dot(Node* a, char* nom)
 
 int main(int argc, char *argv[])
 {
-	Node * a = create_root("test",create_root("ad",create_child("adz"),create_child("azd")),create_root("adz",create_child("adaz"),create_root("azd",create_child("adzd"),NULL)));
+	/*Node * a = create_root("test",create_root("ad",create_child("adz"),create_child("azd")),create_root("adz",create_child("adaz"),create_root("azd",create_child("adzd"),NULL)));
 
 	printf("Hauteur %d\n",height(a));
 
@@ -175,20 +189,29 @@ int main(int argc, char *argv[])
 
 	printf ("Postfix: ");
 	print_postfix(a);
-	printf("\n");
+	printf("\n");*/
 
 	
 
-	Node* b = create_root("Root");
+	Node* root = create_child("Root");
+	Node* actualUsedNode = root;
 	int i;
 	
-	for (i=0; i < argc; i++)
+	for (i=1; i < argc; i++)
 	{
 		printf("Argument %d : %s \n", i+1, argv[i]);
-		create_child(argv[i])
+		actualUsedNode = create_and_return_left_child(actualUsedNode,argv[i]);
 	}
 
-	save_dot(b,"arbre1");
+	printf("Hauteur %d\n",height(root));
+
+	printf("Taille %d\n",size(root));
+
+	printf ("Prefix: ");
+	print_prefix(root);
+	printf("\n");
+		
+	save_dot(root,"arbre1");
 
 	return 0;
 }
