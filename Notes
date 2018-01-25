@@ -1,0 +1,2 @@
+Sur cloud 9 si il y une erreur à la création du tree "Error: Fontconfig warning: ignoring C.UTF-8: not a valid language tag"
+Exécuter dans l'invite de commande : LC_ALL=C
