@@ -2,15 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <unistd.h>
 #include "tree.h"
 #define LSH_RL_BUFSIZE 1024
 
-int main(int argc, char *argv[])
-{
-	//create_tree_from_command(argc,argv);
-	bash_loop();
-	return EXIT_SUCCESS;
-}
+
 
 char *read_console_line(void)
 {
@@ -52,4 +48,25 @@ int execute_command(char **command)
   }else{
   	return true;
   }
+}
+
+void printCurrentDirectory()
+{
+  char cwd[1024];
+  if (getcwd(cwd, sizeof(cwd)) != NULL)
+   fprintf(stdout, "Current working dir: %s\n", cwd);
+}
+
+void changeCurrentDirectory(char *path)
+{
+  printf("changing current directory to %s \n",path);
+  chdir(path);
+  printCurrentDirectory();
+}
+
+int main(int argc, char *argv[])
+{
+	//create_tree_from_command(argc,argv);
+	bash_loop();
+	return EXIT_SUCCESS;
 }
