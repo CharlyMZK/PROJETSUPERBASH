@@ -6,29 +6,29 @@
 #include "tree.h"
 
 
-Node* create_root(char* v, Node* leftChild, Node* rightChild)
+Node* create_root(char* command, Node* leftChild, Node* rightChild)
 {
 	Node* a =malloc(sizeof(Node));
-	a->command = v;
+	a->command = command;
 	a->leftChild = leftChild;
 	a->rightChild = rightChild;
 	return a;
 }
 
-Node* create_child(char* v)
+Node* create_child(char* command)
 {
-	return create_root(v,NULL,NULL);
+	return create_root(command,NULL,NULL);
 }
 
-Node* create_and_return_left_child(Node* a,char* v)
+Node* create_and_return_left_child(Node* a,char* command)
 {
-	a->leftChild = create_root(v,NULL,NULL);
+	a->leftChild = create_root(command,NULL,NULL);
 	return a->leftChild;
 }
 
-Node* create_and_return_right_child(Node* a,char* v)
+Node* create_and_return_right_child(Node* a,char* command)
 {
-	a->rightChild = create_root(v,NULL,NULL);
+	a->rightChild = create_root(command,NULL,NULL);
 	return a->rightChild;
 }
 
@@ -46,7 +46,7 @@ Node* get_right_child(Node* a)
 }
 
 
-char* root(Node* a)
+char* getCommand(Node* a)
 {
 	return a->command;
 }
@@ -83,7 +83,7 @@ void print_prefix(Node* a)
 {	
 	if (!is_empty(a))
 	{
-		printf("%s /",root(a));
+		printf("%s /",getCommand(a));
 		print_prefix(get_left_child(a));
 		print_prefix(get_right_child(a));		
 	}
@@ -94,7 +94,7 @@ void print_infix(Node* a)
 	if (!is_empty(a))
 	{
 		print_infix(get_left_child(a));
-		printf("%s /",root(a));
+		printf("%s /",getCommand(a));
 		print_infix(get_right_child(a));		
 	}
 }
@@ -105,7 +105,7 @@ void print_postfix(Node* a)
 	{
 		print_postfix(get_left_child(a));
 		print_postfix(get_right_child(a));		
-		printf("%s /",root(a));
+		printf("%s /",getCommand(a));
 	}
 }
 
@@ -125,13 +125,13 @@ void rec_save_dot(Node* a, FILE* f)
 	Node *g = get_left_child(a); 
 	if (!is_empty(g))
 	{
-		fprintf(f,"%s -> %s \n",root(a),root(g));
+		fprintf(f,"%s -> %s \n",getCommand(a),getCommand(g));
 		rec_save_dot(g,f);
 	}
 	Node *d = get_right_child(a); 
 	if (!is_empty(d))
 	{
-		fprintf(f,"%s -> %s \n",root(a),root(d));
+		fprintf(f,"%s -> %s \n",getCommand(a),getCommand(d));
 		rec_save_dot(d,f);
 	}
 
@@ -178,15 +178,15 @@ bool is_separator(char* s){
 }
 
 void create_tree_from_command(int commandSize, char *commandString[]){
-	Node* root = create_child("Root");
-	Node* actualUsedNode = root;
+	Node* getCommand = create_child("Root");
+	Node* actualUsedNode = getCommand;
 	int i;
 	for (i=1; i < commandSize; i++)
 	{
 		printf("Argument %d : %s \n", i+1, commandString[i]);
 		if(is_separator(commandString[i])){
 			printf("Getting back on root..\n");
-			actualUsedNode = root;
+			actualUsedNode = getCommand;
 		}else{
 			printf("Continuing the tree..\n");
 			if(get_left_child(actualUsedNode) == NULL){
@@ -199,12 +199,12 @@ void create_tree_from_command(int commandSize, char *commandString[]){
 		}
 	}
 
-	printf("Hauteur %d\n",height(root));
-	printf("Taille %d\n",size(root));
+	printf("Hauteur %d\n",height(getCommand));
+	printf("Taille %d\n",size(getCommand));
 	printf ("Prefix: ");
-	print_prefix(root);
+	print_prefix(getCommand);
 	printf("\n");
 		
-	save_dot(root,"arbre1");
+	save_dot(getCommand,"arbre1");
 }
 

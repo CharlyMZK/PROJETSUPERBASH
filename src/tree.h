@@ -5,30 +5,62 @@
 
 #define MAX(X,Y) ((X)>(Y)?(X):(Y))
 
+
+/**
+ * @brief noeud de l'arbre
+ * 
+ * Noeud de l'arbre
+ */
 typedef struct sNode
 {
-	char* command;
-	bool success;
-	char* result;
-	char* separator;
-	char* inputValue;
-	struct sNode* leftChild;
-	struct sNode* rightChild;	
+	char* command; /** chaine de caractère contenant la commande*/
+	bool success; /** boolean indiquant le succés ou l'echec de la sous commande*/
+	char* result; /** chaine de caractère contenant le résultat de la commande */
+	char* separator; /** chaine de caractère contenant le séparateur */
+	char* inputValue; /** chaine de caractère contenant le la valeur d'entré de la commande */
+	struct sNode* leftChild; /** fils droit*/
+	struct sNode* rightChild;	/** fils gauche*/
 } Node;
 
-Node* create_root(char* v, Node* leftChild, Node* rightChild);
+/**
+ * Créer un noeud 
+ * @param command texte de la commande
+ * @param leftChild fils gauche
+ * @param rightChild fils droit
+ */
+Node* create_root(char* command, Node* leftChild, Node* rightChild);
 
-Node* create_child(char* v);
+/**
+ * Créer un noeud
+ * @param command texte de la commande
+ */
+Node* create_child(char* command);
 
+
+/**
+ * Renvoi le fils gauche
+ */
 Node* get_left_child(Node* a);
 
+/**
+ * Renvoi le fils droit
+ */
 Node* get_right_child(Node* a);
 
-Node* create_and_return_left_child(Node* a, char* v);
+/**
+ * Créer et renvois le fils gauche
+ */
+Node* create_and_return_left_child(Node* a, char* command);
 
-Node* create_and_return_right_child(Node* a, char* v);
+/**
+ * Créer et renvois le fils droit
+ */
+Node* create_and_return_right_child(Node* a, char* command);
 
-char* root(Node* a);
+/**
+ * Renvois la commande du noeud
+ */
+char* getCommand(Node* a);
 
 int is_empty(Node* a);
 
