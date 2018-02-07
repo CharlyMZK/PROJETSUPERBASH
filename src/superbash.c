@@ -1,3 +1,15 @@
+/**
+ * \file superbash.c
+ * \brief Programme principal du projet
+ * \author Charly Mrazeck, Baptiste Oberbach
+ * \version 0.1.0
+ * \date février 2018
+ *
+ * Programme executant le bash du projet superbash
+ *
+ */
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,7 +20,7 @@
 
 
 
-char *readConsoleLine(void)
+char *read_console_line(void)
 {
   int bufsize = LSH_RL_BUFSIZE;
   int position = 0;
@@ -28,14 +40,16 @@ char *readConsoleLine(void)
   }
 }
 
-void bashLoop(void)
+void bash_loop(void)
 {
-  char **command;
+  char *command;
   bool isRunning = true;
+  printf("- Prompt launched, Saltscript only please. -\n");
   do {
-    printf("> ");
-    command = readConsoleLine();
-    isRunning = executeCommand(command);
+    printf("Prompt > ");
+    command = read_console_line();
+    isRunning = handle_command(command);
+    //isRunning = executeCommand(command);
   } while (isRunning);
   free(command);
 }
@@ -51,29 +65,48 @@ int executeCommand(char **command)
   }
 }*/
 
-int executeCommand(char * command)
+int handle_command(char* command){
+  printf("[Log] Handling command \n");
+  create_tree_from_command_(command);
+  int bufsize = LSH_RL_BUFSIZE;
+  char *ptr = malloc(sizeof(char) * bufsize);
+  ptr=strstr(command,"&&");
+  int pos = ptr - command;
+  printf("Pos %d",pos);
+  
+  
+  return true;
+}
+
+
+void create_tree_from_command_(char* command){
+  printf("[Log] Creating tree \n");
+}
+
+
+int execute_command(char * command)
 {
   system(command);
   return true;
 }
 
-void printCurrentDirectory()
+void print_current_directory()
 {
   char cwd[1024];
   if (getcwd(cwd, sizeof(cwd)) != NULL)
    fprintf(stdout, "Current working dir: %s\n", cwd);
 }
 
-void changeCurrentDirectory(char *path)
+void change_current_directory(char *path)
 {
   printf("changing current directory to %s \n",path);
   chdir(path);
-  printCurrentDirectory();
+  print_current_directory();
 }
 
 int main(int argc, char *argv[])
 {
-	//create_tree_from_command(argc,argv);
-	bashLoop();
+	bash_loop();
+	create_tree_from_command(17,"ls -l | grep 2048");
 	return EXIT_SUCCESS;
 }
