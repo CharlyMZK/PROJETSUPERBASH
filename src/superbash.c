@@ -54,6 +54,7 @@ int executeCommand(char **command)
 int executeCommand(char * command)
 {
   system(command);
+  return true;
 }
 
 void printCurrentDirectory()
