@@ -8,7 +8,7 @@
 
 
 
-char *read_console_line(void)
+char *readConsoleLine(void)
 {
   int bufsize = LSH_RL_BUFSIZE;
   int position = 0;
@@ -28,19 +28,20 @@ char *read_console_line(void)
   }
 }
 
-void bash_loop(void)
+void bashLoop(void)
 {
   char **command;
   bool isRunning = true;
   do {
     printf("> ");
-    command = read_console_line();
-    isRunning = execute_command(command);
+    command = readConsoleLine();
+    isRunning = executeCommand(command);
   } while (isRunning);
   free(command);
 }
 
-int execute_command(char **command)
+/*
+int executeCommand(char **command)
 {
   int i;
   if (command[0] == NULL) {
@@ -48,6 +49,11 @@ int execute_command(char **command)
   }else{
   	return true;
   }
+}*/
+
+int executeCommand(char * command)
+{
+  system(command);
 }
 
 void printCurrentDirectory()
@@ -67,6 +73,6 @@ void changeCurrentDirectory(char *path)
 int main(int argc, char *argv[])
 {
 	//create_tree_from_command(argc,argv);
-	bash_loop();
+	bashLoop();
 	return EXIT_SUCCESS;
 }
