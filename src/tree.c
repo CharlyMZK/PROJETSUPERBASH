@@ -8,6 +8,7 @@
 
 Node* create_root(char* command, Node* leftChild, Node* rightChild)
 {
+	printf("[Log] Creating a node with command : %s\n",command);
 	Node* a =malloc(sizeof(Node));
 	a->command = command;
 	a->leftChild = leftChild;
@@ -83,8 +84,10 @@ void print_prefix(Node* a)
 {	
 	if (!is_empty(a))
 	{
-		printf("%s /",getCommand(a));
+		printf("[ %s ]\n",getCommand(a));
+		printf("\n[<]");
 		print_prefix(get_left_child(a));
+		printf("\n[>]");
 		print_prefix(get_right_child(a));		
 	}
 }
@@ -122,18 +125,26 @@ void clean(Node* a)
 
 void rec_save_dot(Node* a, FILE* f)
 {
+	printf("Trying to save dot\n");
 	Node *g = get_left_child(a); 
-	if (!is_empty(g))
+	printf("Left child get\n");
+	if (!is_empty(g))	
 	{
+		printf("[Entered in left]\n");
+		printf("[Adding in tree pdf] %s -> %s \n",getCommand(a),getCommand(g));
 		fprintf(f,"%s -> %s \n",getCommand(a),getCommand(g));
 		rec_save_dot(g,f);
 	}
 	Node *d = get_right_child(a); 
+	printf("Right child get\n");
 	if (!is_empty(d))
 	{
+		printf("[Entered in right]\n");
+		printf("[Adding in tree pdf]  %s -> %s \n",getCommand(a),getCommand(d));
 		fprintf(f,"%s -> %s \n",getCommand(a),getCommand(d));
 		rec_save_dot(d,f);
 	}
+	printf("Trt ended\n");
 
 }
 
@@ -150,9 +161,12 @@ void save_dot(Node* a, char* nom)
 	FILE* f = fopen(buffer,"w");
 
 	// ecrit dans le fichier
+	printf("[PDF] Trying to create a file.. \n");
 	if (!is_empty(a))
 	{
+		printf("[PDF] node not empty !  \n");
 		fprintf(f,"Digraph {\n");
+		printf("[Diagraph]\n");
 		rec_save_dot(a,f);
 		fprintf(f,"}\n");
 	}
@@ -172,7 +186,7 @@ void save_dot(Node* a, char* nom)
 
 	free(buffer);
 }
-
+/*
 bool is_separator(char* s){
 	return strcmp(s,"||") == 0;
 }
@@ -208,3 +222,4 @@ void create_tree_from_command(int commandSize, char *commandString[]){
 	save_dot(getCommand,"arbre1");
 }
 
+*/

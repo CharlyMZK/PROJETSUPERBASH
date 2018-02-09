@@ -62,6 +62,9 @@ Node* create_and_return_right_child(Node* a, char* command);
  */
 char* getCommand(Node* a);
 
+/**
+ * 
+ */ 
 int is_empty(Node* a);
 
 int is_child(Node* a);
