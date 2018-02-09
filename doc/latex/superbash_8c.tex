@@ -1,0 +1,67 @@
+\hypertarget{superbash_8c}{\section{src/superbash.c File Reference}
+\label{superbash_8c}\index{src/superbash.\-c@{src/superbash.\-c}}
+}
+
+
+Programme principal du projet.  
+
+
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include $<$stdbool.\-h$>$}\\*
+{\ttfamily \#include $<$unistd.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}tree.\-h\char`\"{}}\\*
+Include dependency graph for superbash.\-c\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{superbash_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{superbash_8c_acffba4e12894ca7015d00aaf3a2354cc}{\#define {\bfseries L\-S\-H\-\_\-\-R\-L\-\_\-\-B\-U\-F\-S\-I\-Z\-E}~1024}\label{superbash_8c_acffba4e12894ca7015d00aaf3a2354cc}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{superbash_8c_a0596c39f3cb05234e70ddae681b730a6}{char $\ast$ {\bfseries read\-\_\-console\-\_\-line} (void)}\label{superbash_8c_a0596c39f3cb05234e70ddae681b730a6}
+
+\item 
+\hypertarget{superbash_8c_a40ea05e6559158264ffb3c0bcf215841}{void {\bfseries bash\-\_\-loop} (void)}\label{superbash_8c_a40ea05e6559158264ffb3c0bcf215841}
+
+\item 
+\hypertarget{superbash_8c_af84467fe53452a65df671e6c1cee70f1}{int {\bfseries handle\-\_\-command} (char $\ast$command)}\label{superbash_8c_af84467fe53452a65df671e6c1cee70f1}
+
+\item 
+\hypertarget{superbash_8c_a2dd475209952c9e108ba249938aa84d1}{void {\bfseries create\-\_\-tree\-\_\-from\-\_\-command\-\_\-} (char $\ast$command)}\label{superbash_8c_a2dd475209952c9e108ba249938aa84d1}
+
+\item 
+\hypertarget{superbash_8c_a370ffc4c27a249fb1029bdcdac48fec7}{int {\bfseries execute\-\_\-command} (char $\ast$command)}\label{superbash_8c_a370ffc4c27a249fb1029bdcdac48fec7}
+
+\item 
+\hypertarget{superbash_8c_ab441892e9eec5b0ee1d6ece0f23594d3}{void {\bfseries print\-\_\-current\-\_\-directory} ()}\label{superbash_8c_ab441892e9eec5b0ee1d6ece0f23594d3}
+
+\item 
+\hypertarget{superbash_8c_a9b43697ad274f24cf39e6fe2ee7024da}{void {\bfseries change\-\_\-current\-\_\-directory} (char $\ast$path)}\label{superbash_8c_a9b43697ad274f24cf39e6fe2ee7024da}
+
+\item 
+\hypertarget{superbash_8c_a0ddf1224851353fc92bfbff6f499fa97}{int {\bfseries main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})}\label{superbash_8c_a0ddf1224851353fc92bfbff6f499fa97}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Programme principal du projet. \begin{DoxyAuthor}{Author}
+Charly Mrazeck, Baptiste Oberbach 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\-1.\-0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+février 2018
+\end{DoxyDate}
+Programme executant le bash du projet superbash 
