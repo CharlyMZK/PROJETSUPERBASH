@@ -109,20 +109,6 @@ void print_prefix(int spacesCounter, Node* a)
 
 }
 
-/*
-void print_prefix(Node* a)
-{	
-	if (!is_empty(a))
-	{
-		printf("[ %s ]\n",getCommand(a));
-		printf("\n[<]");
-		print_prefix(get_left_child(a));
-		printf("\n[>]");
-		print_prefix(get_right_child(a));		
-	}
-}
-*/
-
 void print_infix(Node* a)
 {
 	if (!is_empty(a))
@@ -217,40 +203,3 @@ void save_dot(Node* a, char* nom)
 
 	free(buffer);
 }
-/*
-bool is_separator(char* s){
-	return strcmp(s,"||") == 0;
-}
-
-void create_tree_from_command(int commandSize, char *commandString[]){
-	Node* getCommand = create_child("Root");
-	Node* actualUsedNode = getCommand;
-	int i;
-	for (i=1; i < commandSize; i++)
-	{
-		printf("Argument %d : %s \n", i+1, commandString[i]);
-		if(is_separator(commandString[i])){
-			printf("Getting back on root..\n");
-			actualUsedNode = getCommand;
-		}else{
-			printf("Continuing the tree..\n");
-			if(get_left_child(actualUsedNode) == NULL){
-				printf("Creating a new left child..\n");
-				actualUsedNode = create_and_return_left_child(actualUsedNode,commandString[i]);
-			}else if(get_right_child(actualUsedNode) == NULL){
-				printf("Creating a new right child..\n");
-				actualUsedNode = create_and_return_right_child(actualUsedNode,commandString[i]);
-			}
-		}
-	}
-
-	printf("Hauteur %d\n",height(getCommand));
-	printf("Taille %d\n",size(getCommand));
-	printf ("Prefix: ");
-	print_prefix(getCommand);
-	printf("\n");
-		
-	save_dot(getCommand,"arbre1");
-}
-
-*/

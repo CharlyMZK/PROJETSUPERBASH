@@ -156,7 +156,6 @@ void create_tree_from_command(char* command){
   
   
   while (index > 0) {
-    
     printf("[Read] letter checked : %c \n", command[index]);
     if(is_separator(command[index])){
       separator = substr(command,index-1,2);
