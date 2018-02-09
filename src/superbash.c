@@ -65,16 +65,65 @@ void bash_loop(void)
   free(command);
 }
 
-/*
-int executeCommand(char **command)
+/**
+ * Remove leading whitespace characters from string
+ */
+void trimLeading(char * str)
 {
-  int i;
-  if (command[0] == NULL) {
-    return false;
-  }else{
-  	return true;
-  }
-}*/
+    int index, i, j;
+
+    index = 0;
+
+    /* Find last index of whitespace character */
+    while(str[index] == ' ' || str[index] == '\t' || str[index] == '\n')
+    {
+        index++;
+    }
+    if(index != 0)
+    {
+        /* Shit all trailing characters to its left */
+        i = 0;
+        while(str[i + index] != '\0')
+        {
+            str[i] = str[i + index];
+            i++;
+        }
+        str[i] = '\0'; // Make sure that string is NULL terminated
+    }
+}
+
+void trimLast(char * str)
+{
+    int index, i, j;
+
+    index = 0;
+
+    /* Find last index of whitespace character */
+    while(str[index] == ' ' || str[index] == '\t' || str[index] == '\n')
+    {
+        index++;
+    }
+    if(index != 0)
+    {
+        /* Shit all trailing characters to its left */
+        i = 0;
+        while(str[i + index] != '\0')
+        {
+            str[i] = str[i + index];
+            i++;
+        }
+        str[i] = '\0'; // Make sure that string is NULL terminated
+    }
+}
+
+
+void remove_space_at_beginning_and_end(char * string)
+{
+  trimLeading(string);
+  printf("%s fin de la string\n", string);
+  
+  
+}
 
 int handle_command(char* command){
   printf("[Log] Handling command \n");
@@ -204,7 +253,7 @@ void create_tree_from_command_(char* command){
   
   printf("[Root] Root command : %s\n",root->command);
   printf("Printing prefix : \n");
-  print_prefix(root);
+  print_prefix(0,root);
   printf("\n");
 }
 
@@ -231,6 +280,10 @@ void change_current_directory(char *path)
 
 int main(int argc, char *argv[])
 {
+  printf(" test trim \n");
+  char ex[] ="                                    test avec espace avant et des cara spéciaux || && <  ";
+  //char * ex = "                                   test avec espace avant et des cara spéciaux || && <  ";
+  remove_space_at_beginning_and_end(ex);
 	bash_loop();
 	//create_tree_from_command(17,"ls -l | grep 2048");
 	return EXIT_SUCCESS;

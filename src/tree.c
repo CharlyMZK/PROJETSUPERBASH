@@ -80,6 +80,36 @@ int size(Node* a)
 }
 
 
+void print_prefix(int spacesCounter, Node* a)
+{	
+	if (!is_empty(a))
+	{
+		int i;
+		int j;
+		int k;
+		for(i = 0; i < spacesCounter ; i++){
+			printf(" ");
+		}
+		printf("[ %s ]\n",getCommand(a));
+		printf("\n");
+		spacesCounter ++ ;
+		for(j = 0; j <= spacesCounter ; j++){
+			printf(" ");
+		}
+		printf("[<]");
+		print_prefix(spacesCounter,get_left_child(a));
+		printf("\n");
+		for(k = 0; k <= spacesCounter ; k++){
+			printf(" ");
+		}
+		printf("[>]");
+		print_prefix(spacesCounter,get_right_child(a));		
+		printf("\n");
+	}
+
+}
+
+/*
 void print_prefix(Node* a)
 {	
 	if (!is_empty(a))
@@ -91,6 +121,7 @@ void print_prefix(Node* a)
 		print_prefix(get_right_child(a));		
 	}
 }
+*/
 
 void print_infix(Node* a)
 {

@@ -73,7 +73,8 @@ int height(Node* a);
 
 int size(Node* a);
 
-void print_prefix(Node* a);
+//void print_prefix(Node* a);
+void print_prefix(int spaceCounter, Node* a);
 
 void print_infix(Node* a);
 
