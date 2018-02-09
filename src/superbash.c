@@ -16,10 +16,11 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include "tree.h"
+#include "logger.h"
 #define LSH_RL_BUFSIZE 1024
 #define pipe_separator '|'
 #define and_separator '&'
-
+#define VERBOSE true
 
 char *substr(char *src,int pos,int len) { 
   char *dest=NULL;                        
@@ -74,45 +75,40 @@ void trimLeading(char * str)
 
     index = 0;
 
-    /* Find last index of whitespace character */
+    /* Trouve le dernier index des premiers espaces */
     while(str[index] == ' ' || str[index] == '\t' || str[index] == '\n')
     {
         index++;
     }
     if(index != 0)
     {
-        /* Shit all trailing characters to its left */
+        /* shift le tableau sur la gauche */
         i = 0;
         while(str[i + index] != '\0')
         {
             str[i] = str[i + index];
             i++;
         }
-        str[i] = '\0'; // Make sure that string is NULL terminated
+        str[i] = '\0'; //Ferme la string
     }
 }
-
+/**
+ * Enlève les espaces en fin de chaine
+ * 
+ */
 void trimLast(char * str)
 {
-    int index, i, j;
-
-    index = 0;
-    // strlen 
-    /* Find last index of whitespace character */
+    int index, i, lastIndex;
+    lastIndex = strlen(str) -1;
+    index = lastIndex;
+    /* Trouve le premier index des derniers espaces */
     while(str[index] == ' ' || str[index] == '\t' || str[index] == '\n')
     {
-        index++;
+        index--;
     }
-    if(index != 0)
+    if(index != lastIndex )
     {
-        /* Shit all trailing characters to its left */
-        i = 0;
-        while(str[i + index] != '\0')
-        {
-            str[i] = str[i + index];
-            i++;
-        }
-        str[i] = '\0'; // Make sure that string is NULL terminated
+        str[index] = '\0'; // Make sure that string is NULL terminated
     }
 }
 
@@ -121,13 +117,13 @@ void remove_space_at_beginning_and_end(char * string)
 {
   trimLeading(string);
   printf("%s fin de la string\n", string);
-  
-  
+  trimLast(string);
+  printf("%s fin de la string\n", string);
 }
 
 int handle_command(char* command){
   printf("[Log] Handling command \n");
-  create_tree_from_command_(command);
+  create_tree_from_command(command);
   return true;
 }
 
@@ -143,61 +139,7 @@ bool is_separator(char instruction){
   return false;
 }
 
-/*void create_tree_from_command_(char* command){
-  printf("[Log] Creating tree \n");
-  int end = strlen(command) - 1; 
-  int index = end;
-  int lastSeparatorPosition = 0;
-  Node* root = NULL;
-  Node* actualUsedNode = NULL;
-  Node* newNode = NULL;
-  
-  char* separator;
-
-  
-  printf("[The command is : %s | I'm going to read > end : %d index : %d]\n",command, end,index);
-  
-  
-  while (index > 0) {
-    printf("[Read] letter checked : %c \n", command[index]);
-    if(is_separator(command[index])){
-      lastSeparatorPosition = index;
-      separator = substr(command,index,2);
-      printf("Separator found : %s",separator);
-      
-      printf("[Separator] I found a separator, creating a node from %d to %d\n", index+1, end);
-      if(actualUsedNode == NULL){ 
-        root = create_root(substr(command,index,2),NULL,create_root(substr(command,index+1,end),NULL,NULL)); 
-        actualUsedNode = root;
-      }else{
-        newNode = create_root(substr(command,index,index-1),NULL,create_root(substr(command,index+1,end),NULL,NULL));
-        if(actualUsedNode->leftChild == NULL){
-          actualUsedNode->leftChild = newNode;
-          actualUsedNode = newNode;
-        }
-      }
-      index--;
-    }
-    index --;
-  }
-  
-  if(root == NULL){
-    printf("[No root] Root is null, only one command, creating..\n");
-    root = create_root(command,NULL,NULL); 
-  }else if(actualUsedNode->leftChild == NULL){
-    actualUsedNode->leftChild = create_root(substr(command,0,lastSeparatorPosition),NULL,NULL);
-  }else if(actualUsedNode->rightChild == NULL){
-    actualUsedNode->rightChild = create_root(substr(command,0,lastSeparatorPosition),NULL,NULL);
-  }
-  
-  printf("[Root] Root command : %s\n",root->command);
-  printf("Printing prefix : \n");
-  print_prefix(root);
-  printf("\n");
-}*/
-
-
-void create_tree_from_command_(char* command){
+void create_tree_from_command(char* command){
   printf("[Log] Creating tree \n");
   int end = strlen(command) - 1; 
   int index = end;
@@ -214,6 +156,7 @@ void create_tree_from_command_(char* command){
   
   
   while (index > 0) {
+    
     printf("[Read] letter checked : %c \n", command[index]);
     if(is_separator(command[index])){
       separator = substr(command,index-1,2);
@@ -281,7 +224,7 @@ void change_current_directory(char *path)
 int main(int argc, char *argv[])
 {
   printf(" test trim \n");
-  char ex[] ="                                    test avec espace avant et des cara spéciaux || && <  ";
+  char ex[] ="                                    test avec espace avant et des cara spéciaux || && <                             ";
   //char * ex = "                                   test avec espace avant et des cara spéciaux || && <  ";
   remove_space_at_beginning_and_end(ex);
 	bash_loop();
