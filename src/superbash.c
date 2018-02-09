@@ -185,6 +185,7 @@ void create_tree_from_command(char* command){
     printf("[ ROW ]");
   }
   
+  remove_space_at_beginning_and_end(command);
   if(root == NULL){
     printf("[No root] Root is null, only one command, creating..\n");
     root = create_root(command,NULL,NULL); 
