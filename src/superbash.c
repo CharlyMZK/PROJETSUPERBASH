@@ -66,7 +66,7 @@ void bash_loop(void)
 }
 
 /**
- * Remove leading whitespace characters from string
+ * Enlève les espaces en début de chaine
  */
 void trimLeading(char * str)
 {
@@ -97,7 +97,7 @@ void trimLast(char * str)
     int index, i, j;
 
     index = 0;
-
+    // strlen 
     /* Find last index of whitespace character */
     while(str[index] == ' ' || str[index] == '\t' || str[index] == '\n')
     {
