@@ -60,6 +60,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
+      <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -67,7 +68,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -97,13 +98,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &lt;string.h&gt;</code><br/>
 <code>#include &lt;stdbool.h&gt;</code><br/>
 <code>#include &lt;unistd.h&gt;</code><br/>
-<code>#include &quot;tree.h&quot;</code><br/>
+<code>#include &quot;<a class="el" href="tree_8h_source.html">tree.h</a>&quot;</code><br/>
+<code>#include &quot;logger.h&quot;</code><br/>
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for superbash.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="superbash_8c__incl.png" border="0" usemap="#src_2superbash_8c" alt=""/></div>
 <map name="src_2superbash_8c" id="src_2superbash_8c">
-<area shape="rect" id="node7" href="tree_8h_source.html" title="tree.h" alt="" coords="74,80,128,107"/></map>
+<area shape="rect" id="node7" href="tree_8h.html" title="tree.h" alt="" coords="125,80,179,107"/><area shape="rect" id="node8" href="logger_8h_source.html" title="logger.h" alt="" coords="437,80,504,107"/></map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -114,26 +116,29 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a0596c39f3cb05234e70ddae681b730a6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0596c39f3cb05234e70ddae681b730a6"></a>
-char *&#160;</td><td class="memItemRight" valign="bottom"><b>read_console_line</b> (void)</td></tr>
+<tr class="memitem:a92c201a8e2d3381da8c1a9414d29e2d2"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="superbash_8c.html#a92c201a8e2d3381da8c1a9414d29e2d2">substr</a> (char *src, int pos, int len)</td></tr>
+<tr class="separator:a92c201a8e2d3381da8c1a9414d29e2d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0596c39f3cb05234e70ddae681b730a6"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="superbash_8c.html#a0596c39f3cb05234e70ddae681b730a6">read_console_line</a> (void)</td></tr>
 <tr class="separator:a0596c39f3cb05234e70ddae681b730a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40ea05e6559158264ffb3c0bcf215841"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40ea05e6559158264ffb3c0bcf215841"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>bash_loop</b> (void)</td></tr>
+<tr class="memitem:a40ea05e6559158264ffb3c0bcf215841"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="superbash_8c.html#a40ea05e6559158264ffb3c0bcf215841">bash_loop</a> (void)</td></tr>
 <tr class="separator:a40ea05e6559158264ffb3c0bcf215841"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af84467fe53452a65df671e6c1cee70f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af84467fe53452a65df671e6c1cee70f1"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>handle_command</b> (char *command)</td></tr>
+<tr class="memitem:a570d1340863a213574309e115443cf13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="superbash_8c.html#a570d1340863a213574309e115443cf13">trimLeading</a> (char *str)</td></tr>
+<tr class="separator:a570d1340863a213574309e115443cf13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fa05a3f988073d4d9cc0de69a8b34ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="superbash_8c.html#a8fa05a3f988073d4d9cc0de69a8b34ad">trimLast</a> (char *str)</td></tr>
+<tr class="separator:a8fa05a3f988073d4d9cc0de69a8b34ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ed89210277c9bc587916f95d08e023a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="superbash_8c.html#a8ed89210277c9bc587916f95d08e023a">remove_space_at_beginning_and_end</a> (char *string)</td></tr>
+<tr class="separator:a8ed89210277c9bc587916f95d08e023a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14cca885e3d4ae12aaf0c271cc82e5a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="tree_8h.html#a37cd02a05176eff781378c1be7872b5b">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="superbash_8c.html#a14cca885e3d4ae12aaf0c271cc82e5a2">create_tree_from_command</a> (char *command)</td></tr>
+<tr class="separator:a14cca885e3d4ae12aaf0c271cc82e5a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac31b6205a5f05b1fd5fcb9646507b472"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="superbash_8c.html#ac31b6205a5f05b1fd5fcb9646507b472">read_and_exec_tree</a> (<a class="el" href="tree_8h.html#a37cd02a05176eff781378c1be7872b5b">Node</a> *treeCommand)</td></tr>
+<tr class="separator:ac31b6205a5f05b1fd5fcb9646507b472"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af84467fe53452a65df671e6c1cee70f1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="superbash_8c.html#af84467fe53452a65df671e6c1cee70f1">handle_command</a> (char *command)</td></tr>
 <tr class="separator:af84467fe53452a65df671e6c1cee70f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dd475209952c9e108ba249938aa84d1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2dd475209952c9e108ba249938aa84d1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>create_tree_from_command_</b> (char *command)</td></tr>
-<tr class="separator:a2dd475209952c9e108ba249938aa84d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a370ffc4c27a249fb1029bdcdac48fec7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a370ffc4c27a249fb1029bdcdac48fec7"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>execute_command</b> (char *command)</td></tr>
+<tr class="memitem:a370ffc4c27a249fb1029bdcdac48fec7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="superbash_8c.html#a370ffc4c27a249fb1029bdcdac48fec7">execute_command</a> (char *command)</td></tr>
 <tr class="separator:a370ffc4c27a249fb1029bdcdac48fec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab441892e9eec5b0ee1d6ece0f23594d3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab441892e9eec5b0ee1d6ece0f23594d3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>print_current_directory</b> ()</td></tr>
+<tr class="memitem:ab441892e9eec5b0ee1d6ece0f23594d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="superbash_8c.html#ab441892e9eec5b0ee1d6ece0f23594d3">print_current_directory</a> ()</td></tr>
 <tr class="separator:ab441892e9eec5b0ee1d6ece0f23594d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b43697ad274f24cf39e6fe2ee7024da"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9b43697ad274f24cf39e6fe2ee7024da"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>change_current_directory</b> (char *path)</td></tr>
+<tr class="memitem:a9b43697ad274f24cf39e6fe2ee7024da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="superbash_8c.html#a9b43697ad274f24cf39e6fe2ee7024da">change_current_directory</a> (char *path)</td></tr>
 <tr class="separator:a9b43697ad274f24cf39e6fe2ee7024da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ddf1224851353fc92bfbff6f499fa97"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ddf1224851353fc92bfbff6f499fa97"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, char *argv[])</td></tr>
@@ -145,7 +150,227 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, ch
 <dl class="section version"><dt>Version</dt><dd>0.1.0 </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>février 2018</dd></dl>
 <p>Programme executant le bash du projet superbash </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a40ea05e6559158264ffb3c0bcf215841"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void bash_loop </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Execute les commandes passé par ligne de commande </p>
+
+</div>
+</div>
+<a class="anchor" id="a9b43697ad274f24cf39e6fe2ee7024da"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void change_current_directory </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Change le répertoire courant </p>
+
+</div>
+</div>
+<a class="anchor" id="a14cca885e3d4ae12aaf0c271cc82e5a2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="tree_8h.html#a37cd02a05176eff781378c1be7872b5b">Node</a>* create_tree_from_command </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>command</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Créer un arbre à partir de la commande passé en paramètre </p>
+
+</div>
+</div>
+<a class="anchor" id="a370ffc4c27a249fb1029bdcdac48fec7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int execute_command </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>command</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Execute une commande </p>
+
+</div>
+</div>
+<a class="anchor" id="af84467fe53452a65df671e6c1cee70f1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int handle_command </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>command</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Analyse la commande passé en paramètre et l'execute </p>
+
+</div>
+</div>
+<a class="anchor" id="ab441892e9eec5b0ee1d6ece0f23594d3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void print_current_directory </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Affiche le répertoire courant </p>
+
+</div>
+</div>
+<a class="anchor" id="ac31b6205a5f05b1fd5fcb9646507b472"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool read_and_exec_tree </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="tree_8h.html#a37cd02a05176eff781378c1be7872b5b">Node</a> *&#160;</td>
+          <td class="paramname"><em>treeCommand</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Lis un arbre et execute les commandes </p>
+
+</div>
+</div>
+<a class="anchor" id="a0596c39f3cb05234e70ddae681b730a6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* read_console_line </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Lis une ligne de la console et renvois la ligne lu </p>
+
+</div>
+</div>
+<a class="anchor" id="a8ed89210277c9bc587916f95d08e023a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void remove_space_at_beginning_and_end </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>string</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Enlève les espaces en début et en fin de chaine </p>
+
+</div>
+</div>
+<a class="anchor" id="a92c201a8e2d3381da8c1a9414d29e2d2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* substr </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>retourne un string à partir de la string src à la position pos pour une longueur len </p>
+
+</div>
+</div>
+<a class="anchor" id="a8fa05a3f988073d4d9cc0de69a8b34ad"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void trimLast </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Enlève les espaces en fin de chaine </p>
+
+</div>
+</div>
+<a class="anchor" id="a570d1340863a213574309e115443cf13"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void trimLeading </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Enlève les espaces en début de chaine </p>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

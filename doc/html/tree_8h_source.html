@@ -60,6 +60,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
+      <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -67,7 +68,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -86,61 +87,77 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">tree.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#define MAX(X,Y) ((X)&gt;(Y)?(X):(Y))</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="structsNode.html">   14</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structsNode.html">sNode</a></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">char</span>* command; </div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="structsNode.html#ad3ce64c185ce2fb0da1625cc6bce9803">   17</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structsNode.html#ad3ce64c185ce2fb0da1625cc6bce9803">success</a>; </div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="structsNode.html#af404972110c1a3225dd689b03a931b36">   18</a></span>&#160;    <span class="keywordtype">char</span>* <a class="code" href="structsNode.html#af404972110c1a3225dd689b03a931b36">result</a>; </div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="structsNode.html#a114d95f7bc7d2ba888a7b297703d73dd">   19</a></span>&#160;    <span class="keywordtype">char</span>* <a class="code" href="structsNode.html#a114d95f7bc7d2ba888a7b297703d73dd">separator</a>; </div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="structsNode.html#acaa42ae913310f65b9d08a4cecb3d40f">   20</a></span>&#160;    <span class="keywordtype">char</span>* <a class="code" href="structsNode.html#acaa42ae913310f65b9d08a4cecb3d40f">inputValue</a>; </div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structsNode.html#abf2b6d71454df07a766b315346375dbd">   21</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structsNode.html">sNode</a>* <a class="code" href="structsNode.html#abf2b6d71454df07a766b315346375dbd">leftChild</a>; </div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="structsNode.html#ad922ff3aa8dfeea7ca810d6524799126">   22</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structsNode.html">sNode</a>* <a class="code" href="structsNode.html#ad922ff3aa8dfeea7ca810d6524799126">rightChild</a>;   </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;} <a class="code" href="structsNode.html">Node</a>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<a class="code" href="structsNode.html">Node</a>* create_root(<span class="keywordtype">char</span>* v, <a class="code" href="structsNode.html">Node</a>* <a class="code" href="structsNode.html#abf2b6d71454df07a766b315346375dbd">leftChild</a>, <a class="code" href="structsNode.html">Node</a>* <a class="code" href="structsNode.html#ad922ff3aa8dfeea7ca810d6524799126">rightChild</a>);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<a class="code" href="structsNode.html">Node</a>* create_child(<span class="keywordtype">char</span>* v);</div>
+<a href="tree_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#define MAX(X,Y) ((X)&gt;(Y)?(X):(Y))</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="structsNode.html">   18</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structsNode.html">sNode</a></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">char</span>* command; </div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structsNode.html#ad3ce64c185ce2fb0da1625cc6bce9803">   21</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structsNode.html#ad3ce64c185ce2fb0da1625cc6bce9803">success</a>; </div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="structsNode.html#af404972110c1a3225dd689b03a931b36">   22</a></span>&#160;    <span class="keywordtype">char</span>* <a class="code" href="structsNode.html#af404972110c1a3225dd689b03a931b36">result</a>; </div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structsNode.html#a114d95f7bc7d2ba888a7b297703d73dd">   23</a></span>&#160;    <span class="keywordtype">char</span>* <a class="code" href="structsNode.html#a114d95f7bc7d2ba888a7b297703d73dd">separator</a>; </div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="structsNode.html#acaa42ae913310f65b9d08a4cecb3d40f">   24</a></span>&#160;    <span class="keywordtype">char</span>* <a class="code" href="structsNode.html#acaa42ae913310f65b9d08a4cecb3d40f">inputValue</a>; </div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="structsNode.html#abf2b6d71454df07a766b315346375dbd">   25</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structsNode.html">sNode</a>* <a class="code" href="structsNode.html#abf2b6d71454df07a766b315346375dbd">leftChild</a>; </div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="structsNode.html#ad922ff3aa8dfeea7ca810d6524799126">   26</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structsNode.html">sNode</a>* <a class="code" href="structsNode.html#ad922ff3aa8dfeea7ca810d6524799126">rightChild</a>;   </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;} <a class="code" href="tree_8h.html#a37cd02a05176eff781378c1be7872b5b">Node</a>;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<a class="code" href="structsNode.html">Node</a>* get_left_child(<a class="code" href="structsNode.html">Node</a>* a);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<a class="code" href="structsNode.html">Node</a>* get_right_child(<a class="code" href="structsNode.html">Node</a>* a);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<a class="code" href="structsNode.html">Node</a>* create_and_return_left_child(<a class="code" href="structsNode.html">Node</a>* a, <span class="keywordtype">char</span>* v);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<a class="code" href="structsNode.html">Node</a>* create_and_return_right_child(<a class="code" href="structsNode.html">Node</a>* a, <span class="keywordtype">char</span>* v);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<a class="code" href="structsNode.html">Node</a>* <a class="code" href="tree_8h.html#affc543a0f6937b7ca2ddb6b01593f536">create_root</a>(<span class="keywordtype">char</span>* command, <a class="code" href="structsNode.html">Node</a>* <a class="code" href="structsNode.html#abf2b6d71454df07a766b315346375dbd">leftChild</a>, <a class="code" href="structsNode.html">Node</a>* <a class="code" href="structsNode.html#ad922ff3aa8dfeea7ca810d6524799126">rightChild</a>);</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">char</span>* root(<a class="code" href="structsNode.html">Node</a>* a);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">int</span> is_empty(<a class="code" href="structsNode.html">Node</a>* a);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">int</span> is_child(<a class="code" href="structsNode.html">Node</a>* a);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<a class="code" href="structsNode.html">Node</a>* <a class="code" href="tree_8h.html#a2c9d8642307b2c766a15e4c87622eaff">create_child</a>(<span class="keywordtype">char</span>* command);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">int</span> height(<a class="code" href="structsNode.html">Node</a>* a);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">int</span> size(<a class="code" href="structsNode.html">Node</a>* a);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">void</span> print_prefix(<a class="code" href="structsNode.html">Node</a>* a);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<a class="code" href="structsNode.html">Node</a>* <a class="code" href="tree_8h.html#a59fcef258c6e60149fa07dd3402a68d9">get_left_child</a>(<a class="code" href="structsNode.html">Node</a>* a);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keywordtype">void</span> print_infix(<a class="code" href="structsNode.html">Node</a>* a);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">void</span> print_postfix(<a class="code" href="structsNode.html">Node</a>* a);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">void</span> clean(<a class="code" href="structsNode.html">Node</a>* a);</div>
-<div class="ttc" id="structsNode_html_a114d95f7bc7d2ba888a7b297703d73dd"><div class="ttname"><a href="structsNode.html#a114d95f7bc7d2ba888a7b297703d73dd">sNode::separator</a></div><div class="ttdeci">char * separator</div><div class="ttdef"><b>Definition:</b> tree.h:19</div></div>
-<div class="ttc" id="structsNode_html_acaa42ae913310f65b9d08a4cecb3d40f"><div class="ttname"><a href="structsNode.html#acaa42ae913310f65b9d08a4cecb3d40f">sNode::inputValue</a></div><div class="ttdeci">char * inputValue</div><div class="ttdef"><b>Definition:</b> tree.h:20</div></div>
-<div class="ttc" id="structsNode_html_abf2b6d71454df07a766b315346375dbd"><div class="ttname"><a href="structsNode.html#abf2b6d71454df07a766b315346375dbd">sNode::leftChild</a></div><div class="ttdeci">struct sNode * leftChild</div><div class="ttdef"><b>Definition:</b> tree.h:21</div></div>
-<div class="ttc" id="structsNode_html"><div class="ttname"><a href="structsNode.html">sNode</a></div><div class="ttdoc">noeud de l&#39;arbre </div><div class="ttdef"><b>Definition:</b> tree.h:14</div></div>
-<div class="ttc" id="structsNode_html_ad922ff3aa8dfeea7ca810d6524799126"><div class="ttname"><a href="structsNode.html#ad922ff3aa8dfeea7ca810d6524799126">sNode::rightChild</a></div><div class="ttdeci">struct sNode * rightChild</div><div class="ttdef"><b>Definition:</b> tree.h:22</div></div>
-<div class="ttc" id="structsNode_html_ad3ce64c185ce2fb0da1625cc6bce9803"><div class="ttname"><a href="structsNode.html#ad3ce64c185ce2fb0da1625cc6bce9803">sNode::success</a></div><div class="ttdeci">bool success</div><div class="ttdef"><b>Definition:</b> tree.h:17</div></div>
-<div class="ttc" id="structsNode_html_af404972110c1a3225dd689b03a931b36"><div class="ttname"><a href="structsNode.html#af404972110c1a3225dd689b03a931b36">sNode::result</a></div><div class="ttdeci">char * result</div><div class="ttdef"><b>Definition:</b> tree.h:18</div></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<a class="code" href="structsNode.html">Node</a>* <a class="code" href="tree_8h.html#a83ea79dab74daf9e345b05af1da68c1d">get_right_child</a>(<a class="code" href="structsNode.html">Node</a>* a);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<a class="code" href="structsNode.html">Node</a>* <a class="code" href="tree_8h.html#ae70b753f4b1c17742cbe17d7d2a7f000">create_and_return_left_child</a>(<a class="code" href="structsNode.html">Node</a>* a, <span class="keywordtype">char</span>* command);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<a class="code" href="structsNode.html">Node</a>* <a class="code" href="tree_8h.html#a9ce90abf06fc63180fd5aa99f42831bf">create_and_return_right_child</a>(<a class="code" href="structsNode.html">Node</a>* a, <span class="keywordtype">char</span>* command);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keywordtype">char</span>* <a class="code" href="tree_8h.html#a95db71664decdbef9474497c7bf01d9c">getCommand</a>(<a class="code" href="structsNode.html">Node</a>* a);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keywordtype">int</span> <a class="code" href="tree_8h.html#ab5d045329cf51c47a59b4abced0d2b64">is_empty</a>(<a class="code" href="structsNode.html">Node</a>* a);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keywordtype">int</span> <a class="code" href="tree_8h.html#a57dd4b0588fd793ba14d488eafee866c">is_child</a>(<a class="code" href="structsNode.html">Node</a>* a);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keywordtype">int</span> <a class="code" href="tree_8h.html#a2dc2471a8a25a29361cd6dfabde67749">height</a>(<a class="code" href="structsNode.html">Node</a>* a);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keywordtype">int</span> <a class="code" href="tree_8h.html#a9604b97cd9078a0efc994c5d3e6d41bc">size</a>(<a class="code" href="structsNode.html">Node</a>* a);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">//void print_prefix(Node* a);</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment"></span><span class="keywordtype">void</span> <a class="code" href="tree_8h.html#a0cb71d608154e6248baa5d0ab3c0a432">print_prefix</a>(<span class="keywordtype">int</span> spaceCounter, <a class="code" href="structsNode.html">Node</a>* a);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree_8h.html#a31f9f1c8cf955ee14fce65d3dcaa425d">print_infix</a>(<a class="code" href="structsNode.html">Node</a>* a);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree_8h.html#ab9254d3227b88221983835b7aaeddf76">print_postfix</a>(<a class="code" href="structsNode.html">Node</a>* a);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree_8h.html#aaa28c852a864a79971dd3954482b2805">clean</a>(<a class="code" href="structsNode.html">Node</a>* a);</div>
+<div class="ttc" id="structsNode_html_a114d95f7bc7d2ba888a7b297703d73dd"><div class="ttname"><a href="structsNode.html#a114d95f7bc7d2ba888a7b297703d73dd">sNode::separator</a></div><div class="ttdeci">char * separator</div><div class="ttdef"><b>Definition:</b> tree.h:23</div></div>
+<div class="ttc" id="tree_8h_html_affc543a0f6937b7ca2ddb6b01593f536"><div class="ttname"><a href="tree_8h.html#affc543a0f6937b7ca2ddb6b01593f536">create_root</a></div><div class="ttdeci">Node * create_root(char *command, Node *leftChild, Node *rightChild)</div><div class="ttdef"><b>Definition:</b> tree.c:20</div></div>
+<div class="ttc" id="tree_8h_html_a2dc2471a8a25a29361cd6dfabde67749"><div class="ttname"><a href="tree_8h.html#a2dc2471a8a25a29361cd6dfabde67749">height</a></div><div class="ttdeci">int height(Node *a)</div><div class="ttdef"><b>Definition:</b> tree.c:84</div></div>
+<div class="ttc" id="tree_8h_html_a57dd4b0588fd793ba14d488eafee866c"><div class="ttname"><a href="tree_8h.html#a57dd4b0588fd793ba14d488eafee866c">is_child</a></div><div class="ttdeci">int is_child(Node *a)</div><div class="ttdef"><b>Definition:</b> tree.c:78</div></div>
+<div class="ttc" id="tree_8h_html_a83ea79dab74daf9e345b05af1da68c1d"><div class="ttname"><a href="tree_8h.html#a83ea79dab74daf9e345b05af1da68c1d">get_right_child</a></div><div class="ttdeci">Node * get_right_child(Node *a)</div><div class="ttdef"><b>Definition:</b> tree.c:60</div></div>
+<div class="ttc" id="structsNode_html_acaa42ae913310f65b9d08a4cecb3d40f"><div class="ttname"><a href="structsNode.html#acaa42ae913310f65b9d08a4cecb3d40f">sNode::inputValue</a></div><div class="ttdeci">char * inputValue</div><div class="ttdef"><b>Definition:</b> tree.h:24</div></div>
+<div class="ttc" id="structsNode_html_abf2b6d71454df07a766b315346375dbd"><div class="ttname"><a href="structsNode.html#abf2b6d71454df07a766b315346375dbd">sNode::leftChild</a></div><div class="ttdeci">struct sNode * leftChild</div><div class="ttdef"><b>Definition:</b> tree.h:25</div></div>
+<div class="ttc" id="tree_8h_html_aaa28c852a864a79971dd3954482b2805"><div class="ttname"><a href="tree_8h.html#aaa28c852a864a79971dd3954482b2805">clean</a></div><div class="ttdeci">void clean(Node *a)</div><div class="ttdef"><b>Definition:</b> tree.c:148</div></div>
+<div class="ttc" id="tree_8h_html_a9ce90abf06fc63180fd5aa99f42831bf"><div class="ttname"><a href="tree_8h.html#a9ce90abf06fc63180fd5aa99f42831bf">create_and_return_right_child</a></div><div class="ttdeci">Node * create_and_return_right_child(Node *a, char *command)</div><div class="ttdef"><b>Definition:</b> tree.c:46</div></div>
+<div class="ttc" id="tree_8h_html_a59fcef258c6e60149fa07dd3402a68d9"><div class="ttname"><a href="tree_8h.html#a59fcef258c6e60149fa07dd3402a68d9">get_left_child</a></div><div class="ttdeci">Node * get_left_child(Node *a)</div><div class="ttdef"><b>Definition:</b> tree.c:54</div></div>
+<div class="ttc" id="tree_8h_html_a31f9f1c8cf955ee14fce65d3dcaa425d"><div class="ttname"><a href="tree_8h.html#a31f9f1c8cf955ee14fce65d3dcaa425d">print_infix</a></div><div class="ttdeci">void print_infix(Node *a)</div><div class="ttdef"><b>Definition:</b> tree.c:128</div></div>
+<div class="ttc" id="tree_8h_html_a9604b97cd9078a0efc994c5d3e6d41bc"><div class="ttname"><a href="tree_8h.html#a9604b97cd9078a0efc994c5d3e6d41bc">size</a></div><div class="ttdeci">int size(Node *a)</div><div class="ttdef"><b>Definition:</b> tree.c:91</div></div>
+<div class="ttc" id="tree_8h_html_a95db71664decdbef9474497c7bf01d9c"><div class="ttname"><a href="tree_8h.html#a95db71664decdbef9474497c7bf01d9c">getCommand</a></div><div class="ttdeci">char * getCommand(Node *a)</div><div class="ttdef"><b>Definition:</b> tree.c:66</div></div>
+<div class="ttc" id="tree_8h_html_ab5d045329cf51c47a59b4abced0d2b64"><div class="ttname"><a href="tree_8h.html#ab5d045329cf51c47a59b4abced0d2b64">is_empty</a></div><div class="ttdeci">int is_empty(Node *a)</div><div class="ttdef"><b>Definition:</b> tree.c:72</div></div>
+<div class="ttc" id="structsNode_html"><div class="ttname"><a href="structsNode.html">sNode</a></div><div class="ttdoc">noeud de l&#39;arbre </div><div class="ttdef"><b>Definition:</b> tree.h:18</div></div>
+<div class="ttc" id="tree_8h_html_a37cd02a05176eff781378c1be7872b5b"><div class="ttname"><a href="tree_8h.html#a37cd02a05176eff781378c1be7872b5b">Node</a></div><div class="ttdeci">struct sNode Node</div><div class="ttdoc">noeud de l&#39;arbre </div></div>
+<div class="ttc" id="tree_8h_html_ae70b753f4b1c17742cbe17d7d2a7f000"><div class="ttname"><a href="tree_8h.html#ae70b753f4b1c17742cbe17d7d2a7f000">create_and_return_left_child</a></div><div class="ttdeci">Node * create_and_return_left_child(Node *a, char *command)</div><div class="ttdef"><b>Definition:</b> tree.c:40</div></div>
+<div class="ttc" id="structsNode_html_ad922ff3aa8dfeea7ca810d6524799126"><div class="ttname"><a href="structsNode.html#ad922ff3aa8dfeea7ca810d6524799126">sNode::rightChild</a></div><div class="ttdeci">struct sNode * rightChild</div><div class="ttdef"><b>Definition:</b> tree.h:26</div></div>
+<div class="ttc" id="structsNode_html_ad3ce64c185ce2fb0da1625cc6bce9803"><div class="ttname"><a href="structsNode.html#ad3ce64c185ce2fb0da1625cc6bce9803">sNode::success</a></div><div class="ttdeci">bool success</div><div class="ttdef"><b>Definition:</b> tree.h:21</div></div>
+<div class="ttc" id="tree_8h_html_a2c9d8642307b2c766a15e4c87622eaff"><div class="ttname"><a href="tree_8h.html#a2c9d8642307b2c766a15e4c87622eaff">create_child</a></div><div class="ttdeci">Node * create_child(char *command)</div><div class="ttdef"><b>Definition:</b> tree.c:35</div></div>
+<div class="ttc" id="tree_8h_html_ab9254d3227b88221983835b7aaeddf76"><div class="ttname"><a href="tree_8h.html#ab9254d3227b88221983835b7aaeddf76">print_postfix</a></div><div class="ttdeci">void print_postfix(Node *a)</div><div class="ttdef"><b>Definition:</b> tree.c:138</div></div>
+<div class="ttc" id="structsNode_html_af404972110c1a3225dd689b03a931b36"><div class="ttname"><a href="structsNode.html#af404972110c1a3225dd689b03a931b36">sNode::result</a></div><div class="ttdeci">char * result</div><div class="ttdef"><b>Definition:</b> tree.h:22</div></div>
+<div class="ttc" id="tree_8h_html_a0cb71d608154e6248baa5d0ab3c0a432"><div class="ttname"><a href="tree_8h.html#a0cb71d608154e6248baa5d0ab3c0a432">print_prefix</a></div><div class="ttdeci">void print_prefix(int spaceCounter, Node *a)</div><div class="ttdef"><b>Definition:</b> tree.c:99</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

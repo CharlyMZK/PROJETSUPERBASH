@@ -12,7 +12,9 @@ Programme principal du projet.
 {\ttfamily \#include $<$stdbool.\-h$>$}\\*
 {\ttfamily \#include $<$unistd.\-h$>$}\\*
 {\ttfamily \#include \char`\"{}tree.\-h\char`\"{}}\\*
-Include dependency graph for superbash.\-c\-:\nopagebreak
+{\ttfamily \#include \char`\"{}logger.\-h\char`\"{}}\\*
+Include dependency graph for superbash.\-c\-:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -28,26 +30,29 @@ Include dependency graph for superbash.\-c\-:\nopagebreak
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hypertarget{superbash_8c_a0596c39f3cb05234e70ddae681b730a6}{char $\ast$ {\bfseries read\-\_\-console\-\_\-line} (void)}\label{superbash_8c_a0596c39f3cb05234e70ddae681b730a6}
-
+char $\ast$ \hyperlink{superbash_8c_a92c201a8e2d3381da8c1a9414d29e2d2}{substr} (char $\ast$src, int pos, int len)
 \item 
-\hypertarget{superbash_8c_a40ea05e6559158264ffb3c0bcf215841}{void {\bfseries bash\-\_\-loop} (void)}\label{superbash_8c_a40ea05e6559158264ffb3c0bcf215841}
-
+char $\ast$ \hyperlink{superbash_8c_a0596c39f3cb05234e70ddae681b730a6}{read\-\_\-console\-\_\-line} (void)
 \item 
-\hypertarget{superbash_8c_af84467fe53452a65df671e6c1cee70f1}{int {\bfseries handle\-\_\-command} (char $\ast$command)}\label{superbash_8c_af84467fe53452a65df671e6c1cee70f1}
-
+void \hyperlink{superbash_8c_a40ea05e6559158264ffb3c0bcf215841}{bash\-\_\-loop} (void)
 \item 
-\hypertarget{superbash_8c_a2dd475209952c9e108ba249938aa84d1}{void {\bfseries create\-\_\-tree\-\_\-from\-\_\-command\-\_\-} (char $\ast$command)}\label{superbash_8c_a2dd475209952c9e108ba249938aa84d1}
-
+void \hyperlink{superbash_8c_a570d1340863a213574309e115443cf13}{trim\-Leading} (char $\ast$str)
 \item 
-\hypertarget{superbash_8c_a370ffc4c27a249fb1029bdcdac48fec7}{int {\bfseries execute\-\_\-command} (char $\ast$command)}\label{superbash_8c_a370ffc4c27a249fb1029bdcdac48fec7}
-
+void \hyperlink{superbash_8c_a8fa05a3f988073d4d9cc0de69a8b34ad}{trim\-Last} (char $\ast$str)
 \item 
-\hypertarget{superbash_8c_ab441892e9eec5b0ee1d6ece0f23594d3}{void {\bfseries print\-\_\-current\-\_\-directory} ()}\label{superbash_8c_ab441892e9eec5b0ee1d6ece0f23594d3}
-
+void \hyperlink{superbash_8c_a8ed89210277c9bc587916f95d08e023a}{remove\-\_\-space\-\_\-at\-\_\-beginning\-\_\-and\-\_\-end} (char $\ast$string)
 \item 
-\hypertarget{superbash_8c_a9b43697ad274f24cf39e6fe2ee7024da}{void {\bfseries change\-\_\-current\-\_\-directory} (char $\ast$path)}\label{superbash_8c_a9b43697ad274f24cf39e6fe2ee7024da}
-
+\hyperlink{tree_8h_a37cd02a05176eff781378c1be7872b5b}{Node} $\ast$ \hyperlink{superbash_8c_a14cca885e3d4ae12aaf0c271cc82e5a2}{create\-\_\-tree\-\_\-from\-\_\-command} (char $\ast$command)
+\item 
+bool \hyperlink{superbash_8c_ac31b6205a5f05b1fd5fcb9646507b472}{read\-\_\-and\-\_\-exec\-\_\-tree} (\hyperlink{tree_8h_a37cd02a05176eff781378c1be7872b5b}{Node} $\ast$tree\-Command)
+\item 
+int \hyperlink{superbash_8c_af84467fe53452a65df671e6c1cee70f1}{handle\-\_\-command} (char $\ast$command)
+\item 
+int \hyperlink{superbash_8c_a370ffc4c27a249fb1029bdcdac48fec7}{execute\-\_\-command} (char $\ast$command)
+\item 
+void \hyperlink{superbash_8c_ab441892e9eec5b0ee1d6ece0f23594d3}{print\-\_\-current\-\_\-directory} ()
+\item 
+void \hyperlink{superbash_8c_a9b43697ad274f24cf39e6fe2ee7024da}{change\-\_\-current\-\_\-directory} (char $\ast$path)
 \item 
 \hypertarget{superbash_8c_a0ddf1224851353fc92bfbff6f499fa97}{int {\bfseries main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})}\label{superbash_8c_a0ddf1224851353fc92bfbff6f499fa97}
 
@@ -65,3 +70,92 @@ Charly Mrazeck, Baptiste Oberbach
 février 2018
 \end{DoxyDate}
 Programme executant le bash du projet superbash 
+
+\subsection{Function Documentation}
+\hypertarget{superbash_8c_a40ea05e6559158264ffb3c0bcf215841}{\index{superbash.\-c@{superbash.\-c}!bash\-\_\-loop@{bash\-\_\-loop}}
+\index{bash\-\_\-loop@{bash\-\_\-loop}!superbash.c@{superbash.\-c}}
+\subsubsection[{bash\-\_\-loop}]{\setlength{\rightskip}{0pt plus 5cm}void bash\-\_\-loop (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{superbash_8c_a40ea05e6559158264ffb3c0bcf215841}
+Execute les commandes passé par ligne de commande \hypertarget{superbash_8c_a9b43697ad274f24cf39e6fe2ee7024da}{\index{superbash.\-c@{superbash.\-c}!change\-\_\-current\-\_\-directory@{change\-\_\-current\-\_\-directory}}
+\index{change\-\_\-current\-\_\-directory@{change\-\_\-current\-\_\-directory}!superbash.c@{superbash.\-c}}
+\subsubsection[{change\-\_\-current\-\_\-directory}]{\setlength{\rightskip}{0pt plus 5cm}void change\-\_\-current\-\_\-directory (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{path}
+\end{DoxyParamCaption}
+)}}\label{superbash_8c_a9b43697ad274f24cf39e6fe2ee7024da}
+Change le répertoire courant \hypertarget{superbash_8c_a14cca885e3d4ae12aaf0c271cc82e5a2}{\index{superbash.\-c@{superbash.\-c}!create\-\_\-tree\-\_\-from\-\_\-command@{create\-\_\-tree\-\_\-from\-\_\-command}}
+\index{create\-\_\-tree\-\_\-from\-\_\-command@{create\-\_\-tree\-\_\-from\-\_\-command}!superbash.c@{superbash.\-c}}
+\subsubsection[{create\-\_\-tree\-\_\-from\-\_\-command}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Node}$\ast$ create\-\_\-tree\-\_\-from\-\_\-command (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{command}
+\end{DoxyParamCaption}
+)}}\label{superbash_8c_a14cca885e3d4ae12aaf0c271cc82e5a2}
+Créer un arbre à partir de la commande passé en paramètre \hypertarget{superbash_8c_a370ffc4c27a249fb1029bdcdac48fec7}{\index{superbash.\-c@{superbash.\-c}!execute\-\_\-command@{execute\-\_\-command}}
+\index{execute\-\_\-command@{execute\-\_\-command}!superbash.c@{superbash.\-c}}
+\subsubsection[{execute\-\_\-command}]{\setlength{\rightskip}{0pt plus 5cm}int execute\-\_\-command (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{command}
+\end{DoxyParamCaption}
+)}}\label{superbash_8c_a370ffc4c27a249fb1029bdcdac48fec7}
+Execute une commande \hypertarget{superbash_8c_af84467fe53452a65df671e6c1cee70f1}{\index{superbash.\-c@{superbash.\-c}!handle\-\_\-command@{handle\-\_\-command}}
+\index{handle\-\_\-command@{handle\-\_\-command}!superbash.c@{superbash.\-c}}
+\subsubsection[{handle\-\_\-command}]{\setlength{\rightskip}{0pt plus 5cm}int handle\-\_\-command (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{command}
+\end{DoxyParamCaption}
+)}}\label{superbash_8c_af84467fe53452a65df671e6c1cee70f1}
+Analyse la commande passé en paramètre et l'execute \hypertarget{superbash_8c_ab441892e9eec5b0ee1d6ece0f23594d3}{\index{superbash.\-c@{superbash.\-c}!print\-\_\-current\-\_\-directory@{print\-\_\-current\-\_\-directory}}
+\index{print\-\_\-current\-\_\-directory@{print\-\_\-current\-\_\-directory}!superbash.c@{superbash.\-c}}
+\subsubsection[{print\-\_\-current\-\_\-directory}]{\setlength{\rightskip}{0pt plus 5cm}void print\-\_\-current\-\_\-directory (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{superbash_8c_ab441892e9eec5b0ee1d6ece0f23594d3}
+Affiche le répertoire courant \hypertarget{superbash_8c_ac31b6205a5f05b1fd5fcb9646507b472}{\index{superbash.\-c@{superbash.\-c}!read\-\_\-and\-\_\-exec\-\_\-tree@{read\-\_\-and\-\_\-exec\-\_\-tree}}
+\index{read\-\_\-and\-\_\-exec\-\_\-tree@{read\-\_\-and\-\_\-exec\-\_\-tree}!superbash.c@{superbash.\-c}}
+\subsubsection[{read\-\_\-and\-\_\-exec\-\_\-tree}]{\setlength{\rightskip}{0pt plus 5cm}bool read\-\_\-and\-\_\-exec\-\_\-tree (
+\begin{DoxyParamCaption}
+\item[{{\bf Node} $\ast$}]{tree\-Command}
+\end{DoxyParamCaption}
+)}}\label{superbash_8c_ac31b6205a5f05b1fd5fcb9646507b472}
+Lis un arbre et execute les commandes \hypertarget{superbash_8c_a0596c39f3cb05234e70ddae681b730a6}{\index{superbash.\-c@{superbash.\-c}!read\-\_\-console\-\_\-line@{read\-\_\-console\-\_\-line}}
+\index{read\-\_\-console\-\_\-line@{read\-\_\-console\-\_\-line}!superbash.c@{superbash.\-c}}
+\subsubsection[{read\-\_\-console\-\_\-line}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ read\-\_\-console\-\_\-line (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{superbash_8c_a0596c39f3cb05234e70ddae681b730a6}
+Lis une ligne de la console et renvois la ligne lu \hypertarget{superbash_8c_a8ed89210277c9bc587916f95d08e023a}{\index{superbash.\-c@{superbash.\-c}!remove\-\_\-space\-\_\-at\-\_\-beginning\-\_\-and\-\_\-end@{remove\-\_\-space\-\_\-at\-\_\-beginning\-\_\-and\-\_\-end}}
+\index{remove\-\_\-space\-\_\-at\-\_\-beginning\-\_\-and\-\_\-end@{remove\-\_\-space\-\_\-at\-\_\-beginning\-\_\-and\-\_\-end}!superbash.c@{superbash.\-c}}
+\subsubsection[{remove\-\_\-space\-\_\-at\-\_\-beginning\-\_\-and\-\_\-end}]{\setlength{\rightskip}{0pt plus 5cm}void remove\-\_\-space\-\_\-at\-\_\-beginning\-\_\-and\-\_\-end (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{string}
+\end{DoxyParamCaption}
+)}}\label{superbash_8c_a8ed89210277c9bc587916f95d08e023a}
+Enlève les espaces en début et en fin de chaine \hypertarget{superbash_8c_a92c201a8e2d3381da8c1a9414d29e2d2}{\index{superbash.\-c@{superbash.\-c}!substr@{substr}}
+\index{substr@{substr}!superbash.c@{superbash.\-c}}
+\subsubsection[{substr}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ substr (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{src, }
+\item[{int}]{pos, }
+\item[{int}]{len}
+\end{DoxyParamCaption}
+)}}\label{superbash_8c_a92c201a8e2d3381da8c1a9414d29e2d2}
+retourne un string à partir de la string src à la position pos pour une longueur len \hypertarget{superbash_8c_a8fa05a3f988073d4d9cc0de69a8b34ad}{\index{superbash.\-c@{superbash.\-c}!trim\-Last@{trim\-Last}}
+\index{trim\-Last@{trim\-Last}!superbash.c@{superbash.\-c}}
+\subsubsection[{trim\-Last}]{\setlength{\rightskip}{0pt plus 5cm}void trim\-Last (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{str}
+\end{DoxyParamCaption}
+)}}\label{superbash_8c_a8fa05a3f988073d4d9cc0de69a8b34ad}
+Enlève les espaces en fin de chaine \hypertarget{superbash_8c_a570d1340863a213574309e115443cf13}{\index{superbash.\-c@{superbash.\-c}!trim\-Leading@{trim\-Leading}}
+\index{trim\-Leading@{trim\-Leading}!superbash.c@{superbash.\-c}}
+\subsubsection[{trim\-Leading}]{\setlength{\rightskip}{0pt plus 5cm}void trim\-Leading (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{str}
+\end{DoxyParamCaption}
+)}}\label{superbash_8c_a570d1340863a213574309e115443cf13}
+Enlève les espaces en début de chaine 

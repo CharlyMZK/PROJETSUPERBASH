@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['superbash_2ec',['superbash.c',['../superbash_8c.html',1,'']]]
+  ['logger_2ec',['logger.c',['../logger_8c.html',1,'']]]
 ];

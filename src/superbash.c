@@ -1,9 +1,9 @@
 /**
- * \file Superbash.c
- * \brief Programme principal du projet
- * \author Charly Mrazeck, Baptiste Oberbach
- * \version 0.1.0
- * \date février 2018
+ * @file
+ * @brief Programme principal du projet
+ * @author Charly Mrazeck, Baptiste Oberbach
+ * @version 0.1.0
+ * @date février 2018
  *
  * Programme executant le bash du projet superbash
  *

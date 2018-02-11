@@ -1,3 +1,8 @@
+/**
+ * @file
+ * contient les fonctions relative à l'écriture de log
+ */
+
 #include "logger.h"
 #include <stdio.h>
 #include <stdlib.h>
