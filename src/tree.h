@@ -63,21 +63,41 @@ Node* create_and_return_right_child(Node* a, char* command);
 char* getCommand(Node* a);
 
 /**
- * 
+ * Renvois true sir le noeud a est vide
  */ 
 int is_empty(Node* a);
-
+/**
+ * Renvois true si le noeud a est une feuille (si il n'a pas de noeud à droite et à gauche)
+ */
 int is_child(Node* a);
 
+/**
+ * Renvois la hauteur du noeud a, c'est à dire le maximum de la profondeur du fils droit et du fils gauche
+ */
 int height(Node* a);
-
+/**
+ * Renvois la taille du noeud, c'est à dire la somme du nombre de noeud à droite et à gauche
+ */
 int size(Node* a);
 
 //void print_prefix(Node* a);
+/**
+ * Affiche le noeud de manière préfixer
+ * @param spaceCounter le nombre d'espace à utiliser pour l'indentation du noeud
+ */
 void print_prefix(int spaceCounter, Node* a);
 
+/**
+ * Affiche le noeud de manière infixer
+ */
 void print_infix(Node* a);
 
+/**
+ * Affiche le noeud de manière postfixer
+ */
 void print_postfix(Node* a);
 
+/**
+ * Libère la mémoire du noeud a
+ */
 void clean(Node* a);

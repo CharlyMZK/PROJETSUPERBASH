@@ -19,6 +19,9 @@
 #include "logger.h"
 #define LSH_RL_BUFSIZE 1024
 
+/**
+ * retourne un string à partir de la string src à la position pos pour une longueur len 
+ */
 char *substr(char *src,int pos,int len) { 
   char *dest=NULL;                        
   if (len>0) {                            
@@ -28,7 +31,9 @@ char *substr(char *src,int pos,int len) {
   return dest;                            
 }
 
-
+/**
+ * Lis une ligne de la console et renvois la ligne lu
+ */
 char *read_console_line(void)
 {
   int bufsize = LSH_RL_BUFSIZE;
@@ -49,6 +54,9 @@ char *read_console_line(void)
   }
 }
 
+/**
+ * Execute les commandes passé par ligne de commande
+ */
 void bash_loop(void)
 {
   char *command;
@@ -109,19 +117,21 @@ void trimLast(char * str)
     }
 }
 
-
+/**
+ * Enlève les espaces en début et en fin de chaine
+ */
 void remove_space_at_beginning_and_end(char * string)
 {
   trimLeading(string);
-  printf("%s fin de la string\n", string);
   trimLast(string);
-  printf("%s fin de la string\n", string);
 }
 
 
 
 
-
+/**
+ * Créer un arbre à partir de la commande passé en paramètre
+ */
 Node* create_tree_from_command(char* command){
   
   int end = strlen(command) - 1; 
@@ -182,6 +192,9 @@ Node* create_tree_from_command(char* command){
   return root;
 }
 
+/**
+ * Lis un arbre et execute les commandes 
+ */
 bool read_and_exec_tree(Node* treeCommand){
   log_message("Superbash.read_and_exec_tree","Reading and executing command");
   if(treeCommand->leftChild != NULL){
@@ -202,6 +215,9 @@ bool read_and_exec_tree(Node* treeCommand){
   return true;
 }
 
+/**
+ * Analyse la commande passé en paramètre et l'execute
+ */
 int handle_command(char* command){
   log_message("Superbash","Handling command..");
   Node* treeCommand = create_tree_from_command(command);
@@ -210,13 +226,18 @@ int handle_command(char* command){
   return true;
 }
 
-
+/**
+ * Execute une commande 
+ */
 int execute_command(char * command)
 {
   system(command);
   return true;
 }
 
+/**
+ * Affiche le répertoire courant
+ */
 void print_current_directory()
 {
   char cwd[1024];
@@ -224,6 +245,9 @@ void print_current_directory()
    fprintf(stdout, "Current working dir: %s\n", cwd);
 }
 
+/**
+ * Change le répertoire courant
+ */
 void change_current_directory(char *path)
 {
   printf("changing current directory to %s \n",path);
@@ -233,10 +257,6 @@ void change_current_directory(char *path)
 
 int main(int argc, char *argv[])
 {
-  printf(" test trim \n");
-  char ex[] ="                                    test avec espace avant et des cara spéciaux || && <                             ";
-  //char * ex = "                                   test avec espace avant et des cara spéciaux || && <  ";
-  remove_space_at_beginning_and_end(ex);
 	bash_loop();
 	//create_tree_from_command(17,"ls -l | grep 2048");
 	return EXIT_SUCCESS;
