@@ -8,7 +8,7 @@
 
 Node* create_root(char* command, Node* leftChild, Node* rightChild)
 {
-	printf("[Log] Creating a node with command : %s\n",command);
+	log_string("Tree.create_root","Creating a node with command",command);
 	Node* a =malloc(sizeof(Node));
 	a->command = command;
 	a->leftChild = leftChild;

@@ -1,5 +1,5 @@
 /**
- * \file superbash.c
+ * \file Superbash.c
  * \brief Programme principal du projet
  * \author Charly Mrazeck, Baptiste Oberbach
  * \version 0.1.0
@@ -129,10 +129,9 @@ int handle_command(char* command){
 
 
 bool is_separator(char instruction){
- printf("[Log] Is this a command ? (%c)\n",instruction); 
- 
+ log_char_value("Superbash.is_separator","Is this a command ?",instruction); 
  if((instruction == pipe_separator) || (instruction == and_separator)){
-   printf("Hey ! Its a pipe !?\n");
+   log_message("Superbash.is_separator","Separator found");
    return true;
  }
 
@@ -140,7 +139,7 @@ bool is_separator(char instruction){
 }
 
 void create_tree_from_command(char* command){
-  printf("[Log] Creating tree \n");
+  
   int end = strlen(command) - 1; 
   int index = end;
   int lastSeparatorPosition = end+1;
@@ -149,23 +148,19 @@ void create_tree_from_command(char* command){
   Node* newNode = NULL;
   int truncateLength;
   char* separator;
-  //char* afterSeparatorFoundCommand;
   char* truncatedCommand;
-  
-  printf("[The command is : %s | I'm going to read > end : %d index : %d]\n",command, end,index);
-  
+  log_message("Superbash.create_tree_from_command","Creating tree..");
+  log_string("Superbash.create_tree_from_command","Command read is",command);
   
   while (index > 0) {
-    printf("[Read] letter checked : %c \n", command[index]);
+    log_message("Superbash.create_tree_from_command","Row starded");
+    log_char_value("Superbash.create_tree_from_command","Letter checked",command[index]);
     if(is_separator(command[index])){
       separator = substr(command,index-1,2);
       truncateLength = lastSeparatorPosition - (index+1);
       truncatedCommand = substr(command,index+1,truncateLength);
-      printf("[Separator] Truncate length = %d - %d\n",lastSeparatorPosition,(index+1));
-      printf("[Separator] Separator found : %s\n",separator);
-      printf("[Separator] Truncate length : %d\n",truncateLength);  
-      printf("[Separator] Truncated command from %d to %d\n",index+1,truncateLength);  
-      printf("[Separator] Creating a node from %d for %d caracts\n", index+1, truncateLength);
+      log_char_value("Superbash.create_tree_from_command","Separator found",separator);
+      log_value("Superbash.create_tree_from_command","Truncate length",truncateLength);
       if(actualUsedNode == NULL){ 
         root = create_root(separator,NULL,create_root(truncatedCommand,NULL,NULL)); 
         actualUsedNode = root;
@@ -178,15 +173,15 @@ void create_tree_from_command(char* command){
       }
       index--;
       lastSeparatorPosition = index;
-      printf("[Separator Position] Separator position : %d\n",lastSeparatorPosition);
+      log_value("Superbash.create_tree_from_command","Last separator position",lastSeparatorPosition);
     }
     index --;
-    printf("[ ROW ]");
+    log_message("Superbash.create_tree_from_command","Row ended");
   }
   
-  remove_space_at_beginning_and_end(command);
+  //remove_space_at_beginning_and_end(command);
   if(root == NULL){
-    printf("[No root] Root is null, only one command, creating..\n");
+    log_message("Superbash.create_tree_from_command","Root is null, only one command, creating..");
     root = create_root(command,NULL,NULL); 
   }else if(actualUsedNode->leftChild == NULL){
     actualUsedNode->leftChild = create_root(substr(command,0,lastSeparatorPosition),NULL,NULL);
@@ -194,7 +189,8 @@ void create_tree_from_command(char* command){
     actualUsedNode->rightChild = create_root(substr(command,0,lastSeparatorPosition),NULL,NULL);
   }
   
-  printf("[Root] Root command : %s\n",root->command);
+  log_string("Superbash.create_tree_from_command","Root command",root->command);
+
   printf("Printing prefix : \n");
   print_prefix(0,root);
   printf("\n");
