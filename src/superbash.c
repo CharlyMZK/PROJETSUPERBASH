@@ -18,9 +18,6 @@
 #include "tree.h"
 #include "logger.h"
 #define LSH_RL_BUFSIZE 1024
-#define pipe_separator '|'
-#define and_separator '&'
-#define VERBOSE true
 
 char *substr(char *src,int pos,int len) { 
   char *dest=NULL;                        
@@ -121,24 +118,11 @@ void remove_space_at_beginning_and_end(char * string)
   printf("%s fin de la string\n", string);
 }
 
-int handle_command(char* command){
-  printf("[Log] Handling command \n");
-  create_tree_from_command(command);
-  return true;
-}
 
 
-bool is_separator(char instruction){
- log_char_value("Superbash.is_separator","Is this a command ?",instruction); 
- if((instruction == pipe_separator) || (instruction == and_separator)){
-   log_message("Superbash.is_separator","Separator found");
-   return true;
- }
 
-  return false;
-}
 
-void create_tree_from_command(char* command){
+Node* create_tree_from_command(char* command){
   
   int end = strlen(command) - 1; 
   int index = end;
@@ -194,6 +178,36 @@ void create_tree_from_command(char* command){
   printf("Printing prefix : \n");
   print_prefix(0,root);
   printf("\n");
+  
+  return root;
+}
+
+bool read_and_exec_tree(Node* treeCommand){
+  log_message("Superbash.read_and_exec_tree","Reading and executing command");
+  if(treeCommand->leftChild != NULL){
+    if(read_and_exec_tree(treeCommand->leftChild)){
+      log_message("Superbash.read_and_exec_tree","Leftchild is not null");  
+      if(treeCommand->command != NULL){
+        log_string("Superbash.read_and_exec_tree","(Command not null ) Executing command",treeCommand->command);
+        execute_command(treeCommand->command);
+      }else{
+        log_message("Superbash.read_and_exec_tree","Command is null, its a separator");
+        return read_and_exec_tree(treeCommand->rightChild);
+      }
+    }
+  }else if(treeCommand->leftChild == NULL && treeCommand->rightChild == NULL){
+    log_string("Superbash.read_and_exec_tree","(Null & Null ) Executing command",treeCommand->command);
+    return execute_command(treeCommand->command);
+  }
+  return true;
+}
+
+int handle_command(char* command){
+  log_message("Superbash","Handling command..");
+  Node* treeCommand = create_tree_from_command(command);
+  log_message("Superbash","Reading and executing tree..");
+  read_and_exec_tree(treeCommand);
+  return true;
 }
 
 

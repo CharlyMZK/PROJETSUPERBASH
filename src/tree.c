@@ -4,13 +4,29 @@
 #include <string.h>
 #include <stdbool.h>
 #include "tree.h"
+#define pipe_separator '|'
+#define and_separator '&'
 
+bool is_separator(char instruction){
+ log_char_value("Superbash.is_separator","Is this a command ?",instruction); 
+ if((instruction == pipe_separator) || (instruction == and_separator)){
+   log_message("Superbash.is_separator","Separator found");
+   return true;
+ }
+
+  return false;
+}
 
 Node* create_root(char* command, Node* leftChild, Node* rightChild)
 {
 	log_string("Tree.create_root","Creating a node with command",command);
 	Node* a =malloc(sizeof(Node));
-	a->command = command;
+	if(is_separator(command[1])){
+		a->separator = command;
+	}else{
+		a->command = command;	
+	}
+	
 	a->leftChild = leftChild;
 	a->rightChild = rightChild;
 	return a;
