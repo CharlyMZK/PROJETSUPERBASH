@@ -35,7 +35,7 @@ char *substr(char *src,int pos,int len) {
  * retourne l'index de la première occurence du caractère charToFind dans la string src
  * ou -1 si le charactère n'est pas présent
  */
-int *findIndexOffFirstOccurenceInString(char *src, char charToFind)
+int *find_index_off_first_occurence_in_string(char *src, char charToFind)
 {
   const char *ptr = strchr(src, charToFind);
   if(ptr) 
@@ -70,7 +70,7 @@ char *read_console_line(void)
 /**
  * Log la commande command à la fin du fichier file
  */
-bool logInFile(char * command, char * file)
+bool log_in_file(char * command, char * file)
 {
   FILE * pFile = fopen(file, "a");
   if(pFile == NULL)
@@ -78,6 +78,7 @@ bool logInFile(char * command, char * file)
     printf("Error opening file, impossible to log command \n");
     return;
   }
+  log_message("Superbash","Saving the command in the log file");
   fprintf(pFile, command);
   fprintf(pFile, "\n");
   fclose(pFile);
@@ -103,7 +104,7 @@ void bash_loop(void)
 /**
  * Enlève les espaces en début de chaine
  */
-void trimLeading(char * str)
+void trim_leading(char * str)
 {
     int index, i, j;
 
@@ -130,7 +131,7 @@ void trimLeading(char * str)
  * Enlève les espaces en fin de chaine
  * 
  */
-void trimLast(char * str)
+void trim_last(char * str)
 {
     int index, i, lastIndex;
     lastIndex = strlen(str) -1;
@@ -151,8 +152,8 @@ void trimLast(char * str)
  */
 void remove_space_at_beginning_and_end(char * string)
 {
-  trimLeading(string);
-  trimLast(string);
+  trim_leading(string);
+  trim_last(string);
 }
 
 
@@ -248,6 +249,7 @@ bool read_and_exec_tree(Node* treeCommand){
  * Analyse la commande passé en paramètre et l'execute
  */
 int handle_command(char* command){
+  log_in_file(command,"./command.txt");
   log_message("Superbash","Handling command..");
   Node* treeCommand = create_tree_from_command(command);
   log_message("Superbash","Reading and executing tree..");
@@ -261,10 +263,10 @@ int handle_command(char* command){
 int execute_command(char * command)
 {
   //Log de la commande 
-  logInFile(command,"./command.txt");
+  
   char * commandCore;
   char * parameters;
-  int indexEndOffCommand = findIndexOffFirstOccurenceInString(command,' ');
+  int indexEndOffCommand = find_index_off_first_occurence_in_string(command,' ');
   //Separate the core of the command from its parameter
   if(indexEndOffCommand != -1)
   {
