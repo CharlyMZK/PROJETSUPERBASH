@@ -68,6 +68,22 @@ char *read_console_line(void)
 }
 
 /**
+ * Log la commande command à la fin du fichier file
+ */
+bool logInFile(char * command, char * file)
+{
+  FILE * pFile = fopen(file, "a");
+  if(pFile == NULL)
+  {
+    printf("Error opening file, impossible to log command \n");
+    return;
+  }
+  fprintf(pFile, command);
+  fprintf(pFile, "\n");
+  fclose(pFile);
+}
+
+/**
  * Execute les commandes passé par ligne de commande
  */
 void bash_loop(void)
@@ -244,6 +260,8 @@ int handle_command(char* command){
  */
 int execute_command(char * command)
 {
+  //Log de la commande 
+  logInFile(command,"./command.txt");
   char * commandCore;
   char * parameters;
   int indexEndOffCommand = findIndexOffFirstOccurenceInString(command,' ');
@@ -265,7 +283,7 @@ int execute_command(char * command)
     printf("%s\n",parameters);
   else if(!strcmp(commandCore, "exit"))
     //TODO EXIT
-    printf("SHOULD EXIT HERE\n");
+    exit(EXIT_SUCCESS);
   else 
   {
     printf("%d \n",strcmp(commandCore, "cd"));
@@ -298,7 +316,6 @@ void change_current_directory(char *path)
 
 int main(int argc, char *argv[])
 {
-  execute_command("echo command");
 	bash_loop();
 	//create_tree_from_command(17,"ls -l | grep 2048");
 	return EXIT_SUCCESS;
