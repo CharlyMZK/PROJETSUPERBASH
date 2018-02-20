@@ -32,6 +32,19 @@ char *substr(char *src,int pos,int len) {
 }
 
 /**
+ * retourne l'index de la première occurence du caractère charToFind dans la string src
+ * ou -1 si le charactère n'est pas présent
+ */
+int *findIndexOffFirstOccurenceInString(char *src, char charToFind)
+{
+  const char *ptr = strchr(src, charToFind);
+  if(ptr) 
+   return ptr - src;
+  else
+    return -1;
+}
+
+/**
  * Lis une ligne de la console et renvois la ligne lu
  */
 char *read_console_line(void)
@@ -257,6 +270,7 @@ void change_current_directory(char *path)
 
 int main(int argc, char *argv[])
 {
+  
 	bash_loop();
 	//create_tree_from_command(17,"ls -l | grep 2048");
 	return EXIT_SUCCESS;
