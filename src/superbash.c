@@ -203,7 +203,7 @@ Node* create_tree_from_command(char* command){
     log_message("Superbash.create_tree_from_command","Row ended");
   }
   
-  //remove_space_at_beginning_and_end(command);
+  remove_space_at_beginning_and_end(command);
   if(root == NULL){
     log_message("Superbash.create_tree_from_command","Root is null, only one command, creating..");
     root = create_root(command,NULL,NULL); 
@@ -214,8 +214,8 @@ Node* create_tree_from_command(char* command){
   }
   
   log_string("Superbash.create_tree_from_command","Root command",root->command);
-
-  printf("Printing prefix : \n");
+ log_message("Superbash.create_tree_from_command","Tree created.");
+  printf("\nPrinting prefix : \n");
   print_prefix(0,root);
   printf("\n");
   
@@ -228,19 +228,32 @@ Node* create_tree_from_command(char* command){
 bool read_and_exec_tree(Node* treeCommand){
   log_message("Superbash.read_and_exec_tree","Reading and executing command");
   if(treeCommand->leftChild != NULL){
+    
     if(read_and_exec_tree(treeCommand->leftChild)){
       log_message("Superbash.read_and_exec_tree","Leftchild is not null");  
       if(treeCommand->command != NULL){
         log_string("Superbash.read_and_exec_tree","(Command not null ) Executing command",treeCommand->command);
         execute_command(treeCommand->command);
+        if(treeCommand->result != NULL && treeCommand->command != NULL){
+          log_string("Superbash.read_and_exec_tree","Command was",treeCommand->command);
+          log_string("Superbash.read_and_exec_tree","Result is ",treeCommand->result);
+        }
       }else{
         log_message("Superbash.read_and_exec_tree","Command is null, its a separator");
+        treeCommand->rightChild->inputValue = treeCommand->leftChild->result;
         return read_and_exec_tree(treeCommand->rightChild);
       }
     }
   }else if(treeCommand->leftChild == NULL && treeCommand->rightChild == NULL){
-    log_string("Superbash.read_and_exec_tree","(Null & Null ) Executing command",treeCommand->command);
-    return execute_command(treeCommand->command);
+    log_string("Superbash.read_and_exec_tree","(Both childs Null) Executing command",treeCommand->command);
+    bool isExecuted = 0;
+    isExecuted = execute_command(treeCommand);
+    log_message("Superbash.read_and_exec_tree","Last comamand executed !");
+    if(treeCommand->result != NULL && treeCommand->command != NULL){
+      log_string("Superbash.read_and_exec_tree","Command was",treeCommand->command);
+      log_string("Superbash.read_and_exec_tree","Result is ",treeCommand->result);
+    }
+    return isExecuted;
   }
   return true;
 }
@@ -260,23 +273,26 @@ int handle_command(char* command){
 /**
  * Execute une commande 
  */
-int execute_command(char * command)
+int execute_command(Node* node)
 {
-  //Log de la commande 
+ 
   
   char * commandCore;
   char * parameters;
-  int indexEndOffCommand = find_index_off_first_occurence_in_string(command,' ');
+  remove_space_at_beginning_and_end(node->command);
+  int indexEndOffCommand = find_index_off_first_occurence_in_string(node->command,' ');
+  
+  if(node->inputValue != NULL){log_string("Superbash.execute_command","Input value",node->inputValue);}
   //Separate the core of the command from its parameter
   if(indexEndOffCommand != -1)
   {
-    commandCore = substr(command,0,indexEndOffCommand);
-    parameters = command + indexEndOffCommand + 1;
+    commandCore = substr(node->command,0,indexEndOffCommand);
+    parameters = node->command + indexEndOffCommand + 1;
   }
   else 
-    commandCore = command;
+    commandCore = node->command;
 
-  //Exeucting custom command
+  //Executing custom command
   if(!strcmp(commandCore, "pwd"))
     print_current_directory();
   else if(!strcmp(commandCore, "cd"))
@@ -284,15 +300,15 @@ int execute_command(char * command)
   else if(!strcmp(commandCore, "echo"))
     printf("%s\n",parameters);
   else if(!strcmp(commandCore, "exit"))
-    //TODO EXIT
     exit(EXIT_SUCCESS);
   else 
   {
-    printf("%d \n",strcmp(commandCore, "cd"));
-    log_message("Superbash","executing using the system fonction");
-    system(command);
+    log_string("Superbash","executing using the system fonction",node->command);
+    system(node->command);
   }
     
+  node->result = "resultat";
+  
   return true;
 }
 
