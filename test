@@ -1,0 +1,11 @@
+total 36
+-rw-r--r-- 1 ubuntu ubuntu 1206 Jan 25 08:34 Makefile
+-rw-r--r-- 1 ubuntu ubuntu  173 Jan 25 09:14 Notes
+-rw-r--r-- 1 ubuntu ubuntu   12 Feb  9 08:27 arbre1.dot
+-rw-r--r-- 1 ubuntu ubuntu  959 Feb  9 08:27 arbre1.pdf
+drwxr-xr-x 2 ubuntu ubuntu 4096 Feb 20 13:05 bin
+-rw-r--r-- 1 ubuntu ubuntu   27 Feb 20 13:08 command.txt
+-rw-r--r-- 1 ubuntu ubuntu    5 Feb 20 12:54 command2.txt
+drwxr-xr-x 4 ubuntu ubuntu 4096 Feb 11 17:07 doc
+drwxr-xr-x 2 ubuntu ubuntu 4096 Feb 20 13:04 src
+-rw-r--r-- 1 ubuntu ubuntu    0 Feb 20 13:08 test

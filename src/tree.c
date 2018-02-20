@@ -1,11 +1,6 @@
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
 #include "tree.h"
-#define pipe_separator '|'
-#define and_separator '&'
+
 
 bool is_separator(char instruction){
  log_char_value("Superbash.is_separator","Is this a command ?",instruction); 
@@ -17,6 +12,12 @@ bool is_separator(char instruction){
   return false;
 }
 
+/**
+ * Créer un noeud 
+ * @param command texte de la commande
+ * @param leftChild fils gauche
+ * @param rightChild fils droit
+ */
 Node* create_root(char* command, Node* leftChild, Node* rightChild)
 {
 	log_string("Tree.create_root","Creating a node with command",command);
@@ -32,55 +33,76 @@ Node* create_root(char* command, Node* leftChild, Node* rightChild)
 	return a;
 }
 
+/**
+ * Créer un noeud
+ * @param command texte de la commande
+ */
 Node* create_child(char* command)
 {
 	return create_root(command,NULL,NULL);
 }
 
+/**
+ * Créer et renvois le fils gauche
+ */
 Node* create_and_return_left_child(Node* a,char* command)
 {
 	a->leftChild = create_root(command,NULL,NULL);
 	return a->leftChild;
 }
 
+/**
+ * Créer et renvois le fils droit
+ */
 Node* create_and_return_right_child(Node* a,char* command)
 {
 	a->rightChild = create_root(command,NULL,NULL);
 	return a->rightChild;
 }
 
-
-
+/**
+ * Renvoi le fils gauche
+ */
 Node* get_left_child(Node* a)
 {
 	return a->leftChild;
 }
 
-
+/**
+ * Renvoi le fils droit
+ */
 Node* get_right_child(Node* a)
 {
 	return a->rightChild;
 }
 
-
+/**
+ * Renvois la commande du noeud
+ */
 char* getCommand(Node* a)
 {
 	return a->command;
 }
 
-
+/**
+ * Renvois true sir le noeud a est vide
+ */ 
 int is_empty(Node* a)
 {
 	return a == NULL;
 }
 
-
+/**
+ * Renvois true si le noeud a est une feuille (si il n'a pas de noeud à droite et à gauche)
+ */
 int is_child(Node* a)
 {
 	return (a->leftChild==NULL)&&(a->rightChild==NULL);
 }
 
-
+/**
+ * Renvois la hauteur du noeud a, c'est à dire le maximum de la profondeur du fils droit et du fils gauche
+ */
 int height(Node* a)
 {
 	if (is_empty(a))
@@ -88,6 +110,9 @@ int height(Node* a)
 	return 1+ MAX(height(get_left_child(a)),height(get_right_child(a)));
 }
 
+/**
+ * Renvois la taille du noeud, c'est à dire la somme du nombre de noeud à droite et à gauche
+ */
 int size(Node* a)
 {
 	if (is_empty(a))
@@ -95,7 +120,10 @@ int size(Node* a)
 	return 1+ size(get_left_child(a)) + size(get_right_child(a));
 }
 
-
+/**
+ * Affiche le noeud de manière préfixer
+ * @param spaceCounter le nombre d'espace à utiliser pour l'indentation du noeud
+ */
 void print_prefix(int spacesCounter, Node* a)
 {	
 	if (!is_empty(a))
@@ -125,6 +153,9 @@ void print_prefix(int spacesCounter, Node* a)
 
 }
 
+/**
+ * Affiche le noeud de manière infixer
+ */
 void print_infix(Node* a)
 {
 	if (!is_empty(a))
@@ -135,6 +166,9 @@ void print_infix(Node* a)
 	}
 }
 
+/**
+ * Affiche le noeud de manière postfixer
+ */
 void print_postfix(Node* a)
 {
 	if (!is_empty(a))
@@ -145,6 +179,9 @@ void print_postfix(Node* a)
 	}
 }
 
+/**
+ * Libère la mémoire du noeud a
+ */
 void clean(Node* a)
 {
 	if  (!is_empty(a))

@@ -1,0 +1,50 @@
+ls
+ls
+ls | ls
+ls -l > test
+ls -l | grep "test"
+ls | ls
+ls -l | grep "truc"
+ls -l | grep "truc"
+ls | grep
+ls -l | grep "truc"
+ls -l | grep "truc"
+ls | l
+ls | ls
+ls | ls
+ls | grep trc
+ls | ls
+ls | ls
+ls | grep tr
+ls | grep "truc"
+ls | ls
+ls | grep fsd
+ls | ls
+ls | grep truc
+ls | grep tr
+ls | ls
+
+make
+ls | ls
+ls | ls
+ls
+
+ls
+ls | s
+ls | ls
+ls | ls
+ls | grep truc
+ls | ls
+ls | echo "ok";
+ls | echo "ok";
+
+ls | ls
+ls | l
+ls | ls
+ls | l
+ls -l | grep "truc"
+ls | ls
+ls
+ls | ls
+make
+ls | ls

@@ -1,23 +1,4 @@
-/**
- * @file
- * @brief Programme principal du projet
- * @author Charly Mrazeck, Baptiste Oberbach
- * @version 0.1.0
- * @date février 2018
- *
- * Programme executant le bash du projet superbash
- *
- */
-
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include "tree.h"
-#include "logger.h"
-#define LSH_RL_BUFSIZE 1024
+#include "commandExecutor.h"
 
 /**
  * retourne un string à partir de la string src à la position pos pour une longueur len 
@@ -36,7 +17,7 @@ char *substr(char *src,int pos,int len) {
  * ou -1 si le charactère n'est pas présent
  */
 int *find_index_off_first_occurence_in_string(char *src, char charToFind)
-{
+{ 
   const char *ptr = strchr(src, charToFind);
   if(ptr) 
    return ptr - src;
@@ -275,11 +256,9 @@ int handle_command(char* command){
  */
 int execute_command(Node* node)
 {
- 
-  
   char * commandCore;
   char * parameters;
-  remove_space_at_beginning_and_end(node->command);
+  trim_leading(node->command);
   int indexEndOffCommand = find_index_off_first_occurence_in_string(node->command,' ');
   
   if(node->inputValue != NULL){log_string("Superbash.execute_command","Input value",node->inputValue);}
@@ -332,9 +311,3 @@ void change_current_directory(char *path)
   print_current_directory();
 }
 
-int main(int argc, char *argv[])
-{
-	bash_loop();
-	//create_tree_from_command(17,"ls -l | grep 2048");
-	return EXIT_SUCCESS;
-}
