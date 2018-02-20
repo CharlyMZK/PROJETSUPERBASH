@@ -244,7 +244,35 @@ int handle_command(char* command){
  */
 int execute_command(char * command)
 {
-  system(command);
+  char * commandCore;
+  char * parameters;
+  int indexEndOffCommand = findIndexOffFirstOccurenceInString(command,' ');
+  //Separate the core of the command from its parameter
+  if(indexEndOffCommand != -1)
+  {
+    commandCore = substr(command,0,indexEndOffCommand);
+    parameters = command + indexEndOffCommand + 1;
+  }
+  else 
+    commandCore = command;
+
+  //Exeucting custom command
+  if(!strcmp(commandCore, "pwd"))
+    print_current_directory();
+  else if(!strcmp(commandCore, "cd"))
+    change_current_directory(parameters);
+  else if(!strcmp(commandCore, "echo"))
+    printf("%s\n",parameters);
+  else if(!strcmp(commandCore, "exit"))
+    //TODO EXIT
+    printf("SHOULD EXIT HERE\n");
+  else 
+  {
+    printf("%d \n",strcmp(commandCore, "cd"));
+    log_message("Superbash","executing using the system fonction");
+    system(command);
+  }
+    
   return true;
 }
 
@@ -270,7 +298,7 @@ void change_current_directory(char *path)
 
 int main(int argc, char *argv[])
 {
-  
+  execute_command("echo command");
 	bash_loop();
 	//create_tree_from_command(17,"ls -l | grep 2048");
 	return EXIT_SUCCESS;
