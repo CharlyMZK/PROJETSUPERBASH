@@ -1,5 +1,7 @@
 #include "commandExecutor.h"
-
+ #include <fcntl.h> // for open
+ #include <unistd.h> // for close
+ 
 /**
  * retourne un string à partir de la string src à la position pos pour une longueur len 
  */
@@ -17,7 +19,7 @@ char *substr(char *src,int pos,int len) {
  * ou -1 si le charactère n'est pas présent
  */
 int *find_index_off_first_occurence_in_string(char *src, char charToFind)
-{ 
+{
   const char *ptr = strchr(src, charToFind);
   if(ptr) 
    return ptr - src;
@@ -57,12 +59,13 @@ bool log_in_file(char * command, char * file)
   if(pFile == NULL)
   {
     printf("Error opening file, impossible to log command \n");
-    return;
+    return false;
   }
   log_message("Superbash","Saving the command in the log file");
   fprintf(pFile, command);
   fprintf(pFile, "\n");
   fclose(pFile);
+  return true;
 }
 
 /**
@@ -87,7 +90,7 @@ void bash_loop(void)
  */
 void trim_leading(char * str)
 {
-    int index, i, j;
+    int index, i;
 
     index = 0;
 
@@ -114,8 +117,8 @@ void trim_leading(char * str)
  */
 void trim_last(char * str)
 {
-    int index, i, lastIndex;
-    lastIndex = strlen(str) -1;
+    int index, lastIndex;
+    lastIndex = strlen(str);
     index = lastIndex;
     /* Trouve le premier index des derniers espaces */
     while(str[index] == ' ' || str[index] == '\t' || str[index] == '\n')
@@ -154,18 +157,18 @@ Node* create_tree_from_command(char* command){
   int truncateLength;
   char* separator;
   char* truncatedCommand;
-  log_message("Superbash.create_tree_from_command","Creating tree..");
-  log_string("Superbash.create_tree_from_command","Command read is",command);
+  log_message("CommandExecutor.create_tree_from_command","Creating tree..");
+  log_string("CommandExecutor.create_tree_from_command","Command read is",command);
   
   while (index > 0) {
-    log_message("Superbash.create_tree_from_command","Row starded");
-    log_char_value("Superbash.create_tree_from_command","Letter checked",command[index]);
+    log_message("CommandExecutor.create_tree_from_command","Row starded");
+    log_char_value("CommandExecutor.create_tree_from_command","Letter checked",command[index]);
     if(is_separator(command[index])){
       separator = substr(command,index-1,2);
       truncateLength = lastSeparatorPosition - (index+1);
       truncatedCommand = substr(command,index+1,truncateLength);
-      log_char_value("Superbash.create_tree_from_command","Separator found",separator);
-      log_value("Superbash.create_tree_from_command","Truncate length",truncateLength);
+      log_char_value("CommandExecutor.create_tree_from_command","Separator found",separator);
+      log_value("CommandExecutor.create_tree_from_command","Truncate length",truncateLength);
       if(actualUsedNode == NULL){ 
         root = create_root(separator,NULL,create_root(truncatedCommand,NULL,NULL)); 
         actualUsedNode = root;
@@ -178,15 +181,15 @@ Node* create_tree_from_command(char* command){
       }
       index--;
       lastSeparatorPosition = index;
-      log_value("Superbash.create_tree_from_command","Last separator position",lastSeparatorPosition);
+      log_value("CommandExecutor.create_tree_from_command","Last separator position",lastSeparatorPosition);
     }
     index --;
-    log_message("Superbash.create_tree_from_command","Row ended");
+    log_message("CommandExecutor.create_tree_from_command","Row ended");
   }
   
   remove_space_at_beginning_and_end(command);
   if(root == NULL){
-    log_message("Superbash.create_tree_from_command","Root is null, only one command, creating..");
+    log_message("CommandExecutor.create_tree_from_command","Root is null, only one command, creating..");
     root = create_root(command,NULL,NULL); 
   }else if(actualUsedNode->leftChild == NULL){
     actualUsedNode->leftChild = create_root(substr(command,0,lastSeparatorPosition),NULL,NULL);
@@ -194,9 +197,9 @@ Node* create_tree_from_command(char* command){
     actualUsedNode->rightChild = create_root(substr(command,0,lastSeparatorPosition),NULL,NULL);
   }
   
-  log_string("Superbash.create_tree_from_command","Root command",root->command);
- log_message("Superbash.create_tree_from_command","Tree created.");
-  printf("\nPrinting prefix : \n");
+  log_string("CommandExecutor.create_tree_from_command","Root command",root->command);
+  log_message("CommandExecutor.create_tree_from_command","Tree created.");
+  log_message("CommandExecutor.create_tree_from_command","Printing prefix..");
   print_prefix(0,root);
   printf("\n");
   
@@ -207,32 +210,32 @@ Node* create_tree_from_command(char* command){
  * Lis un arbre et execute les commandes 
  */
 bool read_and_exec_tree(Node* treeCommand){
-  log_message("Superbash.read_and_exec_tree","Reading and executing command");
+  log_message("CommandExecutor.read_and_exec_tree","Reading and executing command");
   if(treeCommand->leftChild != NULL){
     
     if(read_and_exec_tree(treeCommand->leftChild)){
-      log_message("Superbash.read_and_exec_tree","Leftchild is not null");  
+      log_message("CommandExecutor.read_and_exec_tree","Leftchild is not null");  
       if(treeCommand->command != NULL){
-        log_string("Superbash.read_and_exec_tree","(Command not null ) Executing command",treeCommand->command);
-        execute_command(treeCommand->command);
+        log_string("CommandExecutor.read_and_exec_tree","(Command not null ) Executing command",treeCommand->command);
+        execute_command(treeCommand);
         if(treeCommand->result != NULL && treeCommand->command != NULL){
-          log_string("Superbash.read_and_exec_tree","Command was",treeCommand->command);
-          log_string("Superbash.read_and_exec_tree","Result is ",treeCommand->result);
+          log_string("CommandExecutor.read_and_exec_tree","Command was",treeCommand->command);
+          log_string("CommandExecutor.read_and_exec_tree","Result is ",treeCommand->result);
         }
       }else{
-        log_message("Superbash.read_and_exec_tree","Command is null, its a separator");
+        log_message("CommandExecutor.read_and_exec_tree","Command is null, its a separator");
         treeCommand->rightChild->inputValue = treeCommand->leftChild->result;
         return read_and_exec_tree(treeCommand->rightChild);
       }
     }
   }else if(treeCommand->leftChild == NULL && treeCommand->rightChild == NULL){
-    log_string("Superbash.read_and_exec_tree","(Both childs Null) Executing command",treeCommand->command);
+    log_string("CommandExecutor.read_and_exec_tree","(Both childs Null) Executing command",treeCommand->command);
     bool isExecuted = 0;
     isExecuted = execute_command(treeCommand);
-    log_message("Superbash.read_and_exec_tree","Last comamand executed !");
+    log_message("CommandExecutor.read_and_exec_tree","Last command executed !");
     if(treeCommand->result != NULL && treeCommand->command != NULL){
-      log_string("Superbash.read_and_exec_tree","Command was",treeCommand->command);
-      log_string("Superbash.read_and_exec_tree","Result is ",treeCommand->result);
+      log_string("CommandExecutor.read_and_exec_tree","Command was",treeCommand->command);
+      log_string("CommandExecutor.read_and_exec_tree","Result is ",treeCommand->result);
     }
     return isExecuted;
   }
@@ -244,9 +247,9 @@ bool read_and_exec_tree(Node* treeCommand){
  */
 int handle_command(char* command){
   log_in_file(command,"./command.txt");
-  log_message("Superbash","Handling command..");
+  log_message("CommandExecutor.handle_command","Handling command..");
   Node* treeCommand = create_tree_from_command(command);
-  log_message("Superbash","Reading and executing tree..");
+  log_message("CommandExecutor.handle_command","Reading and executing tree..");
   read_and_exec_tree(treeCommand);
   return true;
 }
@@ -261,7 +264,45 @@ int execute_command(Node* node)
   trim_leading(node->command);
   int indexEndOffCommand = find_index_off_first_occurence_in_string(node->command,' ');
   
-  if(node->inputValue != NULL){log_string("Superbash.execute_command","Input value",node->inputValue);}
+  // -- DUP
+   //Sauvegarde du file descripteur
+   log_message("CommandExecutor.executeCommand","Sauvegarde du file descritor..");
+   int copyFdPrint = dup(1);
+   log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
+   //Création d'un fichier et ouverture
+   char * path = "./tmpFileSystem";
+   int filedes = open(path, O_RDWR | O_CREAT);
+   log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+   //Remplacement de la sortie standart par le descripteur de fichier
+   dup2(filedes, 1);
+   //Fork obligatoire car exec remplace la suite du processus
+   int forkId = fork();
+   if(forkId == 0)
+   {
+     execl("/bin/ps","ps","aux", NULL);
+     //system(node->command);
+   }
+   //Attente dans le père
+   int status;
+   wait(&status); 
+   
+   
+   //Ouverture de /dev/null
+   filedes = open("/dev/null", O_RDWR);
+   dup2(filedes,1);
+   //Ecriture dans la poubelle de grep
+   forkId = fork();
+
+   if(forkId == 0){
+      execl("/bin/grep","grep","^root",path,NULL);
+   }
+   
+   // retour a la normale
+   dup2(copyFdPrint,1);
+   log_message("CommandExecutor.executeCommand","Nous sommes de retour !");
+   // -- DUP END
+   
+   
   //Separate the core of the command from its parameter
   if(indexEndOffCommand != -1)
   {
@@ -282,7 +323,7 @@ int execute_command(Node* node)
     exit(EXIT_SUCCESS);
   else 
   {
-    log_string("Superbash","executing using the system fonction",node->command);
+    log_string("CommandExecutor.executeCommand","Executing using the system fonction",node->command);
     system(node->command);
   }
     

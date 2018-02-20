@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include "tree.h"
+#include "logger.h"
 #define LSH_RL_BUFSIZE 1024
 
 char *substr(char *src,int pos,int len);
