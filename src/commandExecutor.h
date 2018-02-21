@@ -34,3 +34,5 @@ int execute_command(Node* node);
 void print_current_directory();
 
 void change_current_directory(char *path);
+
+bool is_file_empty(char* fp);

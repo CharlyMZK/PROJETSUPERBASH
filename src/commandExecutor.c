@@ -206,6 +206,45 @@ Node* create_tree_from_command(char* command){
   return root;
 }
 
+bool switchOutputFileContentToInputFile(){
+  log_message("CommandExecutor.switchOutputFileContentToInputFile","Preparing input file ..");
+   FILE *fptr1, *fptr2;
+    char filename[100], c;
+ 
+    // Open one file for reading
+    fptr1 = fopen("./tmpOutputFile", "r");
+    if (fptr1 == NULL)
+    {
+        printf("Cannot open file %s \n", filename);
+        return 0;
+    }
+ 
+    // Open another file for writing
+    fptr2 = fopen("./tmpInputFile", "w");
+    if (fptr2 == NULL)
+    {
+        printf("Cannot open file %s \n", filename);
+        return 0;
+    }
+ 
+    // Read contents from file
+    c = fgetc(fptr1);
+    while (c != EOF)
+    {
+        fputc(c, fptr2);
+        c = fgetc(fptr1);
+    }
+    
+    log_message("CommandExecutor.switchOutputFileContentToInputFile","Content copied from input to output ..");
+ 
+ 
+    fclose(fptr1);
+    fclose(fptr2);
+    empty_file("./tmpOutputFile");
+    //fclose(fopen("./tmpOutputFile", "w"));
+    return 1;
+}
+
 /**
  * Lis un arbre et execute les commandes 
  */
@@ -225,6 +264,7 @@ bool read_and_exec_tree(Node* treeCommand){
       }else{
         log_message("CommandExecutor.read_and_exec_tree","Command is null, its a separator");
         treeCommand->rightChild->inputValue = treeCommand->leftChild->result;
+        switchOutputFileContentToInputFile();
         return read_and_exec_tree(treeCommand->rightChild);
       }
     }
@@ -232,7 +272,7 @@ bool read_and_exec_tree(Node* treeCommand){
     log_string("CommandExecutor.read_and_exec_tree","(Both childs Null) Executing command",treeCommand->command);
     bool isExecuted = 0;
     isExecuted = execute_command(treeCommand);
-    log_message("CommandExecutor.read_and_exec_tree","Last command executed !");
+    log_message("CommandExecutor.read_and_exec_tree","This node is at the end of three, command executed.");
     if(treeCommand->result != NULL && treeCommand->command != NULL){
       log_string("CommandExecutor.read_and_exec_tree","Command was",treeCommand->command);
       log_string("CommandExecutor.read_and_exec_tree","Result is ",treeCommand->result);
@@ -270,32 +310,49 @@ int execute_command(Node* node)
    int copyFdPrint = dup(1);
    log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
    //Création d'un fichier et ouverture
-   char * path = "./tmpFileSystem";
-   int filedes = open(path, O_RDWR | O_CREAT);
-   log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
-   //Remplacement de la sortie standart par le descripteur de fichier
-   dup2(filedes, 1);
-   //Fork obligatoire car exec remplace la suite du processus
-   int forkId = fork();
-   if(forkId == 0)
-   {
-     execl("/bin/ps","ps","aux", NULL);
-     //system(node->command);
+   
+   char * outputFilePath = "./tmpOutputFile";
+   char * inputFilePath = "./tmpInputFile";
+   
+   if(!is_file_empty(inputFilePath)){
+     log_message("CommandExecutor.executeCommand","Input file isnt empty.");
+     int filedes = open("./tmpOutputFile", O_RDWR | O_CREAT);
+     dup2(filedes,1);
+     //Ecriture dans la poubelle de grep
+     int forkId = fork();
+     if(forkId == 0){
+        execl("/bin/grep","grep","^root",inputFilePath,NULL);
+     }
+     empty_file("./tmpInputFile");
+   }else{
+       int filedes = open(outputFilePath, O_RDWR | O_CREAT);
+       log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+       //Remplacement de la sortie standart par le descripteur de fichier
+       dup2(filedes, 1);
+       //Fork obligatoire car exec remplace la suite du processus
+       int forkId = fork();
+       if(forkId == 0)
+       {
+         //execl("/bin/ps","ps","aux", NULL);
+         system(node->command);
+       }
    }
+   
+ 
    //Attente dans le père
    int status;
    wait(&status); 
    
    
    //Ouverture de /dev/null
-   filedes = open("/dev/null", O_RDWR);
+   /*filedes = open("./tmpOutputFile", O_RDWR | O_CREAT);
    dup2(filedes,1);
    //Ecriture dans la poubelle de grep
    forkId = fork();
 
    if(forkId == 0){
       execl("/bin/grep","grep","^root",path,NULL);
-   }
+   }*/
    
    // retour a la normale
    dup2(copyFdPrint,1);
@@ -352,3 +409,24 @@ void change_current_directory(char *path)
   print_current_directory();
 }
 
+bool is_file_empty(char* path){
+  log_message("CommandExecutor.empty_file","Is this file empty ?");
+  int size = 0;
+  FILE *fptr = fopen(path, "a");
+  if (NULL != fptr) {
+    fseek (fptr, 0, SEEK_END);
+    size = ftell(fptr);
+
+    if (0 == size) {
+      log_message("CommandExecutor.empty_file","Yes");
+        return true;
+    }
+  }
+  log_message("CommandExecutor.empty_file","No");
+ return false;
+}
+
+void empty_file(char* path){
+  //fclose(fopen(path, "w"));
+  remove(path);
+}
