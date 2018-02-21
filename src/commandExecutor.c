@@ -390,7 +390,8 @@ int execute_command(Node* node)
   else 
   {
     log_string("CommandExecutor.executeCommand","Executing using the system fonction",node->command);
-    system(node->command);
+    //system(node->command);
+    system("ls");
      /*int forkId = fork();
        if(forkId == 0)
        {
