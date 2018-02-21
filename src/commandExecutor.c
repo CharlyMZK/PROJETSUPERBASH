@@ -6,11 +6,16 @@
  * retourne un string à partir de la string src à la position pos pour une longueur len 
  */
 char *substr(char *src,int pos,int len) { 
-  char *dest=NULL;                        
+  char *dest=NULL;          
+  log_message("CommandExecutor.substr","Substr..");
+  log_string("CommandExecutor.substr","String to sub : ",src);
+  log_value("CommandExecutor.substr","Pos",pos);
+  log_value("CommandExecutor.substr","Length",len);
   if (len>0) {                            
     dest = (char *) malloc(len+1);        
-    strncat(dest,src+pos,len);            
+    strncpy(dest,src+pos,len);            
   }                                       
+  log_string("CommandExecutor.substr","String cut",dest);
   return dest;                            
 }
 
@@ -167,8 +172,9 @@ Node* create_tree_from_command(char* command){
       separator = substr(command,index-1,2);
       truncateLength = lastSeparatorPosition - (index+1);
       truncatedCommand = substr(command,index+1,truncateLength);
-      log_char_value("CommandExecutor.create_tree_from_command","Separator found",separator);
-      log_value("CommandExecutor.create_tree_from_command","Truncate length",truncateLength);
+      remove_space_at_beginning_and_end(truncatedCommand);
+      log_string("CommandExecutor.create_tree_from_command","Separator found",separator);
+      log_value("CommandExecutor.create_tree_from_command","Truncating after separator with length",truncateLength);
       if(actualUsedNode == NULL){ 
         root = create_root(separator,NULL,create_root(truncatedCommand,NULL,NULL)); 
         actualUsedNode = root;
@@ -192,8 +198,10 @@ Node* create_tree_from_command(char* command){
     log_message("CommandExecutor.create_tree_from_command","Root is null, only one command, creating..");
     root = create_root(command,NULL,NULL); 
   }else if(actualUsedNode->leftChild == NULL){
+      log_value("CommandExecutor.create_tree_from_command","lastSeparatorPosition",lastSeparatorPosition);
     actualUsedNode->leftChild = create_root(substr(command,0,lastSeparatorPosition),NULL,NULL);
   }else if(actualUsedNode->rightChild == NULL){
+    log_value("CommandExecutor.create_tree_from_command","lastSeparatorPosition",lastSeparatorPosition);
     actualUsedNode->rightChild = create_root(substr(command,0,lastSeparatorPosition),NULL,NULL);
   }
   
@@ -210,7 +218,6 @@ bool switchOutputFileContentToInputFile(){
   log_message("CommandExecutor.switchOutputFileContentToInputFile","Preparing input file ..");
    FILE *fptr1, *fptr2;
     char filename[100], c;
- 
     // Open one file for reading
     fptr1 = fopen("./tmpOutputFile", "r");
     if (fptr1 == NULL)
@@ -235,12 +242,12 @@ bool switchOutputFileContentToInputFile(){
         c = fgetc(fptr1);
     }
     
-    log_message("CommandExecutor.switchOutputFileContentToInputFile","Content copied from input to output ..");
+    log_message("CommandExecutor.switchOutputFileContentToInputFile","Content copied from output to input ..");
  
  
     fclose(fptr1);
     fclose(fptr2);
-    empty_file("./tmpOutputFile");
+    delete_file("./tmpOutputFile");
     //fclose(fopen("./tmpOutputFile", "w"));
     return 1;
 }
@@ -299,6 +306,11 @@ int handle_command(char* command){
  */
 int execute_command(Node* node)
 {
+  char* pathToCommand = malloc(sizeof(char)*(sizeof(node->command)+6));
+  strcat(pathToCommand,"/bin/");
+    log_message("CommandExecutor.executeCommand","Sazddzs.");
+  strcat(pathToCommand, node->command);
+
   char * commandCore;
   char * parameters;
   trim_leading(node->command);
@@ -313,7 +325,7 @@ int execute_command(Node* node)
    
    char * outputFilePath = "./tmpOutputFile";
    char * inputFilePath = "./tmpInputFile";
-   
+  
    if(!is_file_empty(inputFilePath)){
      log_message("CommandExecutor.executeCommand","Input file isnt empty.");
      int filedes = open("./tmpOutputFile", O_RDWR | O_CREAT);
@@ -323,7 +335,6 @@ int execute_command(Node* node)
      if(forkId == 0){
         execl("/bin/grep","grep","^root",inputFilePath,NULL);
      }
-     empty_file("./tmpInputFile");
    }else{
        int filedes = open(outputFilePath, O_RDWR | O_CREAT);
        log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
@@ -333,13 +344,11 @@ int execute_command(Node* node)
        int forkId = fork();
        if(forkId == 0)
        {
-         //execl("/bin/ps","ps","aux", NULL);
-         system(node->command);
+         execl("/bin/ps","ps","aux", NULL);
+         //system(node->command);
        }
    }
    
- 
-   //Attente dans le père
    int status;
    wait(&status); 
    
@@ -353,10 +362,10 @@ int execute_command(Node* node)
    if(forkId == 0){
       execl("/bin/grep","grep","^root",path,NULL);
    }*/
-   
    // retour a la normale
    dup2(copyFdPrint,1);
-   log_message("CommandExecutor.executeCommand","Nous sommes de retour !");
+   log_message("CommandExecutor.executeCommand","Retour sur le thread normal.");
+   empty_file("./tmpInputFile");
    // -- DUP END
    
    
@@ -382,6 +391,21 @@ int execute_command(Node* node)
   {
     log_string("CommandExecutor.executeCommand","Executing using the system fonction",node->command);
     system(node->command);
+     /*int forkId = fork();
+       if(forkId == 0)
+       {
+         log_string("CommandExecutor.executeCommand","Exec ",node->command);
+          
+         
+         log_string("CommandExecutor.executeCommand","Path : ",pathToCommand);
+          execl(pathToCommand,node->command, NULL);
+       }
+   
+   
+   int status;
+   wait(&status); 
+   */
+   
   }
     
   node->result = "resultat";
@@ -426,7 +450,10 @@ bool is_file_empty(char* path){
  return false;
 }
 
-void empty_file(char* path){
-  //fclose(fopen(path, "w"));
+void delete_file(char* path){
   remove(path);
+}
+
+void empty_file(char* path){
+  fclose(fopen(path, "w"));
 }

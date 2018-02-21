@@ -57,3 +57,5 @@ void print_infix(Node* a);
 void print_postfix(Node* a);
 
 void clean(Node* a);
+
+bool is_separator(char instruction);

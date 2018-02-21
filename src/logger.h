@@ -9,4 +9,6 @@ void log_char_string(const char* tag, const char* message,const char* string);
 
 void log_string(const char* tag, const char* message,const char* string);
 
+void log_char_value(const char* tag, const char* message, char parameter);
+
 #endif /* LOG_H */

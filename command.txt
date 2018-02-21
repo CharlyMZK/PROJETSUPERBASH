@@ -54254,3 +54254,314 @@ ls
 ls
 ls
 git add *
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ps aux
+ps aux
+ls
+ls
+ls
+ps aux
+ls
+ls
+ls
+ps aux
+ls
+ls
+ls | l
+ls | grep
+make
+clear
+make
+clear
+ls | grep
+ls | grep
+ls
+ls | l
+ls
+ls | l
+ls
+ls | l
+ls | ls
+ls | ls
+ls | ls
+ls | grep
+ls | grep
+ls | grep
+ls | ls
+ps aux | grep
+ls | ls
+ls | ls
+ls | ls
+ls | ls | grep
+ls | ls
+ls | ls
+ls | ls
+ls -l | grep "root"
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls
+ls | ls
+ls | ls
+ls | grep
+ls | ls
+ls | grep | ls
+ls | ls | ls
+ls | ls
+ls | ls
+ls
+clear
+ls | ls
+ls | ls
+ps aux | px aux
+ps aux | ps aux
+ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ls | ls
+ls | ls | ls
+ls | ls | ls | ls | ls
+ps aux | ps aux | ps aux
+ls
+ls
+clear
+ls | ls | ls
+echo "ok" && echo "tt" || echo "wesh"
+ls | ls
+ls | ls
+ps aux
+ps aux | ps aux
+ls
+ps aux | ps aux
+ps aux | ps aux
+ps aux | ps aux
+ps aux | ps aux
+ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+make
+ls | ls
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ls | ls | ls
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ls | ls
+ls | ls | ls
+ps aux | ps aux | ps aux
+ls | ls
+ls | ls | ls
+ps aux | ps aux | ps aux
+ls | ls | ls | ls | ls | ls
+ps aux | ps aux | ps aux
+ls | ls | ls
+ps aux | ps aux | ps aux
+ls | ls | ls
+ls | grep | tail | head
+ls | ls | ls
+ps aux | ps aux | ps aux
+ls |ls | ls
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ls | ls | ls
+ls | ls
+
+ls | ls
+ps aux | ps aux | ps aux
+ls | ls | ls
+ls
+clear
+make
+ls | ls
+clear
+echo "test | echo "salut"
+clear
+ps aux | ps aux | ps aux
+ls | ls | ls
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ls | ls | ls
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ps aux | ps aux | ps aux
+ls
+clear
+make
+clear
+ls -l | ls
+ps aux | ps aux | ps aux
+clear
+ps aux | ps aux | ps aux
+ls
+ps aux | ps aux | ps aux
+ls | ls | ls
+ls | echo "root"
+echo "test" | echo "ok"
+ls -l | grep | ls
+ls -l | ls
+ls | ls
+ls | ls 
+ls | ls | ls 
+ps aux | ps aux | ps aux
+ps aux | ps aux
+ps aux | ps aux
+ls
+ps aux | ps aux
+ls
+p | p
+p
+p
+p
+p | p
+ls | ls
+p
+p
+p
+p | p
+p
+p
+p
+ls
+ls | ls
+ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls | ls
+ls | ls
+ls | ls | ls
+ls | ls | ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls
+ls | ls | ls | ls
+ls | ls
+ls | ls | ls
+ls | ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+
+ls | ls | ls
+ls | ls | ls
+ls || ls || ls || ls
+
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls | ls
+
+
+ls | ls | ls
+ls | ls
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls
+ls
+cmake
+ls | ls
+ls | ls | ms
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls | ls | ls
+ls
+ls | ls
+ls 
+clear
+ls | ms
+ls | ms
+clear
+ls | ls
+ls | ls |ls
+clear
+ls | ls
+ls | l
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls
+ls | ls
+ls | ls | ls
+ls | ls
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | ls
+ls | grep
+echo "ok" | echo "test"
+ls | grep
+ls | grep
+ls | grep
+ls | ls 
+ls | ls | ls
+ls | ls
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls - grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep

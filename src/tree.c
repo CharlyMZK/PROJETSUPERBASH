@@ -20,11 +20,12 @@ bool is_separator(char instruction){
  */
 Node* create_root(char* command, Node* leftChild, Node* rightChild)
 {
-	log_string("Tree.create_root","Creating a node with command",command);
 	Node* a =malloc(sizeof(Node));
 	if(is_separator(command[1])){
+		log_string("Tree.create_root","Creating a node with separator",command);
 		a->separator = command;
 	}else{
+		log_string("Tree.create_root","Creating a node with command",command);
 		a->command = command;	
 	}
 	
@@ -134,7 +135,10 @@ void print_prefix(int spacesCounter, Node* a)
 		for(i = 0; i < spacesCounter ; i++){
 			printf(" ");
 		}
-		printf("[ %s ]\n",getCommand(a));
+		if(getCommand(a) != NULL)
+			printf("[ %s ]                    Command\n",getCommand(a));
+		else
+			printf("[ %s ]                    Separator\n",a->separator);
 		printf("\n");
 		spacesCounter ++ ;
 		for(j = 0; j <= spacesCounter ; j++){
