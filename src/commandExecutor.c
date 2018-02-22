@@ -120,6 +120,7 @@ void trim_leading(char * str)
         str[i] = '\0'; //Ferme la string
     }
 }
+
 /**
  * Enlève les espaces en fin de chaine
  * 
@@ -151,7 +152,6 @@ void remove_space_at_beginning_and_end(char * string)
   trim_leading(string);
   trim_last(string);
 }
-
 
 
 /**
@@ -199,12 +199,8 @@ Node* create_tree_from_command(char* command){
     log_message("CommandExecutor.create_tree_from_command","Row ended");
   }
   log_message("CommandExecutor.create_tree_from_command","While ended,  finishing the three..");
-  
 
-
- 
-
-   char *firstCommand = malloc(lastSeparatorPosition + 1);
+  char *firstCommand = malloc(lastSeparatorPosition + 1);
   
   if(root == NULL){
     log_message("CommandExecutor.create_tree_from_command","Root is null, only one command, creating..");
@@ -235,6 +231,9 @@ Node* create_tree_from_command(char* command){
   return root;
 }
 
+/**
+ * Copie le contenu de OUTPUT_FILEPATH dans INPUT_FILEPATH
+ */
 bool switch_output_file_content_to_input_file(){
   log_message("CommandExecutor.switchOutputFileContentToInputFile","Preparing input file ..");
    FILE *fptr1, *fptr2;
@@ -430,11 +429,6 @@ int handle_command(char* command){
  */
 int execute_command(Node* node)
 {
-  char * commandCore;
-  char * parameters;
-  //trim_leading(node->command);
-  int indexEndOffCommand = find_index_off_first_occurence_in_string(node->command,' ');
-  
  //Sauvegarde du file descripteur
  log_message("CommandExecutor.executeCommand","Sauvegarde du file descritor..");
  int copyFdPrint = dup(1);
@@ -453,16 +447,51 @@ int execute_command(Node* node)
   log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
 
   int filedes = open(OUTPUT_FILEPATH, O_RDWR | O_CREAT);
-  int forkId = fork();
-  if(forkId == 0){
-   log_string("CommandExecutor.executeCommand","Executing ",node->command);
-   log_string("CommandExecutor.executeCommand","with token ",tokens[0]);
-   log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
-   dup2(filedes,1);
-    execvp(tokens[0],tokens);
+    //Executing custom command
+  if(!strcmp(tokens[0], "pwd"))
+  {
+    log_message("CommandExecutor.executeCommand","Execution du la commande built in pwd");
+    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+    dup2(filedes,1);
+    print_current_directory();
   }
+  else if(!strcmp(tokens[0], "cd"))
+  {
+    log_message("CommandExecutor.executeCommand","Execution du la commande built in cd");
+    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+    dup2(filedes,1);
+    change_current_directory(tokens[1]);
+  }
+  else if(!strcmp(tokens[0], "echo"))
+  {
+    log_message("CommandExecutor.executeCommand","Execution du la commande built in echo");
+    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+    dup2(filedes,1);
+    echo();
+  }
+  else if(!strcmp(tokens[0], "exit"))
+  {
+    log_message("CommandExecutor.executeCommand","Execution du la commande built in exit");
+    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+    dup2(filedes,1);
+    exit(EXIT_SUCCESS);
+  }
+  else
+  {
+    int forkId = fork();
+    if(forkId == 0){
+
+    log_string("CommandExecutor.executeCommand","Executing ",node->command);
+    log_string("CommandExecutor.executeCommand","with token ",tokens[0]);
+    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+    dup2(filedes,1);
+    execvp(tokens[0],tokens);
+  
+    }
   int status;
   wait(&status); 
+  }
+
    
    // retour a la normale
    dup2(copyFdPrint,1);
@@ -518,6 +547,18 @@ void change_current_directory(char *path)
   print_current_directory();
 }
 
+/**
+ * Affiche ECHO
+ * TODO passé des paramètres
+ */
+void echo()
+{
+  printf("echo\n");
+}
+
+/**
+ * 
+ */
 bool is_file_empty(char* path){
   log_message("CommandExecutor.empty_file","Is this file empty ?");
   int size = 0;
