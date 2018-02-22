@@ -306,14 +306,9 @@ int handle_command(char* command){
  */
 int execute_command(Node* node)
 {
-  char* pathToCommand = malloc(sizeof(char)*(sizeof(node->command)+6));
-  strcat(pathToCommand,"/bin/");
-    log_message("CommandExecutor.executeCommand","Sazddzs.");
-  strcat(pathToCommand, node->command);
-
   char * commandCore;
   char * parameters;
-  trim_leading(node->command);
+  //trim_leading(node->command);
   int indexEndOffCommand = find_index_off_first_occurence_in_string(node->command,' ');
   
   // -- DUP
@@ -390,8 +385,9 @@ int execute_command(Node* node)
   else 
   {
     log_string("CommandExecutor.executeCommand","Executing using the system fonction",node->command);
-    //system(node->command);
-    system("ls");
+printf("%s",node->command);
+//system("ls");
+    system(node->command);
      /*int forkId = fork();
        if(forkId == 0)
        {
@@ -408,8 +404,6 @@ int execute_command(Node* node)
    */
    
   }
-    
-  node->result = "resultat";
   
   return true;
 }
