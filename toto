@@ -1,7 +1,4 @@
-[CommandExecutor.executeCommand]: Executing  ( grep ) 
-[CommandExecutor.executeCommand]: with token  ( grep ) 
 -rw-r--r-- 1 ubuntu ubuntu   173 Jan 25 09:14 Notes
 -rw-r--r-- 1 ubuntu ubuntu   959 Feb  9 08:27 arbre1.pdf
 -rw-r--r-- 1 ubuntu ubuntu     5 Feb 20 12:54 command2.txt
 -rw-r--r-- 1 ubuntu ubuntu   538 Feb 20 13:08 test
--rw-r--r-- 1 ubuntu ubuntu     0 Feb 22 13:05 tmpInputFile

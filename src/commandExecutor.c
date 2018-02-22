@@ -443,7 +443,7 @@ int execute_command(Node* node)
  //Création d'un fichier et ouverture
  
  char * outputFilePath = "./tmpOutputFile";
- char * inputFilePath = "./tmpInputFile";
+  char * inputFilePath = "./tmpInputFile";
   
  /*if(!is_file_empty(inputFilePath)){
    log_message("CommandExecutor.executeCommand","Input file isnt empty.");
@@ -468,23 +468,22 @@ int execute_command(Node* node)
      }
  }*/
    
- char** tokens;
+  char** tokens;
 
 
-
-   
   if(!is_file_empty(inputFilePath)){
     tokens = split_and_add_path(node->command,inputFilePath);
     log_string("CommandExecutor.executeCommand","First token : ",tokens[0]);
     log_message("CommandExecutor.executeCommand","Input file isnt empty.");
     printf("%s %s %s\n",tokens[0],tokens[1],tokens[2]);
     int filedes = open("./tmpOutputFile", O_RDWR | O_CREAT);
-    dup2(filedes,1);
+    
     //Ecriture dans outputfile
     int forkId = fork();
     if(forkId == 0){
      log_string("CommandExecutor.executeCommand","Executing ",node->command);
      log_string("CommandExecutor.executeCommand","with token ",tokens[0]);
+     dup2(filedes,1);
      //execl("/bin/grep","grep","^root",inputFilePath,NULL);
       execvp(tokens[0],tokens);
         
@@ -495,7 +494,7 @@ int execute_command(Node* node)
     int filedes = open(outputFilePath, O_RDWR | O_CREAT);
     log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
     //Remplacement de la sortie standart par le descripteur de fichier
-    dup2(filedes, 1);
+
     //Fork obligatoire car exec remplace la suite du processus
     int forkId = fork();
     if(forkId == 0)
@@ -503,6 +502,7 @@ int execute_command(Node* node)
      //execl("/bin/ps","ps","aux", NULL);
      log_string("CommandExecutor.executeCommand","Executing ",node->command);
      log_string("CommandExecutor.executeCommand","with token ",tokens[0]);
+     dup2(filedes, 1);
      execvp(tokens[0],tokens);
      //system(node->command);
     }
