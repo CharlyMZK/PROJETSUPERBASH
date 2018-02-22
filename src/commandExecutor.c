@@ -431,62 +431,59 @@ int execute_command(Node* node)
 {
  //Sauvegarde du file descripteur
  log_message("CommandExecutor.executeCommand","Sauvegarde du file descritor..");
- int copyFdPrint = dup(1);
+ int standardInPutCopy  = dup(1);
 
-  char** tokens;
+  char** splitedBySpacesCommand;
   if(!is_file_empty(INPUT_FILEPATH)){
-    tokens = str_split_and_add_path(node->command,INPUT_FILEPATH);
-    log_string("CommandExecutor.executeCommand","First token : ",tokens[0]);
+    splitedBySpacesCommand = str_split_and_add_path(node->command,INPUT_FILEPATH);
     log_message("CommandExecutor.executeCommand","Input file isnt empty.");
-    printf("%s %s %s\n",tokens[0],tokens[1],tokens[2]);
   }else{
-    tokens = str_split(node->command, ' ');
-    log_string("CommandExecutor.executeCommand","First token : ",tokens[0]);
+    splitedBySpacesCommand = str_split(node->command, ' ');
+    log_string("CommandExecutor.executeCommand","First token : ",splitedBySpacesCommand[0]);
   }
   //Ecriture dans outputfile
   log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
 
-  int filedes = open(OUTPUT_FILEPATH, O_RDWR | O_CREAT);
+  int fileDescriptorValue  = open(OUTPUT_FILEPATH, O_RDWR | O_CREAT);
     //Executing custom command
-  if(!strcmp(tokens[0], "pwd"))
+  if(!strcmp(splitedBySpacesCommand[0], "pwd"))
   {
     log_message("CommandExecutor.executeCommand","Execution du la commande built in pwd");
     log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
-    dup2(filedes,1);
+    dup2(fileDescriptorValue ,1);
     print_current_directory();
   }
-  else if(!strcmp(tokens[0], "cd"))
+  else if(!strcmp(splitedBySpacesCommand[0], "cd"))
   {
     log_message("CommandExecutor.executeCommand","Execution du la commande built in cd");
     log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
-    dup2(filedes,1);
-    change_current_directory(tokens[1]);
+    dup2(fileDescriptorValue ,1);
+    change_current_directory(splitedBySpacesCommand[1]);
   }
-  else if(!strcmp(tokens[0], "echo"))
+  else if(!strcmp(splitedBySpacesCommand[0], "echo"))
   {
     log_message("CommandExecutor.executeCommand","Execution du la commande built in echo");
     log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
-    dup2(filedes,1);
+    dup2(fileDescriptorValue ,1);
     echo();
   }
-  else if(!strcmp(tokens[0], "exit"))
+  else if(!strcmp(splitedBySpacesCommand[0], "exit"))
   {
     log_message("CommandExecutor.executeCommand","Execution du la commande built in exit");
     log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
-    dup2(filedes,1);
+    dup2(fileDescriptorValue ,1);
     exit(EXIT_SUCCESS);
   }
   else
   {
     int forkId = fork();
-    if(forkId == 0){
-
-    log_string("CommandExecutor.executeCommand","Executing ",node->command);
-    log_string("CommandExecutor.executeCommand","with token ",tokens[0]);
-    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
-    dup2(filedes,1);
-    execvp(tokens[0],tokens);
-  
+    if(forkId == 0)
+    {
+      log_string("CommandExecutor.executeCommand","Executing ",node->command);
+      log_string("CommandExecutor.executeCommand","with token ",splitedBySpacesCommand[0]);
+      log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+      dup2(fileDescriptorValue ,1);
+      execvp(splitedBySpacesCommand[0],splitedBySpacesCommand);
     }
   int status;
   wait(&status); 
@@ -494,36 +491,9 @@ int execute_command(Node* node)
 
    
    // retour a la normale
-   dup2(copyFdPrint,1);
+   dup2(standardInPutCopy ,1);
    log_message("CommandExecutor.executeCommand","Retour sur le thread normal.");
    empty_file(INPUT_FILEPATH);
-   // -- DUP END
-   
-   /*
-  //Separate the core of the command from its parameter
-  if(indexEndOffCommand != -1)
-  {
-    commandCore = substr(node->command,0,indexEndOffCommand);
-    parameters = node->command + indexEndOffCommand + 1;
-  }
-  else 
-    commandCore = node->command;
-
-  //Executing custom command
-  if(!strcmp(commandCore, "pwd"))
-    print_current_directory();
-  else if(!strcmp(commandCore, "cd"))
-    change_current_directory(parameters);
-  else if(!strcmp(commandCore, "echo"))
-    printf("%s\n",parameters);
-  else if(!strcmp(commandCore, "exit"))
-    exit(EXIT_SUCCESS);
-  else 
-  {
-    log_string("CommandExecutor.executeCommand","Executing using the system fonction",node->command);
-    system(node->command);
-  }
-  */
   return true;
 }
 
