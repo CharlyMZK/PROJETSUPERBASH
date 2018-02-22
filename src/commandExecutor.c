@@ -1,6 +1,9 @@
 #include "commandExecutor.h"
  #include <fcntl.h> // for open
  #include <unistd.h> // for close
+ #include <stdlib.h>
+#include <string.h>
+#include <assert.h>
  
 /**
  * retourne un string à partir de la string src à la position pos pour une longueur len 
@@ -233,7 +236,7 @@ Node* create_tree_from_command(char* command){
   return root;
 }
 
-bool switchOutputFileContentToInputFile(){
+bool switch_output_file_content_to_input_file(){
   log_message("CommandExecutor.switchOutputFileContentToInputFile","Preparing input file ..");
    FILE *fptr1, *fptr2;
     char filename[100], c;
@@ -290,7 +293,7 @@ bool read_and_exec_tree(Node* treeCommand){
       }else{
         log_message("CommandExecutor.read_and_exec_tree","Command is null, its a separator");
         treeCommand->rightChild->inputValue = treeCommand->leftChild->result;
-        switchOutputFileContentToInputFile();
+        switch_output_file_content_to_input_file();
         return read_and_exec_tree(treeCommand->rightChild);
       }
     }
@@ -306,6 +309,108 @@ bool read_and_exec_tree(Node* treeCommand){
     return isExecuted;
   }
   return true;
+}
+
+/**
+ * Split la chaine a_str avec le délimiteur a_delim
+ */
+char** str_split(char* a_str, const char a_delim)
+{
+    char** result    = 0;
+    size_t count     = 0;
+    char* tmp        = a_str;
+    char* last_comma = 0;
+    char delim[2];
+    delim[0] = a_delim;
+    delim[1] = 0;
+
+    /* Count how many elements will be extracted. */
+    while (*tmp)
+    {
+        if (a_delim == *tmp)
+        {
+            count++;
+            last_comma = tmp;
+        }
+        tmp++;
+    }
+
+    /* Add space for trailing token. */
+    count += last_comma < (a_str + strlen(a_str) - 1);
+
+    /* Add space for terminating null string so caller
+       knows where the list of returned strings ends. */
+    count++;
+
+    result = malloc(sizeof(char*) * count);
+
+    if (result)
+    {
+        size_t idx  = 0;
+        char* token = strtok(a_str, delim);
+
+        while (token)
+        {
+            assert(idx < count);
+            *(result + idx++) = strdup(token);
+            token = strtok(0, delim);
+        }
+        assert(idx == count - 1);
+        *(result + idx) = 0;
+    }
+
+    return result;
+}
+
+
+/**
+ * Créer un tableau d'arguments en séparant la chaine args pour chaque espace et en ajoutant la chaine path
+ */
+char** split_and_add_path(char * args,char * path)
+{
+  char a_delim = ' ';
+  char** result    = 0;
+  size_t count     = 0;
+  char* tmp        = args;
+  char* last_comma = 0;
+  char delim[2];
+  delim[0] = a_delim;
+  delim[1] = 0;
+  /* Count how many elements will be extracted. */
+  while (*tmp)
+  {
+      if (a_delim == *tmp)
+      {
+          count++;
+          last_comma = tmp;
+      }
+      tmp++;
+  }
+  /* Add space for trailing token. */
+  count += last_comma < (args + strlen(args) - 1);
+
+  /* Add space for terminating null string so caller
+     knows where the list of returned strings ends. */
+  count++;
+
+  result = malloc(sizeof(char*) * count+1);
+  if (result)
+  {
+      size_t idx  = 0;
+      char* token = strtok(args, delim);
+
+      while (token)
+      {
+          assert(idx < count);
+          *(result + idx++) = strdup(token);
+          token = strtok(0, delim);
+      }
+      assert(idx == count - 1);
+      *(result + idx) = 0;
+      result[idx] = path;
+  }
+
+  return result;
 }
 
 /**
@@ -331,40 +436,80 @@ int execute_command(Node* node)
   int indexEndOffCommand = find_index_off_first_occurence_in_string(node->command,' ');
   
   // -- DUP
-   //Sauvegarde du file descripteur
-   log_message("CommandExecutor.executeCommand","Sauvegarde du file descritor..");
-   int copyFdPrint = dup(1);
-   log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
-   //Création d'un fichier et ouverture
-   
-   char * outputFilePath = "./tmpOutputFile";
-   char * inputFilePath = "./tmpInputFile";
+ //Sauvegarde du file descripteur
+ log_message("CommandExecutor.executeCommand","Sauvegarde du file descritor..");
+ int copyFdPrint = dup(1);
+ log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
+ //Création d'un fichier et ouverture
+ 
+ char * outputFilePath = "./tmpOutputFile";
+ char * inputFilePath = "./tmpInputFile";
   
-   if(!is_file_empty(inputFilePath)){
-     log_message("CommandExecutor.executeCommand","Input file isnt empty.");
-     int filedes = open("./tmpOutputFile", O_RDWR | O_CREAT);
-     dup2(filedes,1);
-     //Ecriture dans la poubelle de grep
-     int forkId = fork();
-     if(forkId == 0){
-        execl("/bin/grep","grep","^root",inputFilePath,NULL);
-     }
-   }else{
-       int filedes = open(outputFilePath, O_RDWR | O_CREAT);
-       log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
-       //Remplacement de la sortie standart par le descripteur de fichier
-       dup2(filedes, 1);
-       //Fork obligatoire car exec remplace la suite du processus
-       int forkId = fork();
-       if(forkId == 0)
-       {
-         execl("/bin/ps","ps","aux", NULL);
-         //system(node->command);
-       }
+ /*if(!is_file_empty(inputFilePath)){
+   log_message("CommandExecutor.executeCommand","Input file isnt empty.");
+   int filedes = open("./tmpOutputFile", O_RDWR | O_CREAT);
+   dup2(filedes,1);
+   //Ecriture dans la poubelle de grep
+   int forkId = fork();
+   if(forkId == 0){
+      execl("/bin/grep","grep","^root",inputFilePath,NULL);
    }
+ }else{
+     int filedes = open(outputFilePath, O_RDWR | O_CREAT);
+     log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+     //Remplacement de la sortie standart par le descripteur de fichier
+     dup2(filedes, 1);
+     //Fork obligatoire car exec remplace la suite du processus
+     int forkId = fork();
+     if(forkId == 0)
+     {
+       execl("/bin/ps","ps","aux", NULL);
+       //system(node->command);
+     }
+ }*/
    
-   int status;
-   wait(&status); 
+ char** tokens;
+
+
+
+   
+  if(!is_file_empty(inputFilePath)){
+    tokens = split_and_add_path(node->command,inputFilePath);
+    log_string("CommandExecutor.executeCommand","First token : ",tokens[0]);
+    log_message("CommandExecutor.executeCommand","Input file isnt empty.");
+    printf("%s %s %s\n",tokens[0],tokens[1],tokens[2]);
+    int filedes = open("./tmpOutputFile", O_RDWR | O_CREAT);
+    dup2(filedes,1);
+    //Ecriture dans outputfile
+    int forkId = fork();
+    if(forkId == 0){
+     log_string("CommandExecutor.executeCommand","Executing ",node->command);
+     log_string("CommandExecutor.executeCommand","with token ",tokens[0]);
+     //execl("/bin/grep","grep","^root",inputFilePath,NULL);
+      execvp(tokens[0],tokens);
+        
+     }
+  }else{
+    tokens = str_split(node->command, ' ');
+    log_string("CommandExecutor.executeCommand","First token : ",tokens[0]);
+    int filedes = open(outputFilePath, O_RDWR | O_CREAT);
+    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+    //Remplacement de la sortie standart par le descripteur de fichier
+    dup2(filedes, 1);
+    //Fork obligatoire car exec remplace la suite du processus
+    int forkId = fork();
+    if(forkId == 0)
+    {
+     //execl("/bin/ps","ps","aux", NULL);
+     log_string("CommandExecutor.executeCommand","Executing ",node->command);
+     log_string("CommandExecutor.executeCommand","with token ",tokens[0]);
+     execvp(tokens[0],tokens);
+     //system(node->command);
+    }
+  }
+   
+  int status;
+  wait(&status); 
    
    
    //Ouverture de /dev/null
@@ -382,7 +527,7 @@ int execute_command(Node* node)
    empty_file("./tmpInputFile");
    // -- DUP END
    
-   
+   /*
   //Separate the core of the command from its parameter
   if(indexEndOffCommand != -1)
   {
@@ -404,28 +549,9 @@ int execute_command(Node* node)
   else 
   {
     log_string("CommandExecutor.executeCommand","Executing using the system fonction",node->command);
-    
-
-//system("ls");
-    
     system(node->command);
-     /*int forkId = fork();
-       if(forkId == 0)
-       {
-         log_string("CommandExecutor.executeCommand","Exec ",node->command);
-          
-         
-         log_string("CommandExecutor.executeCommand","Path : ",pathToCommand);
-          execl(pathToCommand,node->command, NULL);
-       }
-   
-   
-   int status;
-   wait(&status); 
-   */
-   
   }
-  
+  */
   return true;
 }
 
@@ -473,3 +599,4 @@ void delete_file(char* path){
 void empty_file(char* path){
   fclose(fopen(path, "w"));
 }
+
