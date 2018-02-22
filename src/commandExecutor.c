@@ -1,9 +1,11 @@
 #include "commandExecutor.h"
- #include <fcntl.h> // for open
- #include <unistd.h> // for close
- #include <stdlib.h>
+#include <fcntl.h> // for open
+#include <unistd.h> // for close
+#include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <sys/types.h>
+#include <sys/wait.h>
  
 /**
  * retourne un string à partir de la string src à la position pos pour une longueur len 
@@ -26,7 +28,7 @@ char *substr(char *src,int pos,int len) {
  * retourne l'index de la première occurence du caractère charToFind dans la string src
  * ou -1 si le charactère n'est pas présent
  */
-int *find_index_off_first_occurence_in_string(char *src, char charToFind)
+int find_index_off_first_occurence_in_string(char *src, char charToFind)
 {
   const char *ptr = strchr(src, charToFind);
   if(ptr) 
@@ -70,8 +72,7 @@ bool log_in_file(char * command, char * file)
     return false;
   }
   log_message("Superbash","Saving the command in the log file");
-  fprintf(pFile, command);
-  fprintf(pFile, "\n");
+  fprintf(pFile, "%s \n",command);
   fclose(pFile);
   return true;
 }
@@ -99,7 +100,6 @@ void bash_loop(void)
 void trim_leading(char * str)
 {
     int index, i;
-
     index = 0;
     log_string("CommandExecutor.trim_leading","String is",str);
     /* Trouve le dernier index des premiers espaces */
@@ -151,7 +151,6 @@ void remove_space_at_beginning_and_end(char * string)
   trim_leading(string);
   trim_last(string);
 }
-
 
 
 
@@ -241,7 +240,7 @@ bool switch_output_file_content_to_input_file(){
    FILE *fptr1, *fptr2;
     char filename[100], c;
     // Open one file for reading
-    fptr1 = fopen("./tmpOutputFile", "r");
+    fptr1 = fopen(OUTPUT_FILEPATH, "r");
     if (fptr1 == NULL)
     {
         printf("Cannot open file %s \n", filename);
@@ -249,7 +248,7 @@ bool switch_output_file_content_to_input_file(){
     }
  
     // Open another file for writing
-    fptr2 = fopen("./tmpInputFile", "w");
+    fptr2 = fopen(INPUT_FILEPATH, "w");
     if (fptr2 == NULL)
     {
         printf("Cannot open file %s \n", filename);
@@ -269,8 +268,8 @@ bool switch_output_file_content_to_input_file(){
  
     fclose(fptr1);
     fclose(fptr2);
-    delete_file("./tmpOutputFile");
-    //fclose(fopen("./tmpOutputFile", "w"));
+    delete_file(OUTPUT_FILEPATH);
+    //fclose(fopen(OUTPUT_FILEPATH, "w"));
     return 1;
 }
 
@@ -366,7 +365,7 @@ char** str_split(char* a_str, const char a_delim)
 /**
  * Créer un tableau d'arguments en séparant la chaine args pour chaque espace et en ajoutant la chaine path
  */
-char** split_and_add_path(char * args,char * path)
+char** str_split_and_add_path(char * args,char * path)
 {
   char a_delim = ' ';
   char** result    = 0;
@@ -422,6 +421,7 @@ int handle_command(char* command){
   Node* treeCommand = create_tree_from_command(command);
   log_message("CommandExecutor.handle_command","Reading and executing tree..");
   read_and_exec_tree(treeCommand);
+  log_message("CommandExecutor.handle_command","Cleaning files..");
   return true;
 }
 
@@ -435,96 +435,39 @@ int execute_command(Node* node)
   //trim_leading(node->command);
   int indexEndOffCommand = find_index_off_first_occurence_in_string(node->command,' ');
   
-  // -- DUP
  //Sauvegarde du file descripteur
  log_message("CommandExecutor.executeCommand","Sauvegarde du file descritor..");
  int copyFdPrint = dup(1);
- log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
- //Création d'un fichier et ouverture
- 
- char * outputFilePath = "./tmpOutputFile";
-  char * inputFilePath = "./tmpInputFile";
-  
- /*if(!is_file_empty(inputFilePath)){
-   log_message("CommandExecutor.executeCommand","Input file isnt empty.");
-   int filedes = open("./tmpOutputFile", O_RDWR | O_CREAT);
-   dup2(filedes,1);
-   //Ecriture dans la poubelle de grep
-   int forkId = fork();
-   if(forkId == 0){
-      execl("/bin/grep","grep","^root",inputFilePath,NULL);
-   }
- }else{
-     int filedes = open(outputFilePath, O_RDWR | O_CREAT);
-     log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
-     //Remplacement de la sortie standart par le descripteur de fichier
-     dup2(filedes, 1);
-     //Fork obligatoire car exec remplace la suite du processus
-     int forkId = fork();
-     if(forkId == 0)
-     {
-       execl("/bin/ps","ps","aux", NULL);
-       //system(node->command);
-     }
- }*/
-   
+
   char** tokens;
-
-
-  if(!is_file_empty(inputFilePath)){
-    tokens = split_and_add_path(node->command,inputFilePath);
+  if(!is_file_empty(INPUT_FILEPATH)){
+    tokens = str_split_and_add_path(node->command,INPUT_FILEPATH);
     log_string("CommandExecutor.executeCommand","First token : ",tokens[0]);
     log_message("CommandExecutor.executeCommand","Input file isnt empty.");
     printf("%s %s %s\n",tokens[0],tokens[1],tokens[2]);
-    int filedes = open("./tmpOutputFile", O_RDWR | O_CREAT);
-    
-    //Ecriture dans outputfile
-    int forkId = fork();
-    if(forkId == 0){
-     log_string("CommandExecutor.executeCommand","Executing ",node->command);
-     log_string("CommandExecutor.executeCommand","with token ",tokens[0]);
-     dup2(filedes,1);
-     //execl("/bin/grep","grep","^root",inputFilePath,NULL);
-      execvp(tokens[0],tokens);
-        
-     }
   }else{
     tokens = str_split(node->command, ' ');
     log_string("CommandExecutor.executeCommand","First token : ",tokens[0]);
-    int filedes = open(outputFilePath, O_RDWR | O_CREAT);
-    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
-    //Remplacement de la sortie standart par le descripteur de fichier
-
-    //Fork obligatoire car exec remplace la suite du processus
-    int forkId = fork();
-    if(forkId == 0)
-    {
-     //execl("/bin/ps","ps","aux", NULL);
-     log_string("CommandExecutor.executeCommand","Executing ",node->command);
-     log_string("CommandExecutor.executeCommand","with token ",tokens[0]);
-     dup2(filedes, 1);
-     execvp(tokens[0],tokens);
-     //system(node->command);
-    }
   }
-   
+  //Ecriture dans outputfile
+  log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
+
+  int filedes = open(OUTPUT_FILEPATH, O_RDWR | O_CREAT);
+  int forkId = fork();
+  if(forkId == 0){
+   log_string("CommandExecutor.executeCommand","Executing ",node->command);
+   log_string("CommandExecutor.executeCommand","with token ",tokens[0]);
+   log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+   dup2(filedes,1);
+    execvp(tokens[0],tokens);
+  }
   int status;
   wait(&status); 
    
-   
-   //Ouverture de /dev/null
-   /*filedes = open("./tmpOutputFile", O_RDWR | O_CREAT);
-   dup2(filedes,1);
-   //Ecriture dans la poubelle de grep
-   forkId = fork();
-
-   if(forkId == 0){
-      execl("/bin/grep","grep","^root",path,NULL);
-   }*/
    // retour a la normale
    dup2(copyFdPrint,1);
    log_message("CommandExecutor.executeCommand","Retour sur le thread normal.");
-   empty_file("./tmpInputFile");
+   empty_file(INPUT_FILEPATH);
    // -- DUP END
    
    /*
