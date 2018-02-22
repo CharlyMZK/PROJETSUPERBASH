@@ -54565,3 +54565,108 @@ ls | grep
 ls | grep
 ls | grep
 ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls |grep
+ls | grep
+ls | grep
+ls | grep
+ls | grep
+ls
+ls | grep
+grep | ls
+echo "ok" | echo "yo"
+grep | grep
+ls | ls
+cd | cd
+m
+m | m
+ls | ls | ls
+ls | ls
+ls
+ls | ls
+ls | ls | ls
+ls | ls
+ls | ls | ls
+ls | ls
+ls | ls
+ls | grep
+ls | grep
+ls | grep
+ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls | ls
+ls | ls
+git status
+git add src/commandExecutor.c
+ls | ls
+
+ls | ls
+ls | ls
+ls | ls
+ls | ls | ls | ls
+ls | ls
+ls | ls
+ls |ls
+ls | ls
+ls | ls
+ls | ls | ls
+clear
+ls | grep
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls
+clera
+clear
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | grep
+grpe | ls
+ls | ls
+grep | grep
+grep | grep
+ls | ls
+ls | ls
+ls |ls
+ls | ls
+ls | ls
+ls |ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls
+ls | ls | ls
+ls | ls
+ls | ls
+ls | ls
+ls | grep
+ls | ls
+ls | ls
+ls | ls
+ls | grep 1
+ls | grep
+ls | grep 1
+ls | grep 1
+ls | grep toto
+grep

@@ -1,3 +1,17 @@
-root           1  0.0  0.0   1104     0 ?        Ss   07:28   0:01 /mnt/shared/sbin/tini -- /mnt/shared/sbin/micro-inetd 22 /mnt/shared/sbin/dropbear -i -s -m -R
-root           7  0.0  0.0   4052   964 ?        S+   07:28   0:00 /mnt/shared/sbin/micro-inetd 22 /mnt/shared/sbin/dropbear -i -s -m -R
-root       13476  0.0  0.0  19376  2176 ?        Ss   16:55   0:02 /mnt/shared/sbin/dropbear -i -s -m -R
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.0  0.0   1104     4 ?        Ss   07:28   0:00 /mnt/shared/sbin/tini -- /mnt/shared/sbin/micro-inetd 22 /mnt/shared/sbin/dropbear -i -s -m -R
+root           7  0.0  0.0   4052  1068 ?        S+   07:28   0:00 /mnt/shared/sbin/micro-inetd 22 /mnt/shared/sbin/dropbear -i -s -m -R
+ubuntu       794  0.0  0.0 133940  4692 ?        Ss   07:29   0:01 /mnt/shared/sbin/tmux -u2 -L cloud92.2 new -s boberbach@projetsuperbash_88 export ISOUTPUTPANE=0;bash -l ; set -q -g status off ; set -q destroy-unattached off ; set -q mouse-select-pane on ; set -q set-titles on ; set -q quiet on ; set -q -g prefix C-b ; set -q -g default-terminal xterm-256color ; setw -q -g xterm-keys on
+ubuntu       795  0.0  0.0  11276  2560 pts/1    Ss   07:29   0:00 bash -c export ISOUTPUTPANE=0;bash -l
+ubuntu       796  0.0  0.0  29128 12592 pts/1    S    07:29   0:00 bash -l
+ubuntu      2594  0.0  0.0  11276  2608 pts/3    Ss   08:09   0:00 bash -c export ISOUTPUTPANE=0;bash -l
+ubuntu      2595  0.0  0.0  29084 12664 pts/3    S    08:09   0:01 bash -l
+root        6818  0.0  0.0  19376  2152 ?        Ss   09:48   0:00 /mnt/shared/sbin/dropbear -i -s -m -R
+ubuntu      6819  0.2  0.0 1244420 50740 ?       Sl   09:48   0:01 vfs-worker {"pingInterval":5000,"nodePath":"/mnt/shared/lib/node_modules","tmuxBin":"/mnt/shared/sbin/tmux","root":"/","debug":true,"connectionTimeout":60000,"sshConnectTimeout":30000,"metapath":"/.c9/metadata","wsmetapath":"/.c9/metadata/workspace","projectDir":"/home/ubuntu/workspace","extendApi":{"collab":{"file":"c9.ide.collab/server/collab-server.js","user":{"uid":"1987451","email":"charlymrazeck@gmail.com","name":"mzkcharly","fullname":"Charly"},"project":{"pid":5791998,"name":"projetsuperbash"},"readonly":false,"nodePath":"/mnt/shared/lib/node_modules"},"pubsub":{"file":"c9.ide.pubsub/pubsub-service.js"},"ping":{"file":"c9.vfs.client/ping-service.js"}},"defaultEnv":{}}                                                       
+ubuntu      7283  0.0  0.0 123736  2708 pts/0    Ss+  09:49   0:00 /mnt/shared/sbin/tmux -u2 -L cloud92.2 attach -t boberbach@projetsuperbash_177
+root        7825  0.0  0.0  19376  2080 ?        Ss   09:50   0:00 /mnt/shared/sbin/dropbear -i -s -m -R
+ubuntu      7826  0.1  0.0 1232460 35708 ?       Sl   09:50   0:01 vfs-worker {"pingInterval":5000,"nodePath":"/mnt/shared/lib/node_modules","tmuxBin":"/mnt/shared/sbin/tmux","root":"/","debug":true,"connectionTimeout":60000,"sshConnectTimeout":30000,"metapath":"/.c9/metadata","wsmetapath":"/.c9/metadata/workspace","projectDir":"/home/ubuntu/workspace","extendApi":{"collab":{"file":"c9.ide.collab/server/collab-server.js","user":{"uid":"1987453","email":"o.baptiste@wanadoo.fr","name":"boberbach","fullname":"Baptiste Oberbach"},"project":{"pid":5791998,"name":"projetsuperbash"},"readonly":false,"nodePath":"/mnt/shared/lib/node_modules"},"pubsub":{"file":"c9.ide.pubsub/pubsub-service.js"},"ping":{"file":"c9.vfs.client/ping-service.js"}},"defaultEnv":{}}                                              
+ubuntu      8258  0.0  0.0 123736  2628 pts/2    Ss+  09:50   0:00 /mnt/shared/sbin/tmux -u2 -L cloud92.2 attach -t boberbach@projetsuperbash_88
+ubuntu      8706  0.0  0.0   4396  1388 pts/1    S+   09:50   0:00 ./bin/superbash
+ubuntu      8740  0.0  0.0   4376  1356 pts/3    S+   09:57   0:00 bin/superbash
+ubuntu      8772  0.0  0.0  17268  2408 pts/1    R+   09:59   0:00 ps aux

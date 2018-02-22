@@ -98,7 +98,7 @@ void trim_leading(char * str)
     int index, i;
 
     index = 0;
-
+    log_string("CommandExecutor.trim_leading","String is",str);
     /* Trouve le dernier index des premiers espaces */
     while(str[index] == ' ' || str[index] == '\t' || str[index] == '\n')
     {
@@ -113,6 +113,7 @@ void trim_leading(char * str)
             str[i] = str[i + index];
             i++;
         }
+        log_message("CommandExecutor.trim_leading","0 put back");
         str[i] = '\0'; //Ferme la string
     }
 }
@@ -122,6 +123,7 @@ void trim_leading(char * str)
  */
 void trim_last(char * str)
 {
+    log_string("CommandExecutor.trim_last","String is",str);
     int index, lastIndex;
     lastIndex = strlen(str);
     index = lastIndex;
@@ -132,6 +134,7 @@ void trim_last(char * str)
     }
     if(index != lastIndex )
     {
+      log_message("CommandExecutor.trim_last","0 put back");
         str[index] = '\0'; // Make sure that string is NULL terminated
     }
 }
@@ -141,6 +144,7 @@ void trim_last(char * str)
  */
 void remove_space_at_beginning_and_end(char * string)
 {
+  log_message("CommandExecutor.remove_space_at_beginning_and_end","Remove spaces at begining and end");
   trim_leading(string);
   trim_last(string);
 }
@@ -192,17 +196,32 @@ Node* create_tree_from_command(char* command){
     index --;
     log_message("CommandExecutor.create_tree_from_command","Row ended");
   }
+  log_message("CommandExecutor.create_tree_from_command","While ended,  finishing the three..");
   
-  remove_space_at_beginning_and_end(command);
+
+
+ 
+
+   char *firstCommand = malloc(lastSeparatorPosition + 1);
+  
   if(root == NULL){
     log_message("CommandExecutor.create_tree_from_command","Root is null, only one command, creating..");
+    remove_space_at_beginning_and_end(command);
     root = create_root(command,NULL,NULL); 
   }else if(actualUsedNode->leftChild == NULL){
+    
+    log_message("CommandExecutor.create_tree_from_command","Creating last left child");
       log_value("CommandExecutor.create_tree_from_command","lastSeparatorPosition",lastSeparatorPosition);
-    actualUsedNode->leftChild = create_root(substr(command,0,lastSeparatorPosition),NULL,NULL);
+   
+    firstCommand[lastSeparatorPosition] = '\0';
+     firstCommand = substr(command,0,lastSeparatorPosition);
+    actualUsedNode->leftChild = create_root(firstCommand,NULL,NULL);
   }else if(actualUsedNode->rightChild == NULL){
+    log_message("CommandExecutor.create_tree_from_command","Creating last right child");
     log_value("CommandExecutor.create_tree_from_command","lastSeparatorPosition",lastSeparatorPosition);
-    actualUsedNode->rightChild = create_root(substr(command,0,lastSeparatorPosition),NULL,NULL);
+     firstCommand[lastSeparatorPosition] = '\0';
+     firstCommand = substr(command,0,lastSeparatorPosition);
+    actualUsedNode->rightChild = create_root(substr(firstCommand,0,lastSeparatorPosition),NULL,NULL);
   }
   
   log_string("CommandExecutor.create_tree_from_command","Root command",root->command);
@@ -385,8 +404,10 @@ int execute_command(Node* node)
   else 
   {
     log_string("CommandExecutor.executeCommand","Executing using the system fonction",node->command);
-printf("%s",node->command);
+    
+
 //system("ls");
+    
     system(node->command);
      /*int forkId = fork();
        if(forkId == 0)
