@@ -6,10 +6,12 @@
 #include "tree.h"
 #include "logger.h"
 #define LSH_RL_BUFSIZE 1024
+#define OUTPUT_FILEPATH "./tmpOutputFile"
+#define INPUT_FILEPATH "./tmpInputFile"
 
 char *substr(char *src,int pos,int len);
 
-int *find_index_off_first_occurence_in_string(char *src, char charToFind);
+int find_index_off_first_occurence_in_string(char *src, char charToFind);
 
 char *read_console_line(void);
 

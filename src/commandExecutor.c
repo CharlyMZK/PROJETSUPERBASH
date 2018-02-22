@@ -1,9 +1,11 @@
 #include "commandExecutor.h"
- #include <fcntl.h> // for open
- #include <unistd.h> // for close
- #include <stdlib.h>
+#include <fcntl.h> // for open
+#include <unistd.h> // for close
+#include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <sys/types.h>
+#include <sys/wait.h>
  
 /**
  * retourne un string à partir de la string src à la position pos pour une longueur len 
@@ -26,7 +28,7 @@ char *substr(char *src,int pos,int len) {
  * retourne l'index de la première occurence du caractère charToFind dans la string src
  * ou -1 si le charactère n'est pas présent
  */
-int *find_index_off_first_occurence_in_string(char *src, char charToFind)
+int find_index_off_first_occurence_in_string(char *src, char charToFind)
 {
   const char *ptr = strchr(src, charToFind);
   if(ptr) 
@@ -70,8 +72,7 @@ bool log_in_file(char * command, char * file)
     return false;
   }
   log_message("Superbash","Saving the command in the log file");
-  fprintf(pFile, command);
-  fprintf(pFile, "\n");
+  fprintf(pFile, "%s \n",command);
   fclose(pFile);
   return true;
 }
@@ -201,9 +202,6 @@ Node* create_tree_from_command(char* command){
   }
   log_message("CommandExecutor.create_tree_from_command","While ended,  finishing the three..");
   
-
-
- 
 
    char *firstCommand = malloc(lastSeparatorPosition + 1);
   
@@ -366,7 +364,7 @@ char** str_split(char* a_str, const char a_delim)
 /**
  * Créer un tableau d'arguments en séparant la chaine args pour chaque espace et en ajoutant la chaine path
  */
-char** split_and_add_path(char * args,char * path)
+char** str_split_and_add_path(char * args,char * path)
 {
   char a_delim = ' ';
   char** result    = 0;
@@ -432,97 +430,40 @@ int execute_command(Node* node)
 {
   char * commandCore;
   char * parameters;
-  //trim_leading(node->command);
+  char** splitedBySpacesCommand;
   int indexEndOffCommand = find_index_off_first_occurence_in_string(node->command,' ');
+  int standardInPutCopy = dup(1);
+  int fileDescriptorValue;
+  int forkId;
+  log_message("CommandExecutor.executeCommand","Execution started, checking is input file is empty..");
   
-  // -- DUP
- //Sauvegarde du file descripteur
- log_message("CommandExecutor.executeCommand","Sauvegarde du file descritor..");
- int copyFdPrint = dup(1);
- log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
- //Création d'un fichier et ouverture
- 
- char * outputFilePath = "./tmpOutputFile";
-  char * inputFilePath = "./tmpInputFile";
-  
- /*if(!is_file_empty(inputFilePath)){
-   log_message("CommandExecutor.executeCommand","Input file isnt empty.");
-   int filedes = open("./tmpOutputFile", O_RDWR | O_CREAT);
-   dup2(filedes,1);
-   //Ecriture dans la poubelle de grep
-   int forkId = fork();
-   if(forkId == 0){
-      execl("/bin/grep","grep","^root",inputFilePath,NULL);
-   }
- }else{
-     int filedes = open(outputFilePath, O_RDWR | O_CREAT);
-     log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
-     //Remplacement de la sortie standart par le descripteur de fichier
-     dup2(filedes, 1);
-     //Fork obligatoire car exec remplace la suite du processus
-     int forkId = fork();
-     if(forkId == 0)
-     {
-       execl("/bin/ps","ps","aux", NULL);
-       //system(node->command);
-     }
- }*/
-   
-  char** tokens;
-
-
-  if(!is_file_empty(inputFilePath)){
-    tokens = split_and_add_path(node->command,inputFilePath);
-    log_string("CommandExecutor.executeCommand","First token : ",tokens[0]);
-    log_message("CommandExecutor.executeCommand","Input file isnt empty.");
-    printf("%s %s %s\n",tokens[0],tokens[1],tokens[2]);
-    int filedes = open("./tmpOutputFile", O_RDWR | O_CREAT);
-    
-    //Ecriture dans outputfile
-    int forkId = fork();
-    if(forkId == 0){
-     log_string("CommandExecutor.executeCommand","Executing ",node->command);
-     log_string("CommandExecutor.executeCommand","with token ",tokens[0]);
-     dup2(filedes,1);
-     //execl("/bin/grep","grep","^root",inputFilePath,NULL);
-      execvp(tokens[0],tokens);
-        
-     }
+  if(!is_file_empty(INPUT_FILEPATH)){
+    log_message("CommandExecutor.executeCommand","Input file isnt empty. Spliting the args and adding input path to get last output...");
+    splitedBySpacesCommand = str_split_and_add_path(node->command,INPUT_FILEPATH);
   }else{
-    tokens = str_split(node->command, ' ');
-    log_string("CommandExecutor.executeCommand","First token : ",tokens[0]);
-    int filedes = open(outputFilePath, O_RDWR | O_CREAT);
-    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
-    //Remplacement de la sortie standart par le descripteur de fichier
-
-    //Fork obligatoire car exec remplace la suite du processus
-    int forkId = fork();
+    log_message("CommandExecutor.executeCommand","Input file is empty. Spliting args");
+   splitedBySpacesCommand = str_split(node->command, ' ');
+  }
+  
+   fileDescriptorValue = open(OUTPUT_FILEPATH, O_RDWR | O_CREAT);
+   forkId = fork();
     if(forkId == 0)
     {
      //execl("/bin/ps","ps","aux", NULL);
      log_string("CommandExecutor.executeCommand","Executing ",node->command);
-     log_string("CommandExecutor.executeCommand","with token ",tokens[0]);
-     dup2(filedes, 1);
-     execvp(tokens[0],tokens);
+     log_string("CommandExecutor.executeCommand","with token ",splitedBySpacesCommand[0]);
+     //Remplacement de la sortie standart par le descripteur de fichier
+     dup2(fileDescriptorValue, 1);
+     execvp(splitedBySpacesCommand[0],splitedBySpacesCommand);
      //system(node->command);
     }
-  }
-   
+    
   int status;
   wait(&status); 
    
    
-   //Ouverture de /dev/null
-   /*filedes = open("./tmpOutputFile", O_RDWR | O_CREAT);
-   dup2(filedes,1);
-   //Ecriture dans la poubelle de grep
-   forkId = fork();
-
-   if(forkId == 0){
-      execl("/bin/grep","grep","^root",path,NULL);
-   }*/
    // retour a la normale
-   dup2(copyFdPrint,1);
+   dup2(standardInPutCopy,1);
    log_message("CommandExecutor.executeCommand","Retour sur le thread normal.");
    empty_file("./tmpInputFile");
    // -- DUP END
@@ -576,7 +517,6 @@ void change_current_directory(char *path)
 }
 
 bool is_file_empty(char* path){
-  log_message("CommandExecutor.empty_file","Is this file empty ?");
   int size = 0;
   FILE *fptr = fopen(path, "a");
   if (NULL != fptr) {
@@ -584,11 +524,9 @@ bool is_file_empty(char* path){
     size = ftell(fptr);
 
     if (0 == size) {
-      log_message("CommandExecutor.empty_file","Yes");
         return true;
     }
   }
-  log_message("CommandExecutor.empty_file","No");
  return false;
 }
 
