@@ -29,9 +29,9 @@ Node* create_tree_from_command(char* command);
 
 bool read_and_exec_tree(Node* treeCommand);
 
-int handle_command(char* command);
+int create_and_execute_tree(char* command);
 
-int execute_command(Node* node);
+int handle_command(Node* node);
 
 void print_current_directory();
 

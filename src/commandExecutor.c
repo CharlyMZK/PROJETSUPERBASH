@@ -88,7 +88,7 @@ void bash_loop(void)
   do {
     printf("Prompt > ");
     command = read_console_line();
-    isRunning = handle_command(command);
+    isRunning = create_and_execute_tree(command);
     //isRunning = executeCommand(command);
   } while (isRunning);
   free(command);
@@ -283,7 +283,7 @@ bool read_and_exec_tree(Node* treeCommand){
       log_message("CommandExecutor.read_and_exec_tree","Leftchild is not null");  
       if(treeCommand->command != NULL){
         log_string("CommandExecutor.read_and_exec_tree","(Command not null ) Executing command",treeCommand->command);
-        execute_command(treeCommand);
+        handle_command(treeCommand);
         if(treeCommand->result != NULL && treeCommand->command != NULL){
           log_string("CommandExecutor.read_and_exec_tree","Command was",treeCommand->command);
           log_string("CommandExecutor.read_and_exec_tree","Result is ",treeCommand->result);
@@ -298,7 +298,7 @@ bool read_and_exec_tree(Node* treeCommand){
   }else if(treeCommand->leftChild == NULL && treeCommand->rightChild == NULL){
     log_string("CommandExecutor.read_and_exec_tree","(Both childs Null) Executing command",treeCommand->command);
     bool isExecuted = 0;
-    isExecuted = execute_command(treeCommand);
+    isExecuted = handle_command(treeCommand);
     log_message("CommandExecutor.read_and_exec_tree","This node is at the end of three, command executed.");
     if(treeCommand->result != NULL && treeCommand->command != NULL){
       log_string("CommandExecutor.read_and_exec_tree","Command was",treeCommand->command);
@@ -414,7 +414,7 @@ char** str_split_and_add_path(char * args,char * path)
 /**
  * Analyse la commande passé en paramètre et l'execute
  */
-int handle_command(char* command){
+int create_and_execute_tree(char* command){
   log_in_file(command,"./command.txt");
   log_message("CommandExecutor.handle_command","Handling command..");
   Node* treeCommand = create_tree_from_command(command);
@@ -427,7 +427,7 @@ int handle_command(char* command){
 /**
  * Execute une commande 
  */
-int execute_command(Node* node)
+int handle_command(Node* node)
 {
  //Sauvegarde du file descripteur
  log_message("CommandExecutor.executeCommand","Sauvegarde du file descritor..");
@@ -441,6 +441,7 @@ int execute_command(Node* node)
     splitedBySpacesCommand = str_split(node->command, ' ');
     log_string("CommandExecutor.executeCommand","First token : ",splitedBySpacesCommand[0]);
   }
+  
   //Ecriture dans outputfile
   log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
 
