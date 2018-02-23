@@ -1,9 +1,10 @@
+#include "commandExecutor.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
-#include "commandExecutor.h"
+#define LSH_RL_BUFSIZE 1024
 
 /**
  * Lis une ligne de la console et renvois la ligne lu

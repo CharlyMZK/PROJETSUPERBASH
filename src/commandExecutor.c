@@ -13,7 +13,7 @@
 #include <stdbool.h>
  #define OUTPUT_FILEPATH "./tmpOutputFile"
 #define INPUT_FILEPATH "./tmpInputFile"
-
+#define LSH_RL_BUFSIZE 1024
 
 
 /**
