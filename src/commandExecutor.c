@@ -67,7 +67,7 @@ int handle_command(Node* node)
   
   //Ecriture dans outputfile
   log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
-
+  empty_file(OUTPUT_FILEPATH);
   int fileDescriptorValue  = open(OUTPUT_FILEPATH, O_RDWR | O_CREAT);
     //Executing custom command
   if(!strcmp(splitedBySpacesCommand[0], "pwd"))
