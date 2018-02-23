@@ -1,10 +1,12 @@
-#include "treeUtils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include "treeUtils.h"
+#include "logUtils.h"
 
 bool is_separator(char instruction){
+	
  log_char_value("Superbash.is_separator","Is this a command ?",instruction); 
  if((instruction == pipe_separator) || (instruction == and_separator) || (instruction == higher_separator) || (instruction == lower_separator)){
    log_message("Superbash.is_separator","Separator found");

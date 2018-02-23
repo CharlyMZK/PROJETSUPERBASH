@@ -1,8 +1,3 @@
-#include "builtInCommandUtils.h"
-#include "commandExecutor.h"
-#include "logUtils.h"
-#include "stringUtils.h"
-#include "fileUtils.h"
 #include <fcntl.h> // for open
 #include <unistd.h> // for close
 #include <stdlib.h>
@@ -11,6 +6,11 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdbool.h>
+#include "builtInCommandUtils.h"
+#include "commandExecutor.h"
+#include "logUtils.h"
+#include "stringUtils.h"
+#include "fileUtils.h"
  #define OUTPUT_FILEPATH "./tmpOutputFile"
 #define INPUT_FILEPATH "./tmpInputFile"
 #define LSH_RL_BUFSIZE 1024

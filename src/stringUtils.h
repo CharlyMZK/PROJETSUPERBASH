@@ -1,16 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include <assert.h>
-
 char *substr(char *src,int pos,int len);
 
 int find_index_off_first_occurence_in_string(char *src, char charToFind);
 
 bool log_in_file(char * string, char * file);
-
+ 
 void trim_leading(char * str);
 
 void trim_last(char * str);

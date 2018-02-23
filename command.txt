@@ -29,3 +29,8 @@ ls | grep src
 ls 
 ls | grep src 
 ls > tetttt.txt 
+ls 
+ls | grep src 
+ls | grep src 
+ls 
+ls 

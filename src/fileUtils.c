@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include "stringUtils.h"
 
 /**
  * Vide le fichier path

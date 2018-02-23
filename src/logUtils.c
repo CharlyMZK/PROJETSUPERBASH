@@ -3,13 +3,14 @@
  * contient les fonctions relative à l'écriture de log
  */
 
-
-#include "logUtils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include "treeUtils.h"
+#include "logUtils.h"
 #define VERBOSE 1
+#define LOGGER_H
 
 /**
  * Affiche [tag]: message si le mode verbose est activé

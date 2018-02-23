@@ -1,12 +1,12 @@
-#include "builtInCommandUtils.h"
 #include <stdio.h>
 #include <unistd.h>
+#include "builtInCommandUtils.h"
 
 /**
  * Affiche le répertoire courant
  */
 void print_current_directory()
-{
+{ 
   char cwd[1024];
   if (getcwd(cwd, sizeof(cwd)) != NULL)
    fprintf(stdout, "Current working dir: %s\n", cwd);
