@@ -13,3 +13,8 @@ ls
 ls > yo.txt 
 ls 
 ls | grep src 
+ls 
+ls | grep src 
+test > txt.t 
+ls 
+ls | grep src 
