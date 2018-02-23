@@ -22,11 +22,13 @@
 char** build_command(Node * node)
 {
   char** splitedBySpacesCommand;
+  char * copyCommand = malloc(sizeof(char) * strlen(node->command));
+  strcpy(copyCommand,node->command);
   if(!is_file_empty(INPUT_FILEPATH)){
-    splitedBySpacesCommand = str_split_and_add_path(node->command,INPUT_FILEPATH);
+    splitedBySpacesCommand = str_split_and_add_path(copyCommand,INPUT_FILEPATH);
     log_message("CommandExecutor.executeCommand","Input file isnt empty.");
   }else{
-    splitedBySpacesCommand = str_split(node->command, ' ');
+    splitedBySpacesCommand = str_split(copyCommand, ' ');
     log_string("CommandExecutor.executeCommand","First token : ",splitedBySpacesCommand[0]);
   }
   return splitedBySpacesCommand;
@@ -87,7 +89,7 @@ int handle_command(Node* node)
     log_message("CommandExecutor.executeCommand","Execution du la commande built in echo");
     log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
     dup2(fileDescriptorValue ,1);
-    echo();
+    echo(node);
   }
   else if(!strcmp(splitedBySpacesCommand[0], "exit"))
   {

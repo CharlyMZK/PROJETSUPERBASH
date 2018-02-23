@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
+#include "treeUtils.h"
+#include "stringUtils.h"
 #include "builtInCommandUtils.h"
+
 
 /**
  * Affiche le répertoire courant
@@ -26,8 +30,12 @@ void change_current_directory(char *path)
  * Affiche ECHO
  * TODO passé des paramètres
  */
-void echo()
+void echo(Node * node)
 {
-  printf("echo\n");
+  int len = strlen(node->command);
+  char * copyCommand = malloc(sizeof(char) * len);
+  strcpy(copyCommand,node->command);
+  copyCommand = substr(copyCommand,4,len-3);
+  printf("%s\n",copyCommand);
 }
 
