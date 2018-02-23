@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include "treeUtils.h"
 #include "commandHandler.h"
 #include "fileUtils.h"
 #include "commandExecutor.h"
