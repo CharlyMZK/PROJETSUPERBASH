@@ -56233,3 +56233,68 @@ ls | grep root
 ls | grep root
 ls -l | grep 5
 ls -l | grep 5
+ls 
+ls 
+ls | grep src 
+ls 
+ls 
+ls 
+ls 
+ls 
+ls | grep src 
+ls | grep ^src 
+ls | grep ^src 
+ls | grep ^src 
+ls | grep ^root 
+ls | grep ^src 
+ls 
+ls | grep ^src 
+ls 
+ls | grep src 
+l 
+ls 
+ls 
+ls 
+ls | grep ^src 
+ls 
+ls 
+ls 
+ls 
+ls 
+ls 
+ls 
+ls 
+ls 
+ls 
+ls 
+ls 
+ls 
+ls | grep src 
+ls  
+ls 
+ls > test.txt 
+ls > test.txt 
+ls 
+ls 
+ls 
+ls 
+ls | grep src 
+ls > test.txt 
+ls > blob.txt 
+ls > l.txt 
+ls > t.txt 
+ls > t.txt 
+ls > t.txt 
+ls > t.txt 
+ls > t.txt 
+ls > t.txt 
+ls > t.txt 
+ls > t.txt 
+ls 
+ls > te.txt 
+ls > to.txt 
+ls > yes.txt 
+ls > tut.txt 
+ls | grep src 
+ls | grep src > tut.txt 
+ls | grep src > baptiste.txt 
