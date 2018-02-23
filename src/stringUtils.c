@@ -196,3 +196,15 @@ char** str_split_and_add_path(char * args,char * path)
 
   return result;
 }
+
+/**
+ * Renvois l'index du & si la string command en contiens un à la fin, sinon renvois -1 
+ */
+int string_contain_and_at_end(char * command)
+{
+  int index = find_index_off_first_occurence_in_string(command,'&');
+  int len = strlen(command);
+  if (index + 1 == len && len != 0)
+    return index;
+  return -1;
+}

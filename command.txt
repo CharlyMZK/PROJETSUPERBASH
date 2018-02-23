@@ -18,3 +18,14 @@ ls | grep src
 test > txt.t 
 ls 
 ls | grep src 
+ls 
+ls  
+ls 
+ls | grep src 
+aa && bb | c || dd 
+echo "hello" > test.txt && echo "test" || echo "blob" 
+ls 
+ls | grep src 
+ls 
+ls | grep src 
+ls > tetttt.txt 

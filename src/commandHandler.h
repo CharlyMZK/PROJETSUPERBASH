@@ -1,5 +1,6 @@
 #include "logUtils.h"
 #include "stringUtils.h"
+#include <stdbool.h>
 
 Node* create_tree_from_command(char* command);
 

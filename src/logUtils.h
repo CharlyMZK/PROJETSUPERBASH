@@ -1,5 +1,6 @@
 #ifndef LOGGER_H
 #define LOGGER_H
+#include <stdbool.h>
 #include "treeUtils.h"
 
 void log_message(const char* tag, const char* message);

@@ -10,10 +10,15 @@
 #include <assert.h>
 #include <sys/types.h>
 #include <sys/wait.h>
- 
+#include <stdbool.h>
+ #define OUTPUT_FILEPATH "./tmpOutputFile"
+#define INPUT_FILEPATH "./tmpInputFile"
 
 
 
+/**
+ * renvoie un tableau de string contenant la commande et ses paramètres 
+ */
 char** build_command(Node * node)
 {
   char** splitedBySpacesCommand;

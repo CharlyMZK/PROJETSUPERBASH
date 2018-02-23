@@ -20,3 +20,5 @@ void remove_space_at_beginning_and_end(char * string);
 char** str_split_and_add_path(char * args,char * path);
 
 char** str_split(char* a_str, const char a_delim);
+
+int string_contain_and_at_end(char * command);

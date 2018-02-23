@@ -3,10 +3,7 @@
  * contient les fonctions relative à l'utilisation de l'arbre
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
+
 #define MAX(X,Y) ((X)>(Y)?(X):(Y))
 #define pipe_separator '|'
 #define and_separator '&'
