@@ -7,10 +7,14 @@
 #include <sys/types.h>
 #include <sys/wait.h>
  
+// indique si les commandes doivent être executé en arrière plan
+bool background = false;
+
 /**
  * retourne un string à partir de la string src à la position pos pour une longueur len 
  */
-char *substr(char *src,int pos,int len) { 
+char *substr(char *src,int pos,int len) 
+{ 
   char *dest=NULL;          
   log_message("CommandExecutor.substr","Substr..");
   log_string("CommandExecutor.substr","String to sub : ",src);
@@ -158,7 +162,6 @@ void remove_space_at_beginning_and_end(char * string)
  * Créer un arbre à partir de la commande passé en paramètre
  */
 Node* create_tree_from_command(char* command){
-  
   int end = strlen(command) - 1; 
   int index = end;
   int lastSeparatorPosition = end+1;
@@ -412,11 +415,33 @@ char** str_split_and_add_path(char * args,char * path)
 }
 
 /**
+ * Renvois l'index du & si la string command en contiens un à la fin, sinon renvois -1 
+ */
+int string_contain_and_at_end(char * command)
+{
+  int index = find_index_off_first_occurence_in_string(command,'&');
+  int len = strlen(command);
+  if (index + 1 == len && len != 0)
+    return index;
+  return -1;
+}
+
+/**
  * Analyse la commande passé en paramètre et l'execute
  */
 int create_and_execute_tree(char* command){
   log_in_file(command,"./command.txt");
   log_message("CommandExecutor.handle_command","Handling command..");
+  remove_space_at_beginning_and_end(command);
+  //Vérifie si la commande dois être executer en arrière plan
+  int indexAnd = string_contain_and_at_end(command);
+  if(indexAnd != -1)
+  {
+    command = substr(command,0,indexAnd);
+    remove_space_at_beginning_and_end(command);
+    log_string("CommandExecutor.create_and_execute_tree","executing in background command :",command);
+    background = true;
+  }
   Node* treeCommand = create_tree_from_command(command);
   log_message("CommandExecutor.handle_command","Reading and executing tree..");
   read_and_exec_tree(treeCommand);
@@ -424,6 +449,9 @@ int create_and_execute_tree(char* command){
   return true;
 }
 
+/**
+ * renvoie un tableau de string contenant la commande et ses paramètres 
+ */
 char** build_command(Node * node)
 {
   char** splitedBySpacesCommand;
