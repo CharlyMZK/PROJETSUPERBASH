@@ -4,7 +4,7 @@
 
 bool is_separator(char instruction){
  log_char_value("Superbash.is_separator","Is this a command ?",instruction); 
- if((instruction == pipe_separator) || (instruction == and_separator)){
+ if((instruction == pipe_separator) || (instruction == and_separator) || (instruction == higher_separator) || (instruction == lower_separator)){
    log_message("Superbash.is_separator","Separator found");
    return true;
  }

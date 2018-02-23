@@ -4,6 +4,7 @@
  */
 
 #include "logger.h"
+#include "tree.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -42,5 +43,11 @@ void log_string(const char* tag, const char* message,const char* parameter) {
 void log_char_value(const char* tag, const char* message, char parameter) {
    if(VERBOSE == 1){
       printf("[%s]: %s ( %c ) \n", tag, message,parameter);
+   }
+}
+
+void log_tree(Node * node){
+   if(VERBOSE == 1){
+      print_prefix(0,node);
    }
 }

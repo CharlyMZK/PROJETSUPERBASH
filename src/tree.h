@@ -11,6 +11,8 @@
 #define MAX(X,Y) ((X)>(Y)?(X):(Y))
 #define pipe_separator '|'
 #define and_separator '&'
+#define higher_separator '>'
+#define lower_separator '<'
 
 /**
  * @brief noeud de l'arbre

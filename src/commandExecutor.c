@@ -225,7 +225,7 @@ Node* create_tree_from_command(char* command){
   log_string("CommandExecutor.create_tree_from_command","Root command",root->command);
   log_message("CommandExecutor.create_tree_from_command","Tree created.");
   log_message("CommandExecutor.create_tree_from_command","Printing prefix..");
-  print_prefix(0,root);
+  log_tree(root);
   printf("\n");
   
   return root;
@@ -234,12 +234,12 @@ Node* create_tree_from_command(char* command){
 /**
  * Copie le contenu de OUTPUT_FILEPATH dans INPUT_FILEPATH
  */
-bool switch_output_file_content_to_input_file(){
+bool switch_from_file_content_to_file(char* fromFile, char* toFile){
   log_message("CommandExecutor.switchOutputFileContentToInputFile","Preparing input file ..");
    FILE *fptr1, *fptr2;
     char filename[100], c;
     // Open one file for reading
-    fptr1 = fopen(OUTPUT_FILEPATH, "r");
+    fptr1 = fopen(fromFile, "r");
     if (fptr1 == NULL)
     {
         printf("Cannot open file %s \n", filename);
@@ -247,7 +247,7 @@ bool switch_output_file_content_to_input_file(){
     }
  
     // Open another file for writing
-    fptr2 = fopen(INPUT_FILEPATH, "w");
+    fptr2 = fopen(toFile, "w");
     if (fptr2 == NULL)
     {
         printf("Cannot open file %s \n", filename);
@@ -267,7 +267,7 @@ bool switch_output_file_content_to_input_file(){
  
     fclose(fptr1);
     fclose(fptr2);
-    delete_file(OUTPUT_FILEPATH);
+    delete_file(fromFile);
     //fclose(fopen(OUTPUT_FILEPATH, "w"));
     return 1;
 }
@@ -290,8 +290,10 @@ bool read_and_exec_tree(Node* treeCommand){
         }
       }else{
         log_message("CommandExecutor.read_and_exec_tree","Command is null, its a separator");
-        treeCommand->rightChild->inputValue = treeCommand->leftChild->result;
-        switch_output_file_content_to_input_file();
+        remove_space_at_beginning_and_end(treeCommand->separator);
+        treeCommand->rightChild->inputValue = treeCommand->separator;
+
+        switch_from_file_content_to_file(OUTPUT_FILEPATH,INPUT_FILEPATH);
         return read_and_exec_tree(treeCommand->rightChild);
       }
     }
@@ -437,12 +439,34 @@ char** build_command(Node * node)
   return splitedBySpacesCommand;
 }
 
+bool write_node_in_file(Node* node){
+  log_message("CommandExecutor.executeCommand","Ecriture dans un nouveau fichier..");
+     FILE *fptr1;
+    char filename[100], c;
+    // Open one file for reading
+    fptr1 = fopen(node->command, "a");
+    if (fptr1 == NULL)
+    {
+        printf("Cannot open file %s \n", node->command);
+        return 0;
+    }
+    return switch_from_file_content_to_file(INPUT_FILEPATH,node->command);
+}
+
+bool is_separator_redirecting_ouput(Node* node){
+  return node->inputValue != NULL && (node->inputValue[0] == higher_separator); 
+}
+
 /**
  * Execute une commande 
  */
 int handle_command(Node* node)
 {
-  char** splitedBySpacesCommand = build_command(node);
+  if(is_separator_redirecting_ouput(node)){
+     write_node_in_file(node);
+  }
+  
+ char** splitedBySpacesCommand = build_command(node);
  //Sauvegarde du file descripteur
  log_message("CommandExecutor.executeCommand","Sauvegarde du file descritor..");
  int standardInPutCopy  = dup(1);
@@ -496,10 +520,13 @@ int handle_command(Node* node)
   }
 
    
-   // retour a la normale
-   dup2(standardInPutCopy ,1);
-   log_message("CommandExecutor.executeCommand","Retour sur le thread normal.");
-   empty_file(INPUT_FILEPATH);
+  // retour a la normale
+  dup2(standardInPutCopy ,1);
+  log_message("CommandExecutor.executeCommand","Retour sur le thread normal.");
+  empty_file(INPUT_FILEPATH);
+  
+ 
+  display_file_content(OUTPUT_FILEPATH);
   return true;
 }
 
@@ -566,3 +593,25 @@ void empty_file(char* path){
   fclose(fopen(path, "w"));
 }
 
+void display_file_content(char* path){
+    FILE *fptr;
+    char  c;
+  log_message("CommandExecutor.display_file_content","Displaying file content..");
+    // Open file
+    fptr = fopen(path, "r");
+    if (fptr == NULL)
+    {
+        printf("Cannot open file \n");
+        exit(0);
+    }
+ 
+    // Read contents from file
+    c = fgetc(fptr);
+    while (c != EOF)
+    {
+        printf ("%c", c);
+        c = fgetc(fptr);
+    }
+ 
+    fclose(fptr);
+}
