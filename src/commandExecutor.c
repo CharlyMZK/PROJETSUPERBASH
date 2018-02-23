@@ -424,15 +424,8 @@ int create_and_execute_tree(char* command){
   return true;
 }
 
-/**
- * Execute une commande 
- */
-int handle_command(Node* node)
+char** build_command(Node * node)
 {
- //Sauvegarde du file descripteur
- log_message("CommandExecutor.executeCommand","Sauvegarde du file descritor..");
- int standardInPutCopy  = dup(1);
-
   char** splitedBySpacesCommand;
   if(!is_file_empty(INPUT_FILEPATH)){
     splitedBySpacesCommand = str_split_and_add_path(node->command,INPUT_FILEPATH);
@@ -441,6 +434,18 @@ int handle_command(Node* node)
     splitedBySpacesCommand = str_split(node->command, ' ');
     log_string("CommandExecutor.executeCommand","First token : ",splitedBySpacesCommand[0]);
   }
+  return splitedBySpacesCommand;
+}
+
+/**
+ * Execute une commande 
+ */
+int handle_command(Node* node)
+{
+  char** splitedBySpacesCommand = build_command(node);
+ //Sauvegarde du file descripteur
+ log_message("CommandExecutor.executeCommand","Sauvegarde du file descritor..");
+ int standardInPutCopy  = dup(1);
   
   //Ecriture dans outputfile
   log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
@@ -528,7 +533,7 @@ void echo()
 }
 
 /**
- * 
+ * renvoie true si le fichier path est vide
  */
 bool is_file_empty(char* path){
   log_message("CommandExecutor.empty_file","Is this file empty ?");
@@ -547,10 +552,16 @@ bool is_file_empty(char* path){
  return false;
 }
 
+/**
+ * supprime le fichier path
+ */
 void delete_file(char* path){
   remove(path);
 }
 
+/**
+ * Vide le fichier path
+ */
 void empty_file(char* path){
   fclose(fopen(path, "w"));
 }

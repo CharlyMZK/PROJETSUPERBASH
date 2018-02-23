@@ -31,6 +31,8 @@ bool read_and_exec_tree(Node* treeCommand);
 
 int create_and_execute_tree(char* command);
 
+char** build_command(Node * node);
+
 int handle_command(Node* node);
 
 void print_current_directory();
