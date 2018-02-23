@@ -7,9 +7,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
  
-// indique si les commandes doivent être executé en arrière plan
-bool background = false;
-
 /**
  * retourne un string à partir de la string src à la position pos pour une longueur len 
  */
@@ -156,7 +153,6 @@ void remove_space_at_beginning_and_end(char * string)
   trim_leading(string);
   trim_last(string);
 }
-
 
 /**
  * Créer un arbre à partir de la commande passé en paramètre
@@ -434,17 +430,35 @@ int create_and_execute_tree(char* command){
   log_message("CommandExecutor.handle_command","Handling command..");
   remove_space_at_beginning_and_end(command);
   //Vérifie si la commande dois être executer en arrière plan
+  bool background = false;
   int indexAnd = string_contain_and_at_end(command);
   if(indexAnd != -1)
   {
-    command = substr(command,0,indexAnd);
+    //char * commandWithoutAnd = malloc(sizeof(char) * (indexAnd + 1));
+    //commandWithoutAnd[indexAnd] = '\0';
+    //commandWithoutAnd = substr(command,0,indexAnd - 1);
+    //command = commandWithoutAnd;
+    command[indexAnd] = '\0';
     remove_space_at_beginning_and_end(command);
     log_string("CommandExecutor.create_and_execute_tree","executing in background command :",command);
     background = true;
   }
   Node* treeCommand = create_tree_from_command(command);
   log_message("CommandExecutor.handle_command","Reading and executing tree..");
+  
+  int forkId = -1;
+  if(background)
+  {
+    log_string("CommandExecutor.create_and_execute_tree","lancement de la commande en arrière plan :",command);
+    forkId = fork();
+    if(forkId)
+      return true;
+  }
   read_and_exec_tree(treeCommand);
+  if(background && forkId == 0)
+  {
+    exit(EXIT_SUCCESS);
+  }
   log_message("CommandExecutor.handle_command","Cleaning files..");
   return true;
 }
