@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include "logger.h"
 #define MAX(X,Y) ((X)>(Y)?(X):(Y))
 #define pipe_separator '|'
 #define and_separator '&'

@@ -3,8 +3,8 @@
  * contient les fonctions relative à l'écriture de log
  */
 
-#include "logger.h"
-#include "tree.h"
+
+#include "logUtils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -50,4 +50,21 @@ void log_tree(Node * node){
    if(VERBOSE == 1){
       print_prefix(0,node);
    }
+}
+
+/**
+ * Log la commande command à la fin du fichier file
+ */
+bool log_in_file(char * string, char * file)
+{
+  FILE * pFile = fopen(file, "a");
+  if(pFile == NULL)
+  {
+    printf("Error opening file, impossible to log string \n");
+    return false;
+  }
+  log_message("Superbash","Saving the string in the log file");
+  fprintf(pFile, "%s \n",string);
+  fclose(pFile);
+  return true;
 }

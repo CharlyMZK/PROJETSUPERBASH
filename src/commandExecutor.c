@@ -1,4 +1,8 @@
+#include "builtInCommandUtils.h"
 #include "commandExecutor.h"
+#include "logUtils.h"
+#include "stringUtils.h"
+#include "fileUtils.h"
 #include <fcntl.h> // for open
 #include <unistd.h> // for close
 #include <stdlib.h>
@@ -7,153 +11,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
  
-/**
- * retourne un string à partir de la string src à la position pos pour une longueur len 
- */
-char *substr(char *src,int pos,int len) { 
-  char *dest=NULL;          
-  log_message("CommandExecutor.substr","Substr..");
-  log_string("CommandExecutor.substr","String to sub : ",src);
-  log_value("CommandExecutor.substr","Pos",pos);
-  log_value("CommandExecutor.substr","Length",len);
-  if (len>0) {                            
-    dest = (char *) malloc(len+1);        
-    strncpy(dest,src+pos,len);            
-  }                                       
-  log_string("CommandExecutor.substr","String cut",dest);
-  return dest;                            
-}
-
-/**
- * retourne l'index de la première occurence du caractère charToFind dans la string src
- * ou -1 si le charactère n'est pas présent
- */
-int find_index_off_first_occurence_in_string(char *src, char charToFind)
-{
-  const char *ptr = strchr(src, charToFind);
-  if(ptr) 
-   return ptr - src;
-  else
-    return -1;
-}
-
-/**
- * Lis une ligne de la console et renvois la ligne lu
- */
-char *read_console_line(void)
-{
-  int bufsize = LSH_RL_BUFSIZE;
-  int position = 0;
-  char *buffer = malloc(sizeof(char) * bufsize);
-  int c;
-  while (1) {
-    // Read a character
-    c = getchar();
-    // If we hit EOF, replace it with a null character and return.
-    if (c == EOF || c == '\n') {
-      buffer[position] = '\0';
-      return buffer;
-    } else {
-      buffer[position] = c;
-    }
-    position++;
-  }
-}
-
-/**
- * Log la commande command à la fin du fichier file
- */
-bool log_in_file(char * command, char * file)
-{
-  FILE * pFile = fopen(file, "a");
-  if(pFile == NULL)
-  {
-    printf("Error opening file, impossible to log command \n");
-    return false;
-  }
-  log_message("Superbash","Saving the command in the log file");
-  fprintf(pFile, "%s \n",command);
-  fclose(pFile);
-  return true;
-}
-
-/**
- * Execute les commandes passé par ligne de commande
- */
-void bash_loop(void)
-{
-  char *command;
-  bool isRunning = true;
-  printf("- Prompt launched, Saltscript only please. -\n");
-  do {
-    printf("Prompt > ");
-    command = read_console_line();
-    isRunning = create_and_execute_tree(command);
-    //isRunning = executeCommand(command);
-  } while (isRunning);
-  free(command);
-}
-
-/**
- * Enlève les espaces en début de chaine
- */
-void trim_leading(char * str)
-{
-    int index, i;
-    index = 0;
-    log_string("CommandExecutor.trim_leading","String is",str);
-    /* Trouve le dernier index des premiers espaces */
-    while(str[index] == ' ' || str[index] == '\t' || str[index] == '\n')
-    {
-        index++;
-    }
-    if(index != 0)
-    {
-        /* shift le tableau sur la gauche */
-        i = 0;
-        while(str[i + index] != '\0')
-        {
-            str[i] = str[i + index];
-            i++;
-        }
-        log_message("CommandExecutor.trim_leading","0 put back");
-        str[i] = '\0'; //Ferme la string
-    }
-}
-
-/**
- * Enlève les espaces en fin de chaine
- * 
- */
-void trim_last(char * str)
-{
-    log_string("CommandExecutor.trim_last","String is",str);
-    int index, lastIndex;
-    lastIndex = strlen(str);
-    index = lastIndex;
-    /* Trouve le premier index des derniers espaces */
-    while(str[index] == ' ' || str[index] == '\t' || str[index] == '\n')
-    {
-        index--;
-    }
-    if(index != lastIndex )
-    {
-      log_message("CommandExecutor.trim_last","0 put back");
-        str[index] = '\0'; // Make sure that string is NULL terminated
-    }
-}
-
-/**
- * Enlève les espaces en début et en fin de chaine
- */
-void remove_space_at_beginning_and_end(char * string)
-{
-  log_message("CommandExecutor.remove_space_at_beginning_and_end","Remove spaces at begining and end");
-  trim_leading(string);
-  trim_last(string);
-}
-
-
 /**
  * Créer un arbre à partir de la commande passé en paramètre
  */
@@ -231,46 +88,7 @@ Node* create_tree_from_command(char* command){
   return root;
 }
 
-/**
- * Copie le contenu de OUTPUT_FILEPATH dans INPUT_FILEPATH
- */
-bool switch_from_file_content_to_file(char* fromFile, char* toFile){
-  log_message("CommandExecutor.switchOutputFileContentToInputFile","Preparing input file ..");
-   FILE *fptr1, *fptr2;
-    char filename[100], c;
-    // Open one file for reading
-    fptr1 = fopen(fromFile, "r");
-    if (fptr1 == NULL)
-    {
-        printf("Cannot open file %s \n", filename);
-        return 0;
-    }
- 
-    // Open another file for writing
-    fptr2 = fopen(toFile, "w");
-    if (fptr2 == NULL)
-    {
-        printf("Cannot open file %s \n", filename);
-        return 0;
-    }
- 
-    // Read contents from file
-    c = fgetc(fptr1);
-    while (c != EOF)
-    {
-        fputc(c, fptr2);
-        c = fgetc(fptr1);
-    }
-    
-    log_message("CommandExecutor.switchOutputFileContentToInputFile","Content copied from output to input ..");
- 
- 
-    fclose(fptr1);
-    fclose(fptr2);
-    delete_file(fromFile);
-    //fclose(fopen(OUTPUT_FILEPATH, "w"));
-    return 1;
-}
+
 
 /**
  * Lis un arbre et execute les commandes 
@@ -312,108 +130,6 @@ bool read_and_exec_tree(Node* treeCommand){
 }
 
 /**
- * Split la chaine a_str avec le délimiteur a_delim
- */
-char** str_split(char* a_str, const char a_delim)
-{
-    char** result    = 0;
-    size_t count     = 0;
-    char* tmp        = a_str;
-    char* last_comma = 0;
-    char delim[2];
-    delim[0] = a_delim;
-    delim[1] = 0;
-
-    /* Count how many elements will be extracted. */
-    while (*tmp)
-    {
-        if (a_delim == *tmp)
-        {
-            count++;
-            last_comma = tmp;
-        }
-        tmp++;
-    }
-
-    /* Add space for trailing token. */
-    count += last_comma < (a_str + strlen(a_str) - 1);
-
-    /* Add space for terminating null string so caller
-       knows where the list of returned strings ends. */
-    count++;
-
-    result = malloc(sizeof(char*) * count);
-
-    if (result)
-    {
-        size_t idx  = 0;
-        char* token = strtok(a_str, delim);
-
-        while (token)
-        {
-            assert(idx < count);
-            *(result + idx++) = strdup(token);
-            token = strtok(0, delim);
-        }
-        assert(idx == count - 1);
-        *(result + idx) = 0;
-    }
-
-    return result;
-}
-
-
-/**
- * Créer un tableau d'arguments en séparant la chaine args pour chaque espace et en ajoutant la chaine path
- */
-char** str_split_and_add_path(char * args,char * path)
-{
-  char a_delim = ' ';
-  char** result    = 0;
-  size_t count     = 0;
-  char* tmp        = args;
-  char* last_comma = 0;
-  char delim[2];
-  delim[0] = a_delim;
-  delim[1] = 0;
-  /* Count how many elements will be extracted. */
-  while (*tmp)
-  {
-      if (a_delim == *tmp)
-      {
-          count++;
-          last_comma = tmp;
-      }
-      tmp++;
-  }
-  /* Add space for trailing token. */
-  count += last_comma < (args + strlen(args) - 1);
-
-  /* Add space for terminating null string so caller
-     knows where the list of returned strings ends. */
-  count++;
-
-  result = malloc(sizeof(char*) * count+1);
-  if (result)
-  {
-      size_t idx  = 0;
-      char* token = strtok(args, delim);
-
-      while (token)
-      {
-          assert(idx < count);
-          *(result + idx++) = strdup(token);
-          token = strtok(0, delim);
-      }
-      assert(idx == count - 1);
-      *(result + idx) = 0;
-      result[idx] = path;
-  }
-
-  return result;
-}
-
-/**
  * Analyse la commande passé en paramètre et l'execute
  */
 int create_and_execute_tree(char* command){
@@ -442,7 +158,6 @@ char** build_command(Node * node)
 bool write_node_in_file(Node* node){
   log_message("CommandExecutor.executeCommand","Ecriture dans un nouveau fichier..");
      FILE *fptr1;
-    char filename[100], c;
     // Open one file for reading
     fptr1 = fopen(node->command, "a");
     if (fptr1 == NULL)
@@ -530,88 +245,5 @@ int handle_command(Node* node)
   return true;
 }
 
-/**
- * Affiche le répertoire courant
- */
-void print_current_directory()
-{
-  char cwd[1024];
-  if (getcwd(cwd, sizeof(cwd)) != NULL)
-   fprintf(stdout, "Current working dir: %s\n", cwd);
-}
 
-/**
- * Change le répertoire courant
- */
-void change_current_directory(char *path)
-{
-  printf("changing current directory to %s \n",path);
-  chdir(path);
-  print_current_directory();
-}
 
-/**
- * Affiche ECHO
- * TODO passé des paramètres
- */
-void echo()
-{
-  printf("echo\n");
-}
-
-/**
- * renvoie true si le fichier path est vide
- */
-bool is_file_empty(char* path){
-  log_message("CommandExecutor.empty_file","Is this file empty ?");
-  int size = 0;
-  FILE *fptr = fopen(path, "a");
-  if (NULL != fptr) {
-    fseek (fptr, 0, SEEK_END);
-    size = ftell(fptr);
-
-    if (0 == size) {
-      log_message("CommandExecutor.empty_file","Yes");
-        return true;
-    }
-  }
-  log_message("CommandExecutor.empty_file","No");
- return false;
-}
-
-/**
- * supprime le fichier path
- */
-void delete_file(char* path){
-  remove(path);
-}
-
-/**
- * Vide le fichier path
- */
-void empty_file(char* path){
-  fclose(fopen(path, "w"));
-}
-
-void display_file_content(char* path){
-    FILE *fptr;
-    char  c;
-  log_message("CommandExecutor.display_file_content","Displaying file content..");
-    // Open file
-    fptr = fopen(path, "r");
-    if (fptr == NULL)
-    {
-        printf("Cannot open file \n");
-        exit(0);
-    }
- 
-    // Read contents from file
-    c = fgetc(fptr);
-    while (c != EOF)
-    {
-        printf ("%c", c);
-        c = fgetc(fptr);
-    }
- 
-    fclose(fptr);
-}

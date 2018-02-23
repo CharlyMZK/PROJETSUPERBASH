@@ -1,5 +1,5 @@
 
-#include "tree.h"
+#include "treeUtils.h"
 
 
 bool is_separator(char instruction){
