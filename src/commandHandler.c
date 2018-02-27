@@ -8,12 +8,12 @@
 #include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
-#include "treeUtils.h"
-#include "commandHandler.h"
-#include "fileUtils.h"
-#include "commandExecutor.h"
-#include "logUtils.h"
-#include "stringUtils.h"
+#include "../include/treeUtils.h"
+#include "../include/commandHandler.h"
+#include "../include/fileUtils.h"
+#include "../include/commandExecutor.h"
+#include "../include/logUtils.h"
+#include "../include/stringUtils.h"
 #define LSH_RL_BUFSIZE 1024
 #define OUTPUT_FILEPATH "./tmpOutputFile"
 #define INPUT_FILEPATH "./tmpInputFile"

@@ -8,9 +8,9 @@
 #include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
-#include "treeUtils.h"
-#include "logUtils.h"
-#include "stringUtils.h"
+#include "../include/treeUtils.h"
+#include "../include/logUtils.h"
+#include "../include/stringUtils.h"
 
 /**
  * Vide le fichier path

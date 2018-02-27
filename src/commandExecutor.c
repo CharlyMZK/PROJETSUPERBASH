@@ -11,12 +11,12 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdbool.h>
-#include "treeUtils.h"
-#include "builtInCommandUtils.h"
-#include "commandExecutor.h"
-#include "logUtils.h"
-#include "stringUtils.h"
-#include "fileUtils.h"
+#include "../include/treeUtils.h"
+#include "../include/builtInCommandUtils.h"
+#include "../include/commandExecutor.h"
+#include "../include/logUtils.h"
+#include "../include/stringUtils.h"
+#include "../include/fileUtils.h"
 #define LSH_RL_BUFSIZE 1024
 #define OUTPUT_FILEPATH "./tmpOutputFile"
 #define INPUT_FILEPATH "./tmpInputFile"

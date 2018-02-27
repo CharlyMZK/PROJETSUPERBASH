@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
-#include "treeUtils.h"
-#include "logUtils.h"
+#include "../include/treeUtils.h"
+#include "../include/logUtils.h"
 
 /**
  * Return true si le charactère est une séparateur

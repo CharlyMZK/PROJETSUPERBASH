@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
-#include "treeUtils.h"
-#include "logUtils.h"
+#include "../include/treeUtils.h"
+#include "../include/logUtils.h"
 #define VERBOSE 1
 #define LOGGER_H
 

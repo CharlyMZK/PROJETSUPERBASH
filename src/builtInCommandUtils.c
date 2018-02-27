@@ -8,7 +8,7 @@
 #include <string.h>
 #include "treeUtils.h"
 #include "stringUtils.h"
-#include "builtInCommandUtils.h"
+#include "../include/builtInCommandUtils.h"
 
 
 /**

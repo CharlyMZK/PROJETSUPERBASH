@@ -3,8 +3,8 @@
  * contient le main et les fonctions de lecture de ligne passé par l'utilisateur
  */
  
-#include "treeUtils.h"
-#include "commandHandler.h"
+#include "../include/treeUtils.h"
+#include "../include/commandHandler.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

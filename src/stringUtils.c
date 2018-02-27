@@ -8,9 +8,9 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <assert.h>
-#include "treeUtils.h"
-#include "logUtils.h"
-#include "stringUtils.h"
+#include "../include/treeUtils.h"
+#include "../include/logUtils.h"
+#include "../include/stringUtils.h"
 
 /**
  * retourne un string à partir de la string src à la position pos pour une longueur len 
