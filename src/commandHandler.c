@@ -95,6 +95,12 @@ Node* create_tree_from_command(char* command){
  */
 bool read_and_exec_tree(Node* treeCommand){
   log_message("CommandExecutor.read_and_exec_tree","Reading and executing command");
+  if(treeCommand->separator != NULL && (treeCommand->separator[1] == lower_separator)){
+    log_message("CommandExecutor.read_and_exec_tree","< found, copying his file into input");
+    log_string("CommandExecutor.read_and_exec_tree","His separator",treeCommand->rightChild->command);
+    switch_from_file_content_to_file(treeCommand->rightChild->command,INPUT_FILEPATH);
+  }
+  
   if(treeCommand->leftChild != NULL){
     
     if(read_and_exec_tree(treeCommand->leftChild)){
@@ -112,6 +118,11 @@ bool read_and_exec_tree(Node* treeCommand){
         treeCommand->rightChild->inputValue = treeCommand->separator;
 
         switch_from_file_content_to_file(OUTPUT_FILEPATH,INPUT_FILEPATH);
+        
+         if(treeCommand->separator != NULL && (treeCommand->separator == lower_separator)){
+           log_message("CommandExecutor.read_and_exec_tree","Rightchild command is a file, he's not executed.");
+           return true;
+         }
         return read_and_exec_tree(treeCommand->rightChild);
       }
     }

@@ -46,6 +46,8 @@ bool is_file_empty(char* path){
  */
 bool switch_from_file_content_to_file(char* fromFile, char* toFile){
   log_message("CommandExecutor.switchOutputFileContentToInputFile","Preparing input file ..");
+  log_string("CommandExecutor.executeCommand","Copying from ",fromFile);
+  log_string("CommandExecutor.executeCommand","to ",toFile);
    FILE *fptr1, *fptr2;
     char filename[100], c;
     // Open one file for reading
@@ -77,7 +79,7 @@ bool switch_from_file_content_to_file(char* fromFile, char* toFile){
  
     fclose(fptr1);
     fclose(fptr2);
-    delete_file(fromFile);
+    //delete_file(fromFile);
     //fclose(fopen(OUTPUT_FILEPATH, "w"));
     return 1;
 }
