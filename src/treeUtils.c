@@ -1,3 +1,8 @@
+/**
+ * @file
+ * contient les fonctions de l'arbre
+ */
+ 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -5,6 +10,9 @@
 #include "treeUtils.h"
 #include "logUtils.h"
 
+/**
+ * Return true si le charactère est une séparateur
+ */
 bool is_separator(char instruction){
 	
  log_char_value("Superbash.is_separator","Is this a command ?",instruction); 
@@ -226,6 +234,9 @@ void rec_save_dot(Node* a, FILE* f)
 
 }
 
+/**
+ * Sauvegarde le noeud dans le fichier .dot
+ */
 void save_dot(Node* a, char* nom)
 {
 	// buffer pour chaine de car

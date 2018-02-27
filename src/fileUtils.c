@@ -1,3 +1,8 @@
+/**
+ * @file
+ * contient les fonctions relative à l'écriture et la lecture de fichiers
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -82,7 +87,9 @@ bool switch_from_file_content_to_file(char* fromFile, char* toFile){
     return 1;
 }
 
-
+/**
+ * Affiche le contenu du fichier path
+ */
 void display_file_content(char* path){
     FILE *fptr;
     char  c;

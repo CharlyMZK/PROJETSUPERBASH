@@ -1,3 +1,8 @@
+/**
+ * @file
+ * contient les fonctions relative à l'écriture de log
+ */
+
 #include <fcntl.h> // for open
 #include <unistd.h> // for close
 #include <stdlib.h>
@@ -34,6 +39,9 @@ char** build_command(Node * node)
   return splitedBySpacesCommand;
 }
 
+/**
+ * Copie dans input_filepath le fichier passé dans la commande
+ */
 bool write_node_in_file(Node* node){
   log_message("CommandExecutor.executeCommand","Ecriture dans un nouveau fichier..");
      FILE *fptr1;
@@ -47,6 +55,9 @@ bool write_node_in_file(Node* node){
     return switch_from_file_content_to_file(INPUT_FILEPATH,node->command);
 }
 
+/**
+ * Return true si le séparateur est >
+ */
 bool is_separator_redirecting_ouput(Node* node){
   return node->inputValue != NULL && (node->inputValue[0] == higher_separator); 
 }

@@ -1,3 +1,8 @@
+/**
+ * @file
+ * contient les fonctions permettant de créer et de lire l'arbre
+ */
+ 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

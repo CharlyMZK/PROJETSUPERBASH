@@ -1,4 +1,7 @@
-
+/**
+ * @file
+ * contient les fonctions relative à l'utilisation des chaines de caractères
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
