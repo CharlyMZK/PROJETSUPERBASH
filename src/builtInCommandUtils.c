@@ -1,9 +1,14 @@
+/**
+ * @file
+ * contient les fonctions relative aux commande built in
+ */
+
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
 #include "treeUtils.h"
 #include "stringUtils.h"
-#include "builtInCommandUtils.h"
+#include "../include/builtInCommandUtils.h"
 
 
 /**
@@ -27,8 +32,7 @@ void change_current_directory(char *path)
 }
 
 /**
- * Affiche ECHO
- * TODO passé des paramètres
+ * Affiche ce qui se situe après echo dans node->command
  */
 void echo(Node * node)
 {
