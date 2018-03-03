@@ -101,9 +101,47 @@ Node* create_tree_from_command(char* command){
 bool read_and_exec_tree(Node* treeCommand){
   log_message("CommandExecutor.read_and_exec_tree","Reading and executing command");
   if(treeCommand->separator != NULL && (treeCommand->separator[1] == lower_separator)){
-    log_message("CommandExecutor.read_and_exec_tree","< found, copying his file into input");
-    log_string("CommandExecutor.read_and_exec_tree","His separator",treeCommand->rightChild->command);
-    switch_from_file_content_to_file(treeCommand->rightChild->command,INPUT_FILEPATH);
+    if(treeCommand->separator[0] == lower_separator){
+     FILE *out = fopen(INPUT_FILEPATH, "a+");  
+      log_message("CommandExecutor.read_and_exec_tree","Its a <<");  
+      char enteredString[255]= "12";
+      //char *enteredString = malloc(255 * sizeof(enteredString));
+     // while(strcmp(enteredString,treeCommand->rightChild->command) != 0){
+        log_value("q","a",strcmp(enteredString,treeCommand->rightChild->command));
+        log_string("Hey","hey",treeCommand->rightChild->command);
+        printf("Entrez une chaine:\n");
+        
+          char *command;
+         bool isRunning = true;
+  printf("- Prompt launched, Saltscript only please. -\n");
+  do {
+    printf("ajoute ta valeur > ");
+    command = read_console_line();
+     if(strcmp(command,treeCommand->rightChild->command) == 0){
+       printf("- EGALITE. -\n");
+      isRunning = false;
+    }else{
+    printf("\n%s\n",command);
+      fprintf(out, "%s\n", command);
+    //isRunning = executeCommand(command);
+    log_value("a","b",strcmp(command,treeCommand->rightChild->command));
+    }
+  } while (isRunning);
+  
+  
+        //scanf("%s", enteredString);
+      
+        printf("Chaine: %s \n", enteredString);
+         fclose(out);
+        // free(enteredString);
+
+     //}
+      
+    }else{
+      log_message("CommandExecutor.read_and_exec_tree","< found, copying his file into input");
+      log_string("CommandExecutor.read_and_exec_tree","His separator",treeCommand->rightChild->command);
+      switch_from_file_content_to_file(treeCommand->rightChild->command,INPUT_FILEPATH);
+    } 
   }
   
   if(treeCommand->leftChild != NULL){
@@ -118,16 +156,14 @@ bool read_and_exec_tree(Node* treeCommand){
           log_string("CommandExecutor.read_and_exec_tree","Result is ",treeCommand->result);
         }
       }else{
-        log_message("CommandExecutor.read_and_exec_tree","Command is null, its a separator");
-        remove_space_at_beginning_and_end(treeCommand->separator);
-        treeCommand->rightChild->inputValue = treeCommand->separator;
-
-        switch_from_file_content_to_file(OUTPUT_FILEPATH,INPUT_FILEPATH);
-        
-         if(treeCommand->separator != NULL && (treeCommand->separator == lower_separator)){
+        if(treeCommand->separator != NULL && (treeCommand->separator[1] == lower_separator)){
            log_message("CommandExecutor.read_and_exec_tree","Rightchild command is a file, he's not executed.");
            return true;
          }
+        log_message("CommandExecutor.read_and_exec_tree","Command is null, its a separator");
+        remove_space_at_beginning_and_end(treeCommand->separator);
+        treeCommand->rightChild->inputValue = treeCommand->separator;
+        switch_from_file_content_to_file(OUTPUT_FILEPATH,INPUT_FILEPATH);
         return read_and_exec_tree(treeCommand->rightChild);
       }
     }
@@ -157,10 +193,6 @@ int create_and_execute_tree(char* command){
   int indexAnd = string_contain_and_at_end(command);
   if(indexAnd != -1)
   {
-    //char * commandWithoutAnd = malloc(sizeof(char) * (indexAnd + 1));
-    //commandWithoutAnd[indexAnd] = '\0';
-    //commandWithoutAnd = substr(command,0,indexAnd - 1);
-    //command = commandWithoutAnd;
     command[indexAnd] = '\0';
     remove_space_at_beginning_and_end(command);
     log_string("CommandExecutor.create_and_execute_tree","executing in background command :",command);

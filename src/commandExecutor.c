@@ -55,6 +55,19 @@ bool write_node_in_file(Node* node){
     return switch_from_file_content_to_file(INPUT_FILEPATH,node->command);
 }
 
+bool append_node_in_file(Node* node){
+  log_message("CommandExecutor.executeCommand","Ajout a la suite du fichier..");
+     FILE *fptr1;
+    // Open one file for reading
+    fptr1 = fopen(node->command, "a+");
+    if (fptr1 == NULL)
+    {
+        printf("Cannot open file %s \n", node->command);
+        return 0;
+    }
+    return append_from_file_content_to_file(INPUT_FILEPATH,node->command);
+}
+
 /**
  * Return true si le séparateur est >
  */
@@ -62,12 +75,20 @@ bool is_separator_redirecting_ouput(Node* node){
   return node->inputValue != NULL && (node->inputValue[0] == higher_separator); 
 }
 
+bool is_separator_appending_a_file(Node* node){
+  return node->inputValue != NULL && (node->inputValue[0] == higher_separator && node->inputValue[1]== higher_separator); 
+}
+
 /**
  * Execute une commande 
  */
 int handle_command(Node* node)
 {
-  if(is_separator_redirecting_ouput(node)){
+  if(is_separator_appending_a_file(node)){
+    log_message("CommandExecutor.handle_command","Appending to a file");
+    append_node_in_file(node);
+  }else if(is_separator_redirecting_ouput(node)){
+    log_message("CommandExecutor.handle_command","Writing to a file");
      write_node_in_file(node);
   }
   

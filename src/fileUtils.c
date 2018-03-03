@@ -89,6 +89,46 @@ bool switch_from_file_content_to_file(char* fromFile, char* toFile){
     return 1;
 }
 
+bool append_from_file_content_to_file(char* fromFile, char* toFile){
+  log_message("CommandExecutor.append_from_file_content_to_file","Preparing input file ..");
+  log_string("CommandExecutor.executeCommand","Copying from ",fromFile);
+  log_string("CommandExecutor.executeCommand","to ",toFile);
+   FILE *fptr1, *fptr2;
+    char filename[100], c;
+    // Open one file for reading
+    fptr1 = fopen(fromFile, "r");
+    if (fptr1 == NULL)
+    {
+        printf("Cannot open file %s \n", filename);
+        return 0;
+    }
+ 
+    // Open another file for writing
+    fptr2 = fopen(toFile, "a+");
+    if (fptr2 == NULL)
+    {
+        printf("Cannot open file %s \n", filename);
+        return 0;
+    }
+ 
+    // Read contents from file
+    c = fgetc(fptr1);
+    while (c != EOF)
+    {
+        fputc(c, fptr2);
+        c = fgetc(fptr1);
+    }
+    
+    log_message("CommandExecutor.append_from_file_content_to_file","Content copied from output to input ..");
+ 
+ 
+    fclose(fptr1);
+    fclose(fptr2);
+    //delete_file(fromFile);
+    //fclose(fopen(OUTPUT_FILEPATH, "w"));
+    return 1;
+}
+
 /**
  * Affiche le contenu du fichier path
  */
