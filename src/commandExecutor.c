@@ -44,27 +44,14 @@ char** build_command(Node * node)
  */
 bool write_node_in_file(Node* node){
   log_message("CommandExecutor.executeCommand","Ecriture dans un nouveau fichier..");
-     FILE *fptr1;
-    // Open one file for reading
-    fptr1 = fopen(node->command, "a");
-    if (fptr1 == NULL)
-    {
-        printf("Cannot open file %s \n", node->command);
-        return 0;
-    }
     return switch_from_file_content_to_file(INPUT_FILEPATH,node->command);
 }
 
+/**
+ * Ajoute dans input_filepath le fichier passé dans la commande
+ */
 bool append_node_in_file(Node* node){
   log_message("CommandExecutor.executeCommand","Ajout a la suite du fichier..");
-     FILE *fptr1;
-    // Open one file for reading
-    fptr1 = fopen(node->command, "a+");
-    if (fptr1 == NULL)
-    {
-        printf("Cannot open file %s \n", node->command);
-        return 0;
-    }
     return append_from_file_content_to_file(INPUT_FILEPATH,node->command);
 }
 
@@ -75,6 +62,9 @@ bool is_separator_redirecting_ouput(Node* node){
   return node->inputValue != NULL && (node->inputValue[0] == higher_separator); 
 }
 
+/**
+ *  Return true si le séparateur est >>
+ */
 bool is_separator_appending_a_file(Node* node){
   return node->inputValue != NULL && (node->inputValue[0] == higher_separator && node->inputValue[1]== higher_separator); 
 }
@@ -84,6 +74,7 @@ bool is_separator_appending_a_file(Node* node){
  */
 int handle_command(Node* node)
 {
+  // If the node got < or << we are redirecting the output instead of executing command
   if(is_separator_appending_a_file(node)){
     log_message("CommandExecutor.handle_command","Appending to a file");
     append_node_in_file(node);
@@ -92,16 +83,19 @@ int handle_command(Node* node)
      write_node_in_file(node);
   }
   
+ // Handling command
  char** splitedBySpacesCommand = build_command(node);
+ 
  //Sauvegarde du file descripteur
  log_message("CommandExecutor.executeCommand","Sauvegarde du file descritor..");
  int standardInPutCopy  = dup(1);
   
-  //Ecriture dans outputfile
+  //Début de l'écriture dans outputfile
   log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
   empty_file(OUTPUT_FILEPATH);
   int fileDescriptorValue  = open(OUTPUT_FILEPATH, O_RDWR | O_CREAT);
-    //Executing custom command
+  
+  //Executing custom command
   if(!strcmp(splitedBySpacesCommand[0], "pwd"))
   {
     log_message("CommandExecutor.executeCommand","Execution du la commande built in pwd");
@@ -132,6 +126,7 @@ int handle_command(Node* node)
   }
   else
   {
+    // Executing command from exec
     int forkId = fork();
     if(forkId == 0)
     {
@@ -144,7 +139,8 @@ int handle_command(Node* node)
   int status;
   wait(&status); 
   }
-  // retour a la normale
+  
+  // Get back to normal state
   dup2(standardInPutCopy ,1);
   log_message("CommandExecutor.executeCommand","Retour sur le thread normal.");
   empty_file(INPUT_FILEPATH);

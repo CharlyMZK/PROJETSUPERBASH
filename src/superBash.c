@@ -37,6 +37,10 @@ char *read_console_line(void)
   
 
 }
+
+/**
+ * Récupère les arguments
+ */
   char *read_args(void)
 {
   int bufsize = LSH_RL_BUFSIZE;
@@ -74,7 +78,9 @@ void bash_loop(void)
   free(command);
 }
 
-
+/**
+ * Point d'entrée de l'application
+ */ 
 int main(int argc, char *argv[])
 { 
 

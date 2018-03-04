@@ -34,16 +34,22 @@ Node* create_tree_from_command(char* command){
   log_message("CommandHandler.create_tree_from_command","Creating tree..");
   log_string("CommandHandler.create_tree_from_command","Command read is",command);
   
-  while (index > 0) {
+  // Note : we are reading command from end to begining
+  
+  while (index > 0) { // Reading command
     log_message("CommandHandler.create_tree_from_command","Row starded");
     log_char_value("CommandHandler.create_tree_from_command","Letter checked",command[index]);
     if(is_separator(command[index])){
+      // If caracter get is a separator, truncating command in two string, the first one ( separator ) with the separator string
+      // And the other one with the truncated command after the separator
       separator = substr(command,index-1,2);
       truncateLength = lastSeparatorPosition - (index+1);
       truncatedCommand = substr(command,index+1,truncateLength);
       remove_space_at_beginning_and_end(truncatedCommand);
       log_string("CommandHandler.create_tree_from_command","Separator found",separator);
       log_value("CommandHandler.create_tree_from_command","Truncating after separator with length",truncateLength);
+      
+      // Then creates a node with both
       if(actualUsedNode == NULL){ 
         root = create_root(separator,NULL,create_root(truncatedCommand,NULL,NULL)); 
         actualUsedNode = root;
@@ -54,6 +60,8 @@ Node* create_tree_from_command(char* command){
           actualUsedNode = newNode;
         }
       }
+      
+      // Decreasing index and saving the last index position to truncate from the next separator to this position
       index--;
       lastSeparatorPosition = index;
       log_value("CommandHandler.create_tree_from_command","Last separator position",lastSeparatorPosition);
@@ -63,8 +71,8 @@ Node* create_tree_from_command(char* command){
   }
   log_message("CommandHandler.create_tree_from_command","While ended,  finishing the three..");
 
+  // Command read ended, handling first part of command
   char *firstCommand = malloc(lastSeparatorPosition + 1);
-  
   if(root == NULL){
     log_message("CommandHandler.create_tree_from_command","Root is null, only one command, creating..");
     remove_space_at_beginning_and_end(command);

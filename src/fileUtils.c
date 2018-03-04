@@ -123,8 +123,8 @@ bool append_from_file_content_to_file(char* fromFile, char* toFile){
  * Affiche le contenu du fichier path
  */
 void display_file_content(char* path){
-    FILE *fptr;
-    char  c;
+  FILE *fptr;
+  char  c;
   log_message("FileUtils.display_file_content","Displaying file content..");
     // Open file
     fptr = fopen(path, "r");
