@@ -15,9 +15,9 @@
  */
 bool is_separator(char instruction){
 	
- log_char_value("Superbash.is_separator","Is this a command ?",instruction); 
+ log_char_value("TreeUtils.is_separator","Is this a command ?",instruction); 
  if((instruction == pipe_separator) || (instruction == and_separator) || (instruction == higher_separator) || (instruction == lower_separator)){
-   log_message("Superbash.is_separator","Separator found");
+   log_message("TreeUtils.is_separator","Separator found");
    return true;
  }
 
@@ -34,10 +34,10 @@ Node* create_root(char* command, Node* leftChild, Node* rightChild)
 {
 	Node* a =malloc(sizeof(Node));
 	if(is_separator(command[1])){
-		log_string("Tree.create_root","Creating a node with separator",command);
+		log_string("TreeUtils.create_root","Creating a node with separator",command);
 		a->separator = command;
 	}else{
-		log_string("Tree.create_root","Creating a node with command",command);
+		log_string("TreeUtils.create_root","Creating a node with command",command);
 		a->command = command;	
 	}
 	

@@ -17,15 +17,15 @@
  */
 char *substr(char *src,int pos,int len) { 
   char *dest=NULL;          
-  log_message("CommandExecutor.substr","Substr..");
-  log_string("CommandExecutor.substr","String to sub : ",src);
-  log_value("CommandExecutor.substr","Pos",pos);
-  log_value("CommandExecutor.substr","Length",len);
+  log_message("StringUtils.substr","Substr..");
+  log_string("StringUtils.substr","String to sub : ",src);
+  log_value("StringUtils.substr","Pos",pos);
+  log_value("StringUtils.substr","Length",len);
   if (len>0) {                            
     dest = (char *) malloc(len+1);        
     strncpy(dest,src+pos,len);            
   }                                       
-  log_string("CommandExecutor.substr","String cut",dest);
+  log_string("StringUtils.substr","String cut",dest);
   return dest;                            
 }
 
@@ -50,7 +50,7 @@ void trim_leading(char * str)
 {
     int index, i;
     index = 0;
-    log_string("CommandExecutor.trim_leading","String is",str);
+    log_string("StringUtils.trim_leading","String is",str);
     /* Trouve le dernier index des premiers espaces */
     while(str[index] == ' ' || str[index] == '\t' || str[index] == '\n')
     {
@@ -65,7 +65,7 @@ void trim_leading(char * str)
             str[i] = str[i + index];
             i++;
         }
-        log_message("CommandExecutor.trim_leading","0 put back");
+        log_message("StringUtils.trim_leading","0 put back");
         str[i] = '\0'; //Ferme la string
     }
 }
@@ -76,7 +76,7 @@ void trim_leading(char * str)
  */
 void trim_last(char * str)
 {
-    log_string("CommandExecutor.trim_last","String is",str);
+    log_string("StringUtils.trim_last","String is",str);
     int index, lastIndex;
     lastIndex = strlen(str);
     index = lastIndex;
@@ -87,7 +87,7 @@ void trim_last(char * str)
     }
     if(index != lastIndex )
     {
-      log_message("CommandExecutor.trim_last","0 put back");
+      log_message("StringUtils.trim_last","0 put back");
         str[index] = '\0'; // Make sure that string is NULL terminated
     }
 }
@@ -97,7 +97,7 @@ void trim_last(char * str)
  */
 void remove_space_at_beginning_and_end(char * string)
 {
-  log_message("CommandExecutor.remove_space_at_beginning_and_end","Remove spaces at begining and end");
+  log_message("StringUtils.remove_space_at_beginning_and_end","Remove spaces at begining and end");
   trim_leading(string);
   trim_last(string);
 }
@@ -215,6 +215,9 @@ int string_contain_and_at_end(char * command)
   return -1;
 }
 
+/**
+ * Supprime le caractère de fin si il y a un \n et le remplace par \0
+ */
 void remove_newline_ch(char *line)
 {
     int new_line = strlen(line) -1;

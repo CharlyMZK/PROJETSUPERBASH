@@ -30,7 +30,7 @@ void delete_file(char* path){
  * renvoie true si le fichier path est vide
  */
 bool is_file_empty(char* path){
-  log_message("CommandExecutor.empty_file","Is this file empty ?");
+  log_message("FileUtils.empty_file","Is this file empty ?");
   int size = 0;
   FILE *fptr = fopen(path, "a");
   if (NULL != fptr) {
@@ -38,11 +38,11 @@ bool is_file_empty(char* path){
     size = ftell(fptr);
 
     if (0 == size) {
-      log_message("CommandExecutor.empty_file","Yes");
+      log_message("FileUtils.empty_file","Yes");
         return true;
     }
   }
-  log_message("CommandExecutor.empty_file","No");
+  log_message("FileUtils.empty_file","No");
  return false;
 }
 
@@ -50,16 +50,16 @@ bool is_file_empty(char* path){
  * Copie le contenu de OUTPUT_FILEPATH dans INPUT_FILEPATH
  */
 bool switch_from_file_content_to_file(char* fromFile, char* toFile){
-  log_message("CommandExecutor.switchOutputFileContentToInputFile","Preparing input file ..");
-  log_string("CommandExecutor.executeCommand","Copying from ",fromFile);
-  log_string("CommandExecutor.executeCommand","to ",toFile);
-   FILE *fptr1, *fptr2;
-    char filename[100], c;
+    log_message("FileUtils.switch_from_file_content_to_file","Preparing input file ..");
+    log_string("FileUtils.switch_from_file_content_to_file","Copying from ",fromFile);
+    log_string("FileUtils.switch_from_file_content_to_file","to ",toFile);
+    FILE *fptr1, *fptr2;
+    char c;
     // Open one file for reading
     fptr1 = fopen(fromFile, "r");
     if (fptr1 == NULL)
     {
-        printf("Cannot open file %s \n", filename);
+        log_string("FileUtils.switch_from_file_content_to_file","Cannot open file ",fromFile);
         return 0;
     }
  
@@ -67,9 +67,9 @@ bool switch_from_file_content_to_file(char* fromFile, char* toFile){
     fptr2 = fopen(toFile, "w");
     if (fptr2 == NULL)
     {
-        printf("Cannot open file %s \n", filename);
+        log_string("FileUtils.switch_from_file_content_to_file","Cannot open file ",toFile);
         return 0;
-    }
+    }   
  
     // Read contents from file
     c = fgetc(fptr1);
@@ -78,28 +78,23 @@ bool switch_from_file_content_to_file(char* fromFile, char* toFile){
         fputc(c, fptr2);
         c = fgetc(fptr1);
     }
-    
-    log_message("CommandExecutor.switchOutputFileContentToInputFile","Content copied from output to input ..");
- 
- 
+    log_message("FileUtils.switch_from_file_content_to_file","Content copied from output to input ..");
     fclose(fptr1);
     fclose(fptr2);
-    //delete_file(fromFile);
-    //fclose(fopen(OUTPUT_FILEPATH, "w"));
     return 1;
 }
 
 bool append_from_file_content_to_file(char* fromFile, char* toFile){
-  log_message("CommandExecutor.append_from_file_content_to_file","Preparing input file ..");
-  log_string("CommandExecutor.executeCommand","Copying from ",fromFile);
-  log_string("CommandExecutor.executeCommand","to ",toFile);
+   log_message("FileUtils.append_from_file_content_to_file","Preparing input file ..");
+   log_string("FileUtils.append_from_file_content_to_file","Copying from ",fromFile);
+   log_string("FileUtils.append_from_file_content_to_file","to ",toFile);
    FILE *fptr1, *fptr2;
-    char filename[100], c;
+    char c;
     // Open one file for reading
     fptr1 = fopen(fromFile, "r");
     if (fptr1 == NULL)
     {
-        printf("Cannot open file %s \n", filename);
+        log_string("FileUtils.switch_from_file_content_to_file","Cannot open file ",fromFile);
         return 0;
     }
  
@@ -107,7 +102,7 @@ bool append_from_file_content_to_file(char* fromFile, char* toFile){
     fptr2 = fopen(toFile, "a+");
     if (fptr2 == NULL)
     {
-        printf("Cannot open file %s \n", filename);
+        log_string("FileUtils.switch_from_file_content_to_file","Cannot open file ",toFile);
         return 0;
     }
  
@@ -118,14 +113,9 @@ bool append_from_file_content_to_file(char* fromFile, char* toFile){
         fputc(c, fptr2);
         c = fgetc(fptr1);
     }
-    
-    log_message("CommandExecutor.append_from_file_content_to_file","Content copied from output to input ..");
- 
- 
+    log_message("FileUtils.append_from_file_content_to_file","Content copied from output to input ..");
     fclose(fptr1);
     fclose(fptr2);
-    //delete_file(fromFile);
-    //fclose(fopen(OUTPUT_FILEPATH, "w"));
     return 1;
 }
 
@@ -135,12 +125,12 @@ bool append_from_file_content_to_file(char* fromFile, char* toFile){
 void display_file_content(char* path){
     FILE *fptr;
     char  c;
-  log_message("CommandExecutor.display_file_content","Displaying file content..");
+  log_message("FileUtils.display_file_content","Displaying file content..");
     // Open file
     fptr = fopen(path, "r");
     if (fptr == NULL)
     {
-        printf("Cannot open file \n");
+        log_message("FileUtils.append_from_file_content_to_file","Cannot open file");
         exit(0);
     }
  
@@ -151,6 +141,5 @@ void display_file_content(char* path){
         printf ("%c", c);
         c = fgetc(fptr);
     }
- 
     fclose(fptr);
 }

@@ -144,8 +144,6 @@ int handle_command(Node* node)
   int status;
   wait(&status); 
   }
-
-   
   // retour a la normale
   dup2(standardInPutCopy ,1);
   log_message("CommandExecutor.executeCommand","Retour sur le thread normal.");
