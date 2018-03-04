@@ -89,7 +89,7 @@ Node* create_tree_from_command(char* command){
   log_message("CommandExecutor.create_tree_from_command","Tree created.");
   log_message("CommandExecutor.create_tree_from_command","Printing prefix..");
   log_tree(root);
-  printf("\n");
+  
   
   return root;
 }
@@ -203,10 +203,14 @@ int create_and_execute_tree(char* command){
       return true;
   }
   read_and_exec_tree(treeCommand);
+  
+  display_file_content(OUTPUT_FILEPATH);
+  
   if(background && forkId == 0)
   {
     exit(EXIT_SUCCESS);
   }
   log_message("CommandExecutor.handle_command","Cleaning files..");
+  empty_file(OUTPUT_FILEPATH);
   return true;
 }

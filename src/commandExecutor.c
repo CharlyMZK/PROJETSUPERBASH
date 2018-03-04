@@ -150,7 +150,5 @@ int handle_command(Node* node)
   dup2(standardInPutCopy ,1);
   log_message("CommandExecutor.executeCommand","Retour sur le thread normal.");
   empty_file(INPUT_FILEPATH);
-
-  display_file_content(OUTPUT_FILEPATH);
   return true;
 }
