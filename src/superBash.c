@@ -33,6 +33,28 @@ char *read_console_line(void)
     }
     position++;
   }
+  
+  
+
+}
+  char *read_args(void)
+{
+  int bufsize = LSH_RL_BUFSIZE;
+  int position = 0;
+  char *bf = malloc(sizeof(char) * bufsize);
+  int c;
+  while (1) {
+    // Read a character
+    c = getchar();
+    // If we hit EOF, replace it with a null character and return.
+    if (c == EOF || c == '\n') {
+      bf[position] = '\0';
+      return bf;
+    } else {
+      bf[position] = c;
+    }
+    position++;
+  }
 }
 
 /**

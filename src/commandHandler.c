@@ -94,6 +94,33 @@ Node* create_tree_from_command(char* command){
   return root;
 }
 
+bool read_entered_parameters(Node* treeCommand){
+  FILE *out = fopen(INPUT_FILEPATH, "a+");  
+  char enteredString[255]= "";
+  char command[20];
+  bool isRunning = true;
+  log_message("CommandExecutor.read_and_exec_tree","Its a <<");  
+  log_value("CommandExecutor.read_and_exec_tree","Comparing string value",strcmp(enteredString,treeCommand->rightChild->command));
+  log_string("CommandExecutor.read_and_exec_tree","Enter value until",treeCommand->rightChild->command);
+  do {
+    printf("> ");
+    fgets(command, sizeof command, stdin);
+    remove_newline_ch(command);
+    if(strcmp(command,treeCommand->rightChild->command) == 0){
+      printf("- EGALITE. -\n");
+      isRunning = false;
+    }else{
+      printf("\n%s\n",command);
+      fprintf(out, "%s\n", command);
+      log_value("CommandExecutor.read_and_exec_tree","Comparing sting value in while",strcmp(command,treeCommand->rightChild->command));
+      log_string("CommandExecutor.read_and_exec_tree","Enter value until",treeCommand->rightChild->command);
+    }
+  } while (isRunning);
+  printf("Chaine: %s \n", enteredString);
+  fclose(out);
+  return true;
+}
+
 
 /**
  * Lis un arbre et execute les commandes 
@@ -102,41 +129,7 @@ bool read_and_exec_tree(Node* treeCommand){
   log_message("CommandExecutor.read_and_exec_tree","Reading and executing command");
   if(treeCommand->separator != NULL && (treeCommand->separator[1] == lower_separator)){
     if(treeCommand->separator[0] == lower_separator){
-     FILE *out = fopen(INPUT_FILEPATH, "a+");  
-      log_message("CommandExecutor.read_and_exec_tree","Its a <<");  
-      char enteredString[255]= "12";
-      //char *enteredString = malloc(255 * sizeof(enteredString));
-     // while(strcmp(enteredString,treeCommand->rightChild->command) != 0){
-        log_value("q","a",strcmp(enteredString,treeCommand->rightChild->command));
-        log_string("Hey","hey",treeCommand->rightChild->command);
-        printf("Entrez une chaine:\n");
-        
-          char *command;
-         bool isRunning = true;
-  printf("- Prompt launched, Saltscript only please. -\n");
-  do {
-    printf("ajoute ta valeur > ");
-    command = read_console_line();
-     if(strcmp(command,treeCommand->rightChild->command) == 0){
-       printf("- EGALITE. -\n");
-      isRunning = false;
-    }else{
-    printf("\n%s\n",command);
-      fprintf(out, "%s\n", command);
-    //isRunning = executeCommand(command);
-    log_value("a","b",strcmp(command,treeCommand->rightChild->command));
-    }
-  } while (isRunning);
-  
-  
-        //scanf("%s", enteredString);
-      
-        printf("Chaine: %s \n", enteredString);
-         fclose(out);
-        // free(enteredString);
-
-     //}
-      
+         read_entered_parameters(treeCommand);
     }else{
       log_message("CommandExecutor.read_and_exec_tree","< found, copying his file into input");
       log_string("CommandExecutor.read_and_exec_tree","His separator",treeCommand->rightChild->command);

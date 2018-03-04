@@ -214,3 +214,10 @@ int string_contain_and_at_end(char * command)
     return index;
   return -1;
 }
+
+void remove_newline_ch(char *line)
+{
+    int new_line = strlen(line) -1;
+    if (line[new_line] == '\n')
+        line[new_line] = '\0';
+}
