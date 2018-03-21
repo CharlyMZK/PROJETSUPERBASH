@@ -149,7 +149,7 @@ char** str_split(char* a_str, const char a_delim)
         assert(idx == count - 1);
         *(result + idx) = 0;
     }
-
+    
     return result;
 }
 
@@ -223,4 +223,17 @@ void remove_newline_ch(char *line)
     int new_line = strlen(line) -1;
     if (line[new_line] == '\n')
         line[new_line] = '\0';
+}
+
+/**
+ * Remove a selected char
+ */
+void removeChar(char *str, char garbage) {
+
+    char *src, *dst;
+    for (src = dst = str; *src != '\0'; src++) {
+        *dst = *src;
+        if (*dst != garbage) dst++;
+    }
+    *dst = '\0';
 }

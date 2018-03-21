@@ -95,7 +95,120 @@ int handle_command(Node* node)
   empty_file(OUTPUT_FILEPATH);
   int fileDescriptorValue  = open(OUTPUT_FILEPATH, O_RDWR | O_CREAT);
   
+   char c[1000];
+    FILE *fptr;
+
+    if ((fptr = fopen("alias.txt", "r")) == NULL)
+    {
+        printf("Error! opening file");
+        // Program exits if file pointer returns NULL.
+        exit(1);         
+    }
+
+    // reads text until newline 
+    fscanf(fptr,"%[^\n]", c);
+
+
+    char** splitAliases = str_split(c,'|');
+    int splitAliasesIndex = 0;
+    char* handledAlias;
+   char* splitedAlias;
+   char* aliasName;
+   char* aliasRelatedCommand;
+     printf("split[0] : %s \n",splitAliases[0]);
+
+    while(splitAliases[splitAliasesIndex] != NULL){
+       printf("\nString traitée : %s\n",splitAliases[splitAliasesIndex]);
+       
+       handledAlias = splitAliases[splitAliasesIndex];
+       printf("Handled alias : %s\n",handledAlias);
+       
+       char currentCharGet = '\0';
+       
+       int aliasNameSize = 0;
+       int aliasNameIndex = 0;
+       
+       while(currentCharGet != '='){
+         currentCharGet = handledAlias[aliasNameSize];
+         printf("\nChar : %c",currentCharGet);
+         aliasNameSize++;
+       }
+       
+       aliasName = malloc(sizeof(char)*aliasNameSize);
+       
+       char charAdded = '\0';
+      
+       do{
+         charAdded = handledAlias[aliasNameIndex];
+         printf("\nAttrib char : %c",charAdded);
+         aliasName[aliasNameIndex] = handledAlias[aliasNameIndex];
+         aliasNameIndex++;
+         
+       }while(charAdded != '=');
+        removeChar(aliasName,'=');
+       printf("\nAlias name : !%s!",aliasName);
+       
+       int commandNameSize = 0;
+       int commandNameIndex = aliasNameIndex;
+       
+       currentCharGet = '\0';
+        do{
+         currentCharGet = handledAlias[commandNameIndex];
+         printf("\n [C2-1] : %c",currentCharGet);
+         commandNameIndex++;
+         commandNameSize ++ ;
+       }while(currentCharGet != '\0');
+       printf("Command name size : %d",(commandNameSize-3));
+       aliasRelatedCommand = malloc(sizeof(char)*(commandNameSize-3));
+       currentCharGet = '\0';
+       commandNameIndex = aliasNameIndex;
+       int i = 0;
+        do{
+         currentCharGet = handledAlias[commandNameIndex];
+         printf("\n [C2-2] : %c",currentCharGet);
+         if(currentCharGet != '\'' && currentCharGet != '\0'){
+           printf("\n Add char %c on %d index",currentCharGet,i);
+          aliasRelatedCommand[i] = currentCharGet;
+          i++;
+         }
+         commandNameIndex++;
+         
+       }while(currentCharGet != '\0');
+       
+       printf("\nCommand name : !%s!",aliasRelatedCommand);
+       splitAliasesIndex++;
+    }
+    
+    
+    printf("\nData from the file: %s \n", c);
+    char** split = str_split(c,'=');
+    printf("split[0] : %s \n",split[0]);
+    printf("split[1] : %s \n",split[1]);
+    char* commandToExecute = split[1];
+    removeChar(commandToExecute,'\'');
+    removeChar(commandToExecute,'|');
+    printf("Command to execute : %s \n",commandToExecute);
+    
+    
+    fclose(fptr);
+  
   //Executing custom command
+  if(!strcmp(splitedBySpacesCommand[0], "alias"))
+  {
+    log_message("CommandExecutor.executeCommand","Execution du la commande built in alias");
+    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+      FILE *fp = fopen("alias.txt", "ab+");
+    if (fp != NULL)
+    {
+      int count = strlen(splitedBySpacesCommand[1]);
+      char* result = malloc(sizeof(char*) * count+1);
+       result = splitedBySpacesCommand[1];
+       result[count] = '|';
+       printf(" result : %s",result);
+        fputs(result, fp);
+        fclose(fp);
+    }
+  }
   if(!strcmp(splitedBySpacesCommand[0], "pwd"))
   {
     log_message("CommandExecutor.executeCommand","Execution du la commande built in pwd");
@@ -146,3 +259,4 @@ int handle_command(Node* node)
   empty_file(INPUT_FILEPATH);
   return true;
 }
+

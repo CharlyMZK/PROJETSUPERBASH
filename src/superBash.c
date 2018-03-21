@@ -83,7 +83,10 @@ void bash_loop(void)
  */ 
 int main(int argc, char *argv[])
 { 
-
-	bash_loop();
+  if(argv[1] == NULL){
+	  bash_loop();
+  }else{
+    create_and_execute_tree(argv[1]);
+  }
 	return EXIT_SUCCESS;
 }
