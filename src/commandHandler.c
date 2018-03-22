@@ -203,6 +203,7 @@ int create_and_execute_tree(char* command){
     if(forkId)
       return true;
   }
+  
   read_and_exec_tree(treeCommand);
   display_file_content(OUTPUT_FILEPATH);
   if(background && forkId == 0)

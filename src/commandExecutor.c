@@ -69,7 +69,165 @@ bool is_separator_appending_a_file(Node* node){
   return node->inputValue != NULL && (node->inputValue[0] == higher_separator && node->inputValue[1]== higher_separator); 
 }
 
-/**
+int getAliasNameSize(char* handledAlias){
+   char currentCharGet = '\0';
+   int aliasNameSize = 0;
+      log_message("CommandExecutor.executeCommand","Getting alias size");
+      printf("\nHandledAlias : %s",handledAlias);
+      printf("\nAlias name siez : %d",aliasNameSize);
+       while(currentCharGet != '='){
+         currentCharGet = handledAlias[aliasNameSize];
+         aliasNameSize++;
+       }
+       return aliasNameSize;
+}
+
+char* getAliasName(char* handledAlias, int aliasNameSize){
+  
+  
+      char* aliasName = malloc(sizeof(char)*aliasNameSize);
+      char currentCharGet = '\0';
+      int aliasNameIndex = 0;
+      log_message("CommandExecutor.executeCommand","Getting alias name");
+       do{
+         currentCharGet = handledAlias[aliasNameIndex];
+         aliasName[aliasNameIndex] = handledAlias[aliasNameIndex];
+         aliasNameIndex++;
+         
+       }while(currentCharGet != '=');
+       
+       aliasName[aliasNameIndex] = '\0';
+       removeChar(aliasName,'=');
+       log_string("CommandExecutor.executeCommand","Alias name",aliasName);
+       return aliasName;
+}
+
+int getCommandNameSize(char* handledAlias, int indexToStart){
+    log_message("CommandExecutor.executeCommand","Getting command name size");
+      int commandNameSize = 0;
+      int commandNameIndex = indexToStart;
+      char currentCharGet = '\0';
+        do{
+         currentCharGet = handledAlias[commandNameIndex];
+         commandNameIndex++;
+         commandNameSize ++ ;
+       }while(currentCharGet != '\0');
+       return commandNameSize;
+       
+}
+
+char* getCommandName(char* handledAlias, int aliasNameIndex,int commandNameSize){
+  log_message("CommandExecutor.executeCommand","Getting command");
+       char* aliasRelatedCommand = malloc(sizeof(char)*(commandNameSize-2));
+       char currentCharGet = '\0';
+       int commandNameIndex = aliasNameIndex;
+       int i = 0;
+        do{
+         currentCharGet = handledAlias[commandNameIndex];
+         if(currentCharGet != '\''){
+          aliasRelatedCommand[i] = currentCharGet;
+          i++;
+         }
+        aliasRelatedCommand[i] = '\0';
+         commandNameIndex++;
+         
+       }while(currentCharGet != '\0');
+       
+       log_string("CommandExecutor.executeCommand","Command name",aliasRelatedCommand);
+       return aliasRelatedCommand;
+}
+
+int fempty(char const *fname) 
+{
+	FILE *fdesc = fopen(fname,"r");
+	int ret = 0;
+ 
+	if( fdesc )
+	{
+		(void)fgetc(fdesc);
+		if( feof(fdesc) )
+		{
+			ret = 1;
+		}
+		fclose(fdesc);
+	}
+	return ret;
+}
+
+void modifyCommandDependingOnAliasDefined(char* c, char** splitedBySpacesCommand){
+    char** splitAliases = str_split(c,'|');
+  int splitAliasesIndex = 0;
+  char* handledAlias;
+  char* aliasName;
+  char* aliasRelatedCommand;
+  int aliasNameSize = 0;
+  int aliasNameIndex = 0;
+  int commandNameSize = 0;
+  int splitAliasesSize = 0;
+  
+ while(splitAliases[splitAliasesSize] != NULL){
+      splitAliasesSize++;
+  }
+  
+  
+  if(splitAliasesSize > 0){
+  log_message("CommandExecutor.executeCommand","Traitement des alias");
+
+    while(splitAliases[splitAliasesIndex] != NULL){
+      
+      log_string("CommandExecutor.executeCommand","Alias traité",splitAliases[splitAliasesIndex]);
+      
+      handledAlias = splitAliases[splitAliasesIndex];
+      aliasNameSize = getAliasNameSize(handledAlias);
+      aliasName = getAliasName(handledAlias,aliasNameSize);
+       aliasNameIndex = aliasNameSize;
+       commandNameSize = getCommandNameSize(handledAlias, aliasNameIndex);
+       aliasRelatedCommand = getCommandName(handledAlias, aliasNameIndex, commandNameSize);
+       splitAliasesIndex++;
+       
+       log_string("CommandExecutor.executeCommand","Alias name",aliasName);
+       log_string("CommandExecutor.executeCommand","Commande passée",splitedBySpacesCommand[0]);
+       if(!strcmp(splitedBySpacesCommand[0],aliasName)){
+          log_message("CommandExecutor.executeCommand","Alias trouvé, remplacement de la commande..");
+          splitedBySpacesCommand[0] = aliasRelatedCommand;
+       }
+    }
+  
+    char** split = str_split(c,'=');
+    char* commandToExecute = split[1];
+    removeChar(commandToExecute,'\'');
+    removeChar(commandToExecute,'|');
+   
+  }
+  
+  
+}
+
+void handleAlias(char** splitedBySpacesCommand){
+      if(!fempty("alias.txt")){
+  // Gestion des alias
+  char c[1000];
+  FILE *fptr;
+  
+  if ((fptr = fopen("alias.txt", "r")) == NULL)
+  {
+    printf("Error! opening file");
+    // Program exits if file pointer returns NULL.
+    exit(1);         
+  }
+
+  // reads text until newline 
+  fscanf(fptr,"%[^\n]", c);
+
+
+    modifyCommandDependingOnAliasDefined(c,splitedBySpacesCommand);
+   fclose(fptr);
+  }
+  
+}
+
+
+/**ls
  * Execute une commande 
  */
 int handle_command(Node* node)
@@ -92,106 +250,15 @@ int handle_command(Node* node)
   
   //Début de l'écriture dans outputfile
   log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
+  
+  printf("FEMPTY ? %d",fempty("alias.txt"));
+  
   empty_file(OUTPUT_FILEPATH);
   int fileDescriptorValue  = open(OUTPUT_FILEPATH, O_RDWR | O_CREAT);
   
-   char c[1000];
-    FILE *fptr;
 
-    if ((fptr = fopen("alias.txt", "r")) == NULL)
-    {
-        printf("Error! opening file");
-        // Program exits if file pointer returns NULL.
-        exit(1);         
-    }
+  handleAlias(splitedBySpacesCommand);
 
-    // reads text until newline 
-    fscanf(fptr,"%[^\n]", c);
-
-
-    char** splitAliases = str_split(c,'|');
-    int splitAliasesIndex = 0;
-    char* handledAlias;
-   char* splitedAlias;
-   char* aliasName;
-   char* aliasRelatedCommand;
-     printf("split[0] : %s \n",splitAliases[0]);
-
-    while(splitAliases[splitAliasesIndex] != NULL){
-       printf("\nString traitée : %s\n",splitAliases[splitAliasesIndex]);
-       
-       handledAlias = splitAliases[splitAliasesIndex];
-       printf("Handled alias : %s\n",handledAlias);
-       
-       char currentCharGet = '\0';
-       
-       int aliasNameSize = 0;
-       int aliasNameIndex = 0;
-       
-       while(currentCharGet != '='){
-         currentCharGet = handledAlias[aliasNameSize];
-         printf("\nChar : %c",currentCharGet);
-         aliasNameSize++;
-       }
-       
-       aliasName = malloc(sizeof(char)*aliasNameSize);
-       
-       char charAdded = '\0';
-      
-       do{
-         charAdded = handledAlias[aliasNameIndex];
-         printf("\nAttrib char : %c",charAdded);
-         aliasName[aliasNameIndex] = handledAlias[aliasNameIndex];
-         aliasNameIndex++;
-         
-       }while(charAdded != '=');
-        removeChar(aliasName,'=');
-       printf("\nAlias name : !%s!",aliasName);
-       
-       int commandNameSize = 0;
-       int commandNameIndex = aliasNameIndex;
-       
-       currentCharGet = '\0';
-        do{
-         currentCharGet = handledAlias[commandNameIndex];
-         printf("\n [C2-1] : %c",currentCharGet);
-         commandNameIndex++;
-         commandNameSize ++ ;
-       }while(currentCharGet != '\0');
-       printf("Command name size : %d",(commandNameSize-3));
-       aliasRelatedCommand = malloc(sizeof(char)*(commandNameSize-3));
-       currentCharGet = '\0';
-       commandNameIndex = aliasNameIndex;
-       int i = 0;
-        do{
-         currentCharGet = handledAlias[commandNameIndex];
-         printf("\n [C2-2] : %c",currentCharGet);
-         if(currentCharGet != '\'' && currentCharGet != '\0'){
-           printf("\n Add char %c on %d index",currentCharGet,i);
-          aliasRelatedCommand[i] = currentCharGet;
-          i++;
-         }
-         commandNameIndex++;
-         
-       }while(currentCharGet != '\0');
-       
-       printf("\nCommand name : !%s!",aliasRelatedCommand);
-       splitAliasesIndex++;
-    }
-    
-    
-    printf("\nData from the file: %s \n", c);
-    char** split = str_split(c,'=');
-    printf("split[0] : %s \n",split[0]);
-    printf("split[1] : %s \n",split[1]);
-    char* commandToExecute = split[1];
-    removeChar(commandToExecute,'\'');
-    removeChar(commandToExecute,'|');
-    printf("Command to execute : %s \n",commandToExecute);
-    
-    
-    fclose(fptr);
-  
   //Executing custom command
   if(!strcmp(splitedBySpacesCommand[0], "alias"))
   {
