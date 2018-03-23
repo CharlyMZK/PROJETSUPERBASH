@@ -168,11 +168,13 @@ void modifyCommandDependingOnAliasDefined(char* c, char** splitedBySpacesCommand
   }
   
   if(splitAliasesSize > 0){
-  log_message("CommandExecutor.executeCommand","Traitement des alias");
+      
+      
+  log_message("CommandExecutor.modifyCommandDependingOnAliasDefined","Traitement des alias");
 
     while(splitAliases[splitAliasesIndex] != NULL){
       
-      log_string("CommandExecutor.executeCommand","Alias traité",splitAliases[splitAliasesIndex]);
+      log_string("CommandExecutor.modifyCommandDependingOnAliasDefined","Alias traité",splitAliases[splitAliasesIndex]);
       
       handledAlias = splitAliases[splitAliasesIndex];
       aliasNameSize = getAliasNameSize(handledAlias);
@@ -182,10 +184,10 @@ void modifyCommandDependingOnAliasDefined(char* c, char** splitedBySpacesCommand
        aliasRelatedCommand = getCommandName(handledAlias, aliasNameIndex, commandNameSize);
        splitAliasesIndex++;
        
-       log_string("CommandExecutor.executeCommand","Alias name",aliasName);
-       log_string("CommandExecutor.executeCommand","Commande passée",splitedBySpacesCommand[0]);
+       log_string("CommandExecutor.modifyCommandDependingOnAliasDefined","Alias name",aliasName);
+       log_string("CommandExecutor.modifyCommandDependingOnAliasDefined","Commande passée",splitedBySpacesCommand[0]);
        if(!strcmp(splitedBySpacesCommand[0],aliasName)){
-          log_message("CommandExecutor.executeCommand","Alias trouvé, remplacement de la commande..");
+          log_message("CommandExecutor.modifyCommandDependingOnAliasDefined","Alias trouvé, remplacement de la commande..");
           splitedBySpacesCommand[0] = aliasRelatedCommand;
        }
     }
@@ -200,227 +202,127 @@ void modifyCommandDependingOnAliasDefined(char* c, char** splitedBySpacesCommand
   
 }
 
-
-void addOrReplaceAlias(char** splitedBySpacesCommand){
-    
-    log_message("CommandExecutor.executeCommand","Execution du la commande built in alias");
-    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
-      FILE *fptr = fopen("alias.txt", "ab+");
-    char c[1000];
-     // reads text until newline 
-  fscanf(fptr,"%[^\n]", c);
-    char** splitAliases = str_split(c,'|');
-  int splitAliasesIndex = 0;
-  char* handledAlias;
-  char* aliasName;
-  char* aliasRelatedCommand;
-  int aliasNameSize = 0;
-  int aliasNameIndex = 0;
-  int commandNameSize = 0;
-  int splitAliasesSize = 0;
-  
-  int enteredAliasNameSize = 0;
-  int enteredAliasNameIndex = 0;
-  char* enteredAliasName;
-  int enteredCommandNameSize = 0;
-  int enteredSplitAliasesSize = 0;
-  char* enteredAliasRelatedCommand;
-  bool isSameAlias = false;
-  bool isSameCommand = false;
-  
-  
-    handledAlias = splitedBySpacesCommand[1];
-  log_string("CommandExecutor.executeCommand","[Entered] Alias traité",handledAlias);
-  enteredAliasNameSize = getAliasNameSize(handledAlias);
-  enteredAliasName = getAliasName(handledAlias,enteredAliasNameSize);
-  enteredCommandNameSize = getCommandNameSize(handledAlias,enteredAliasNameSize);
-  enteredAliasRelatedCommand = getCommandName(handledAlias,enteredAliasNameSize,enteredCommandNameSize);
-  log_value("CommandExecutor.executeCommand","Alias size ( entered ) ",enteredAliasNameSize);
-  log_string("CommandExecutor.executeCommand","Alias name ( entered ) ",enteredAliasName);
-  log_value("CommandExecutor.executeCommand","Command size ( entered ) ",enteredCommandNameSize);
-  log_string("CommandExecutor.executeCommand","Command name ( entered ) ",enteredAliasRelatedCommand);
-  
-  
-  while(splitAliases[splitAliasesSize] != NULL){
-      splitAliasesSize++;
-  }
-  
-  if(splitAliasesSize > 0){
-  log_message("CommandExecutor.executeCommand","Traitement des alias");
-
-    while(splitAliases[splitAliasesIndex] != NULL){
-      
-      log_string("CommandExecutor.executeCommand","Alias traité",splitAliases[splitAliasesIndex]);
-      
-      handledAlias = splitAliases[splitAliasesIndex];
-      aliasNameSize = getAliasNameSize(handledAlias);
-      aliasName = getAliasName(handledAlias,aliasNameSize);
-       aliasNameIndex = aliasNameSize;
-       commandNameSize = getCommandNameSize(handledAlias, aliasNameIndex);
-       aliasRelatedCommand = getCommandName(handledAlias, aliasNameIndex, commandNameSize);
-       splitAliasesIndex++;
-       
-       log_string("CommandExecutor.executeCommand","Alias name",aliasName);
-       log_string("CommandExecutor.executeCommand","Commande passée",splitedBySpacesCommand[0]);
-       
-       
-    }
-  
-    char** split = str_split(c,'=');
-    char* commandToExecute = split[1];
-    removeChar(commandToExecute,'\'');
-    removeChar(commandToExecute,'|');
-    
-    
-    
-     if(!strcmp(enteredAliasName,aliasName)){
-           isSameAlias = true;
-       }else{
-           isSameAlias = false;
-       }
-       if(strcmp(enteredAliasRelatedCommand,aliasRelatedCommand)){
-           isSameCommand = true;
-       }else{
-           isSameCommand = false;
-       }
-  if(isSameAlias && !isSameCommand){
-      log_message("CommandExecutor.executeCommand","Nom de l'alias egal, mais pas la commande, remplacement..");
-      //     fclose(fptr);
-           printf("Content : %s",c);
-        //fptr = fopen("alias.txt", "w");
-        //fputs("test", fptr);
-       // fclose(fptr);
-  }
-  
-   
-  } 
-  
-  
-
-  
-      
-  
-  
-   if (fptr != NULL)
-    {
-      int count = strlen(splitedBySpacesCommand[1]);
-      char* result = malloc(sizeof(char*) * count+2);
-       result = splitedBySpacesCommand[1];
-       result[count] = '|';
-          result[count+1] = '\0';
-       printf(" result : %s",result);
-        fputs(result, fptr);
-        fclose(fptr);
-    }
-
-}
-
-
-
 void updateAliases(char** splitedBySpacesCommand){
-  log_message("CommandExecutor.executeCommand","Execution du la commande built in alias");
-  log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
-  // Opening update aliases files
-  FILE *fptr = fopen("alias.txt", "ab+");
-  FILE *aliasTmpFilePointer = fopen("aliasTmp.txt", "w");
-  char c[1000];
-  fscanf(fptr,"%[^\n]", c);
+    log_message("CommandExecutor.updateAliases","Execution du la commande built in alias");
+    log_message("CommandExecutor.updateAliases","Remplacement de la sortie standard par le descripteur du fichier");
+    // Opening update aliases files
+    FILE *fptr = fopen("alias.txt", "ab+");
+    FILE *aliasTmpFilePointer = fopen("aliasTmp.txt", "w");
+    char c[1000];
+    log_value("CommandExecutor.updateAliases","Taille de c :",strlen(c));
   
-  // Init split actuel aliases vars
-  char** splitAliases = str_split(c,'|');
-  int splitAliasesIndex = 0;
-  char* handledAlias;
-  char* aliasName;
-  char* aliasRelatedCommand;
-  int aliasNameSize = 0;
-  int aliasNameIndex = 0;
-  int commandNameSize = 0;
-  int splitAliasesSize = 0;
-  
-  // Init split entered alias vars
-  int enteredAliasNameSize = 0;
-  int enteredAliasNameIndex = 0;
-  char* enteredAliasName;
-  int enteredCommandNameSize = 0;
-  int enteredSplitAliasesSize = 0;
-  char* enteredAliasRelatedCommand;
-  bool isSameAlias = false;
-  bool isSameCommand = false;
-
-  // Getting entered alias informations 
-  handledAlias = splitedBySpacesCommand[1];
-  enteredAliasNameSize = getAliasNameSize(handledAlias);
-  enteredAliasName = getAliasName(handledAlias,enteredAliasNameSize);
-  enteredCommandNameSize = getCommandNameSize(handledAlias,enteredAliasNameSize);
-  enteredAliasRelatedCommand = getCommandName(handledAlias,enteredAliasNameSize,enteredCommandNameSize);
-  log_string("CommandExecutor.executeCommand","[Entered] Alias traité",handledAlias);
-  log_string("CommandExecutor.executeCommand","Alias name ( entered ) ",enteredAliasName);
-  log_string("CommandExecutor.executeCommand","Command name ( entered ) ",enteredAliasRelatedCommand);
+    // Init result vars
+    int count = 0;
+    char* result;
+    bool isAliasAdded = false;
    
-  // Get split aliases size
-  while(splitAliases[splitAliasesSize] != NULL){
-      splitAliasesSize++;
-  }
+    if(strlen(c) > 0){
+      fscanf(fptr,"%[^\n]", c);
   
-  if(splitAliasesSize > 0){
-    log_message("CommandExecutor.executeCommand","Traitement des alias");
-    // Iterating on existing file aliases
-    while(splitAliases[splitAliasesIndex] != NULL){
+      // Init split actuel aliases vars
+      char** splitAliases = str_split(c,'|');
+      int splitAliasesIndex = 0;
+      char* handledAlias;
+      char* aliasName;
+      char* aliasRelatedCommand;
+      int aliasNameSize = 0;
+      int aliasNameIndex = 0;
+      int commandNameSize = 0;
+      int splitAliasesSize = 0;
       
-        // Get alias info
-        handledAlias = splitAliases[splitAliasesIndex];
-        aliasNameSize = getAliasNameSize(handledAlias);
-        aliasName = getAliasName(handledAlias,aliasNameSize);
-        aliasNameIndex = aliasNameSize;
-        commandNameSize = getCommandNameSize(handledAlias, aliasNameIndex);
-        aliasRelatedCommand = getCommandName(handledAlias, aliasNameIndex, commandNameSize);
-        splitAliasesIndex++;
+      // Init split entered alias vars
+      int enteredAliasNameSize = 0;
+      char* enteredAliasName;
+      int enteredCommandNameSize = 0;
+      char* enteredAliasRelatedCommand;
+      bool isSameAlias = false;
+      bool isSameCommand = false;
+      
+ 
+     
+    
+      // Getting entered alias informations 
+      handledAlias = splitedBySpacesCommand[1];
+      enteredAliasNameSize = getAliasNameSize(handledAlias);
+      enteredAliasName = getAliasName(handledAlias,enteredAliasNameSize);
+      enteredCommandNameSize = getCommandNameSize(handledAlias,enteredAliasNameSize);
+      enteredAliasRelatedCommand = getCommandName(handledAlias,enteredAliasNameSize,enteredCommandNameSize);
+      log_string("CommandExecutor.updateAliases","[Entered] Alias traité",handledAlias);
+      log_string("CommandExecutor.updateAliases","Alias name ( entered ) ",enteredAliasName);
+      log_string("CommandExecutor.updateAliases","Command name ( entered ) ",enteredAliasRelatedCommand);
        
-        log_string("CommandExecutor.executeCommand","Alias traité",splitAliases[splitAliasesIndex]);
-        log_string("CommandExecutor.executeCommand","Alias name",aliasName);
-        log_string("CommandExecutor.executeCommand","Alias name entré",enteredAliasName);
-       
-        // Comparing with entered alias if name or command is the same
-        if(!strcmp(enteredAliasName,aliasName)){
-            log_message("CommandExecutor.executeCommand","Same alias");
-            isSameAlias = true;
-        }else{
-            log_message("CommandExecutor.executeCommand","Not same alias");
-            isSameAlias = false;
-        }
-        
-        if(!strcmp(enteredAliasRelatedCommand,aliasRelatedCommand)){
-            log_message("CommandExecutor.executeCommand","Same command");
-            isSameCommand = true;
-        }else{
-            log_message("CommandExecutor.executeCommand","Not same command");
-            isSameCommand = false;
-        }
-        
-        if(isSameAlias && !isSameCommand){
-            int count = strlen(splitedBySpacesCommand[1]);
-            char* result = malloc(sizeof(char*) * count+2);
-            result =splitedBySpacesCommand[1];
+      // Get split aliases size
+      while(splitAliases[splitAliasesSize] != NULL){
+          splitAliasesSize++;
+      }
+      
+      if(splitAliasesSize > 0){
+        log_message("CommandExecutor.updateAliases","Traitement des alias");
+        // Iterating on existing file aliases
+        while(splitAliases[splitAliasesIndex] != NULL){
+            // Get alias info
+            handledAlias = splitAliases[splitAliasesIndex];
+            aliasNameSize = getAliasNameSize(handledAlias);
+            aliasName = getAliasName(handledAlias,aliasNameSize);
+            aliasNameIndex = aliasNameSize;
+            commandNameSize = getCommandNameSize(handledAlias, aliasNameIndex);
+            aliasRelatedCommand = getCommandName(handledAlias, aliasNameIndex, commandNameSize);
+            splitAliasesIndex++;
+           
+            log_string("CommandExecutor.updateAliases","Alias traité",splitAliases[splitAliasesIndex]);
+            log_string("CommandExecutor.updateAliases","Alias name",aliasName);
+            log_string("CommandExecutor.updateAliases","Alias name entré",enteredAliasName);
+           
+            // Comparing with entered alias if name or command is the same
+            if(!strcmp(enteredAliasName,aliasName)){
+                log_message("CommandExecutor.updateAliases","Same alias");
+                isSameAlias = true;
+            }else{
+                log_message("CommandExecutor.updateAliases","Not same alias");
+                isSameAlias = false;
+            }
+            
+            if(!strcmp(enteredAliasRelatedCommand,aliasRelatedCommand)){
+                log_message("CommandExecutor.updateAliases","Same command");
+                isSameCommand = true;
+            }else{
+                log_message("CommandExecutor.updateAliases","Not same command");
+                isSameCommand = false;
+            }
+            
+            if(isSameAlias && !isSameCommand){
+                count = strlen(splitedBySpacesCommand[1]);
+                result = malloc(sizeof(char*) * count+2);
+                result =splitedBySpacesCommand[1];
+                isAliasAdded = true;
+                log_string("CommandExecutor.updateAliases","(Alias name trouvé mais commande différente) J'écris dans le fichier",result);
+            }else{
+                count = strlen(handledAlias);
+                result = malloc(sizeof(char*) * count+2);
+                result = handledAlias;
+                log_string("CommandExecutor.updateAliases","(Pas d'alias trouvé) J'écris dans le fichier",result);
+            }
             result[count] = '|';
             result[count+1] = '\0';
             fputs(result, aliasTmpFilePointer);
-            log_string("CommandExecutor.executeCommand","(Alias name trouvé mais commande différente) J'écris dans le fichier",result);
-        }else{
-            int count = strlen(handledAlias);
-            char* result = malloc(sizeof(char*) * count+2);
-            result = handledAlias;
-            result[count] = '|';
-            result[count+1] = '\0';
-            fputs(result, aliasTmpFilePointer);
-            log_string("CommandExecutor.executeCommand","(Pas d'alias trouvé) J'écris dans le fichier",result);
+            
         }
+      }
+  
     }
+    if(!isAliasAdded){
+        count = strlen(splitedBySpacesCommand[1]);
+        result = malloc(sizeof(char*) * count+2);
+        result =splitedBySpacesCommand[1];
+        fputs(result, aliasTmpFilePointer);
+    }
+    
     fclose(fptr);
     fclose(aliasTmpFilePointer);
     
     switch_from_file_content_to_file("aliasTmp.txt","alias.txt");
     empty_file("aliasTmp.txt");
- }
+
 }
 
 void handleAlias(char** splitedBySpacesCommand){
@@ -484,20 +386,6 @@ int handle_command(Node* node)
   if(!strcmp(splitedBySpacesCommand[0], "alias"))
   {
       updateAliases(splitedBySpacesCommand);
-    /*log_message("CommandExecutor.executeCommand","Execution du la commande built in alias");
-    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
-      FILE *fp = fopen("alias.txt", "ab+");
-    if (fp != NULL)
-    {
-      int count = strlen(splitedBySpacesCommand[1]);
-      char* result = malloc(sizeof(char*) * count+2);
-       result = splitedBySpacesCommand[1];
-       result[count] = '|';
-          result[count+1] = '\0';
-       printf(" result : %s",result);
-        fputs(result, fp);
-        fclose(fp);
-    }*/
   }
   if(!strcmp(splitedBySpacesCommand[0], "pwd"))
   {
