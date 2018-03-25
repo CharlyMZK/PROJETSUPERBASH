@@ -248,8 +248,27 @@ void handleAlias(char** splitedBySpacesCommand){
 }
 
 void removeAlias(char** splitedBySpacesCommand){
-    log_message("CommandExecutor.removeAliase","Execution du la commande built in alias");
-    log_message("CommandExecutor.removeAliase","Remplacement de la sortie standard par le descripteur du fichier");
+    
+    // Init split actuel aliases vars
+    char** splitAliases;
+    int splitAliasesIndex = 0;
+    char* handledAlias;
+    char* aliasName;
+    char* aliasRelatedCommand;
+    int aliasNameSize = 0;
+    int aliasNameIndex = 0;
+    int commandNameSize = 0;
+    int splitAliasesSize = 0;
+      
+    // Init split entered alias vars
+    int enteredAliasNameSize = 0;
+    char* enteredAliasName;
+    int enteredCommandNameSize = 0;
+    char* enteredAliasRelatedCommand;
+    bool isSameAlias = false;
+    bool isSameCommand = false; 
+    
+    
     // Opening update aliases files
     FILE *fptr = fopen("alias.txt", "ab+");
     FILE *aliasTmpFilePointer = fopen("aliasTmp.txt", "w");
@@ -261,27 +280,30 @@ void removeAlias(char** splitedBySpacesCommand){
     char* result;
     bool isAliasAdded = false;
    
+    log_message("CommandExecutor.removeAliase","Execution du la commande built in alias");
+    log_message("CommandExecutor.removeAliase","Remplacement de la sortie standard par le descripteur du fichier");
+    
     if(strlen(c) > 0){
       fscanf(fptr,"%[^\n]", c);
   
       // Init split actuel aliases vars
-      char** splitAliases = str_split(c,'|');
-      int splitAliasesIndex = 0;
-      char* handledAlias;
-      char* aliasName;
-      char* aliasRelatedCommand;
-      int aliasNameSize = 0;
-      int aliasNameIndex = 0;
-      int commandNameSize = 0;
-      int splitAliasesSize = 0;
+      splitAliases = str_split(c,'|');
+      splitAliasesIndex = 0;
+      handledAlias;
+      aliasName;
+      aliasRelatedCommand;
+      aliasNameSize = 0;
+      aliasNameIndex = 0;
+      commandNameSize = 0;
+      splitAliasesSize = 0;
       
       // Init split entered alias vars
-      int enteredAliasNameSize = 0;
-      char* enteredAliasName;
-      int enteredCommandNameSize = 0;
-      char* enteredAliasRelatedCommand;
-      bool isSameAlias = false;
-      bool isSameCommand = false; 
+      enteredAliasNameSize = 0;
+      enteredAliasName;
+      enteredCommandNameSize = 0;
+      enteredAliasRelatedCommand;
+      isSameAlias = false;
+      isSameCommand = false; 
     
       // Getting entered alias informations 
       handledAlias = splitedBySpacesCommand[1];
