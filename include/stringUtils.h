@@ -17,3 +17,5 @@ char** str_split(char* a_str, const char a_delim);
 int string_contain_and_at_end(char * command);
 
 void remove_newline_ch(char *line);
+
+void removeChar(char *str, char garbage);
