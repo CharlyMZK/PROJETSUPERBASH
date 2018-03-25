@@ -9,3 +9,5 @@ bool switch_from_file_content_to_file(char* fromFile, char* toFile);
 void display_file_content(char* path);
 
 bool append_from_file_content_to_file(char* fromFile, char* toFile);
+
+int fempty(char const *fname);

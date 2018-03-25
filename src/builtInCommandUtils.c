@@ -42,4 +42,3 @@ void echo(Node * node)
   copyCommand = substr(copyCommand,4,len-3);
   printf("%s\n",copyCommand);
 }
-

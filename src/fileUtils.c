@@ -143,3 +143,20 @@ void display_file_content(char* path){
     }
     fclose(fptr);
 }
+
+int fempty(char const *fname) 
+{
+	FILE *fdesc = fopen(fname,"r");
+	int ret = 0;
+ 
+	if( fdesc )
+	{
+		(void)fgetc(fdesc);
+		if( feof(fdesc) )
+		{
+			ret = 1;
+		}
+		fclose(fdesc);
+	}
+	return ret;
+}
