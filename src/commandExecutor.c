@@ -101,9 +101,15 @@ int handle_command(Node* node)
   
 
   handleAlias(splitedBySpacesCommand);
-
+log_message("CommandExecutor.executeCommand","Start execute command");
 
   //Executing custom command
+   if(!strcmp(splitedBySpacesCommand[0], "setenv"))
+  {
+    
+    log_message("CommandExecutor.executeCommand","Start set env");
+      setenv(splitedBySpacesCommand[1],splitedBySpacesCommand[2],0);
+  }else
   if(!strcmp(splitedBySpacesCommand[0], "alias"))
   {
       if(splitedBySpacesCommand[1] == NULL){
@@ -113,13 +119,13 @@ int handle_command(Node* node)
           log_message("CommandExecutor.executeCommand","Update alias");
         updateAliases(splitedBySpacesCommand);    
       }
-  }
+  }else
   if(!strcmp(splitedBySpacesCommand[0], "unalias"))
   {
       
           removeAlias(splitedBySpacesCommand);
      
-  }
+  }else
   if(!strcmp(splitedBySpacesCommand[0], "pwd"))
   {
     log_message("CommandExecutor.executeCommand","Execution du la commande built in pwd");
