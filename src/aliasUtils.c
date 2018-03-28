@@ -115,31 +115,32 @@ void updateAliases(char** splitedBySpacesCommand){
     char* result;
     bool isAliasAdded = false;
    
+   
+ 
+   // Init split actuel aliases vars
+  char** splitAliases;
+  int splitAliasesIndex = 0;
+  char* handledAlias;
+  char* aliasName;
+  char* aliasRelatedCommand;
+  int aliasNameSize = 0;
+  int aliasNameIndex = 0;
+  int commandNameSize = 0;
+  int splitAliasesSize = 0;
+  
+  // Init split entered alias vars
+  int enteredAliasNameSize = 0;
+  char* enteredAliasName;
+  int enteredCommandNameSize = 0;
+  char* enteredAliasRelatedCommand;
+  bool isSameAlias = false;
+  bool isSameCommand = false;
+      
     if(strlen(c) > 0){
       fscanf(fptr,"%[^\n]", c);
   
       // Init split actuel aliases vars
-      char** splitAliases = str_split(c,'|');
-      int splitAliasesIndex = 0;
-      char* handledAlias;
-      char* aliasName;
-      char* aliasRelatedCommand;
-      int aliasNameSize = 0;
-      int aliasNameIndex = 0;
-      int commandNameSize = 0;
-      int splitAliasesSize = 0;
-      
-      // Init split entered alias vars
-      int enteredAliasNameSize = 0;
-      char* enteredAliasName;
-      int enteredCommandNameSize = 0;
-      char* enteredAliasRelatedCommand;
-      bool isSameAlias = false;
-      bool isSameCommand = false;
-      
- 
-     
-    
+      splitAliases = str_split(c,'|'); 
       // Getting entered alias informations 
       handledAlias = splitedBySpacesCommand[1];
       enteredAliasNameSize = getAliasNameSize(handledAlias);
@@ -226,25 +227,25 @@ void updateAliases(char** splitedBySpacesCommand){
 
 
 void handleAlias(char** splitedBySpacesCommand){
-     char c[1000];
+    char c[1000];
     FILE *fptr;
-  if(!fempty("alias.txt")){
-    // Gestion des alias
-    
-    if ((fptr = fopen("alias.txt", "r")) == NULL)
-    {
-        printf("Error! opening file");
-        // Program exits if file pointer returns NULL.
-        exit(1);         
+    if(!fempty("alias.txt")){
+        // Gestion des alias
+        
+        if ((fptr = fopen("alias.txt", "r")) == NULL)
+        {
+            printf("Error! opening file");
+            // Program exits if file pointer returns NULL.
+            exit(1);         
+        }
+        
+        // reads text until newline 
+        fscanf(fptr,"%[^\n]", c);
+        
+        modifyCommandDependingOnAliasDefined(c,splitedBySpacesCommand);
+        fclose(fptr);
     }
 
-    // reads text until newline 
-    fscanf(fptr,"%[^\n]", c);
-
-    modifyCommandDependingOnAliasDefined(c,splitedBySpacesCommand);
-    fclose(fptr);
-  }
-  
 }
 
 void removeAlias(char** splitedBySpacesCommand){
