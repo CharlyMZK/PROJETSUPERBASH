@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stringUtils.h>
 #include <unistd.h>
 #define LSH_RL_BUFSIZE 1024
 
@@ -72,7 +73,10 @@ void bash_loop(void)
   do {
     printf("Prompt > ");
     command = read_console_line();
-    isRunning = create_and_execute_tree(command);
+     if(!isEmptyString(command)){
+       isRunning = create_and_execute_tree(command);
+     }
+      
     //isRunning = executeCommand(command);
   } while (isRunning);
   free(command);

@@ -237,3 +237,12 @@ void removeChar(char *str, char garbage) {
     }
     *dst = '\0';
 }
+
+bool isEmptyString(char* string){
+     if (string[0] == '\0')
+    {
+       return true;
+    }else{
+        return false;
+    }
+}
