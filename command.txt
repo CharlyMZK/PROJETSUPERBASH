@@ -34,3 +34,4 @@ ls | grep src
 ls | grep src 
 ls 
 ls 
+alias t='ls' 
