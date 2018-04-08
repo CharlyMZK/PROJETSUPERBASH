@@ -112,32 +112,30 @@ void updateAliases(char** splitedBySpacesCommand){
     FILE *aliasTmpFilePointer = fopen(ALIAS_TMP_FILEPATH, "w");
     char c[1000];
     log_value("CommandExecutor.updateAliases","Taille de c :",strlen(c));
-  
+    
     // Init result vars
     int count = 0;
     char* result;
     bool isAliasAdded = false;
-   
-   
- 
-   // Init split actuel aliases vars
-  char** splitAliases;
-  int splitAliasesIndex = 0;
-  char* handledAlias;
-  char* aliasName;
-  char* aliasRelatedCommand;
-  int aliasNameSize = 0;
-  int aliasNameIndex = 0;
-  int commandNameSize = 0;
-  int splitAliasesSize = 0;
-  
-  // Init split entered alias vars
-  int enteredAliasNameSize = 0;
-  char* enteredAliasName;
-  int enteredCommandNameSize = 0;
-  char* enteredAliasRelatedCommand;
-  bool isSameAlias = false;
-  bool isSameCommand = false;
+    
+    // Init split actuel aliases vars
+    char** splitAliases;
+    int splitAliasesIndex = 0;
+    char* handledAlias;
+    char* aliasName;
+    char* aliasRelatedCommand;
+    int aliasNameSize = 0;
+    int aliasNameIndex = 0;
+    int commandNameSize = 0;
+    int splitAliasesSize = 0;
+    
+    // Init split entered alias vars
+    int enteredAliasNameSize = 0;
+    char* enteredAliasName;
+    int enteredCommandNameSize = 0;
+    char* enteredAliasRelatedCommand;
+    bool isSameAlias = false;
+    bool isSameCommand = false;
       
     if(strlen(c) > 0){
       fscanf(fptr,"%[^\n]", c);

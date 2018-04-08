@@ -8,9 +8,18 @@
 #include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include<errno.h>
 #include "../include/treeUtils.h"
 #include "../include/logUtils.h"
 #include "../include/stringUtils.h"
+
+void checkIfFilesExists(FILE *fptr){
+   if(fptr == NULL){
+       dprintf(1,"\nException occured : ");
+       perror(strerror(errno));
+       exit(0);
+   }
+}
 
 /**
  * Vide le fichier path
