@@ -15,8 +15,9 @@
 #include "../include/logUtils.h"
 #include "../include/stringUtils.h"
 #define LSH_RL_BUFSIZE 1024
-#define OUTPUT_FILEPATH "./tmpOutputFile"
-#define INPUT_FILEPATH "./tmpInputFile"
+#define OUTPUT_FILEPATH "./data/global/tmpOutputFile"
+#define INPUT_FILEPATH "./data/global/tmpInputFile"
+#define LOG_FILEPATH "./data/log/command.txt"
 
 /**
  * Créer un arbre à partir de la commande passé en paramètre
@@ -179,7 +180,7 @@ bool read_and_exec_tree(Node* treeCommand){
  * Analyse la commande passé en paramètre et l'execute
  */
 int create_and_execute_tree(char* command){
-  log_in_file(command,"./command.txt");
+  log_in_file(command,LOG_FILEPATH);
   log_message("CommandHandler.handle_command","Handling command..");
   remove_space_at_beginning_and_end(command);
   //Vérifie si la commande dois être executer en arrière plan

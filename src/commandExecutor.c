@@ -19,8 +19,8 @@
 #include "../include/stringUtils.h"
 #include "../include/fileUtils.h"
 #define LSH_RL_BUFSIZE 1024
-#define OUTPUT_FILEPATH "./tmpOutputFile"
-#define INPUT_FILEPATH "./tmpInputFile"
+#define OUTPUT_FILEPATH "./data/global/tmpOutputFile"
+#define INPUT_FILEPATH "./data/global/tmpInputFile"
 
 /**
  * renvoie un tableau de string contenant la commande et ses paramètres 

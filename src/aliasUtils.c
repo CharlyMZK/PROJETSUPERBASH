@@ -6,6 +6,9 @@
 #include "../include/aliasUtils.h"
 #include "../include/logUtils.h"
 #include "../include/fileUtils.h"
+#define ALIAS_FILEPATH "./data/alias/alias.txt"
+#define ALIAS_TMP_FILEPATH "./data/alias/aliasTmp.txt"
+
 
 char* getCommandName(char* handledAlias, int aliasNameIndex,int commandNameSize){
     char* aliasRelatedCommand = malloc(sizeof(char)*(commandNameSize-2));
@@ -62,7 +65,7 @@ void displayAliases(){
     char** split;
     char* commandToExecute;
     
-    if ((fptr = fopen("alias.txt", "r")) == NULL)
+    if ((fptr = fopen(ALIAS_FILEPATH, "r")) == NULL)
     {
         printf("Error! opening file");
         // Program exits if file pointer returns NULL.
@@ -105,8 +108,8 @@ void updateAliases(char** splitedBySpacesCommand){
     log_message("CommandExecutor.updateAliases","Execution du la commande built in alias");
     log_message("CommandExecutor.updateAliases","Remplacement de la sortie standard par le descripteur du fichier");
     // Opening update aliases files
-    FILE *fptr = fopen("alias.txt", "ab+");
-    FILE *aliasTmpFilePointer = fopen("aliasTmp.txt", "w");
+    FILE *fptr = fopen(ALIAS_FILEPATH, "ab+");
+    FILE *aliasTmpFilePointer = fopen(ALIAS_TMP_FILEPATH, "w");
     char c[1000];
     log_value("CommandExecutor.updateAliases","Taille de c :",strlen(c));
   
@@ -220,8 +223,8 @@ void updateAliases(char** splitedBySpacesCommand){
     fclose(fptr);
     fclose(aliasTmpFilePointer);
     
-    switch_from_file_content_to_file("aliasTmp.txt","alias.txt");
-    empty_file("aliasTmp.txt");
+    switch_from_file_content_to_file(ALIAS_TMP_FILEPATH,ALIAS_FILEPATH);
+    empty_file(ALIAS_TMP_FILEPATH);
 
 }
 
@@ -229,10 +232,10 @@ void updateAliases(char** splitedBySpacesCommand){
 void handleAlias(char** splitedBySpacesCommand){
     char c[1000];
     FILE *fptr;
-    if(!fempty("alias.txt")){
+    if(!fempty(ALIAS_FILEPATH)){
         // Gestion des alias
         
-        if ((fptr = fopen("alias.txt", "r")) == NULL)
+        if ((fptr = fopen(ALIAS_FILEPATH, "r")) == NULL)
         {
             printf("Error! opening file");
             // Program exits if file pointer returns NULL.
@@ -270,8 +273,8 @@ void removeAlias(char** splitedBySpacesCommand){
     
     
     // Opening update aliases files
-    FILE *fptr = fopen("alias.txt", "ab+");
-    FILE *aliasTmpFilePointer = fopen("aliasTmp.txt", "w");
+    FILE *fptr = fopen(ALIAS_FILEPATH, "ab+");
+    FILE *aliasTmpFilePointer = fopen(ALIAS_TMP_FILEPATH, "w");
     char c[1000];
     log_value("CommandExecutor.removeAliase","Taille de c :",strlen(c));
   
@@ -350,8 +353,8 @@ void removeAlias(char** splitedBySpacesCommand){
     fclose(fptr);
     fclose(aliasTmpFilePointer);
     
-    switch_from_file_content_to_file("aliasTmp.txt","alias.txt");
-    empty_file("aliasTmp.txt");
+    switch_from_file_content_to_file(ALIAS_TMP_FILEPATH,ALIAS_FILEPATH);
+    empty_file(ALIAS_TMP_FILEPATH);
 }
 
 void modifyCommandDependingOnAliasDefined(char* c, char** splitedBySpacesCommand){
