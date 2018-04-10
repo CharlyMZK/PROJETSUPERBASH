@@ -155,7 +155,11 @@ void display_file_content(char* path){
 
 int fempty(char const *fname) 
 {
+    log_message("FileUtils.fempty","Is file empty?");
 	FILE *fdesc = fopen(fname,"r");
+	log_message("CommandExecutor.handleAlias","The file is opened, exist ?");
+	checkIfFilesExists(fdesc);
+	log_message("CommandExecutor.handleAlias","Is empty checked");
 	int ret = 0;
  
 	if( fdesc )
@@ -167,5 +171,6 @@ int fempty(char const *fname)
 		}
 		fclose(fdesc);
 	}
+	log_message("CommandExecutor.handleAlias","Returing fempty");
 	return ret;
 }

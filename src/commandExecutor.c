@@ -94,12 +94,12 @@ int handle_command(Node* node)
   //Début de l'écriture dans outputfile
   log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
   
-  printf("FEMPTY ? %d",fempty("alias.txt"));
+  
   
   empty_file(OUTPUT_FILEPATH);
   int fileDescriptorValue  = open(OUTPUT_FILEPATH, O_RDWR | O_CREAT);
   
-
+log_message("CommandExecutor.executeCommand","Handle alias");
   handleAlias(splitedBySpacesCommand);
 log_message("CommandExecutor.executeCommand","Start execute command");
 

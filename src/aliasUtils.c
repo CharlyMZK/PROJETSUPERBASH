@@ -30,7 +30,6 @@ char* getCommandName(char* handledAlias, int aliasNameIndex,int commandNameSize)
     return aliasRelatedCommand;
 }
 
-
 char* getAliasName(char* handledAlias, int aliasNameSize){
       char* aliasName = malloc(sizeof(char)*aliasNameSize);
       char currentCharGet = '\0';
@@ -49,7 +48,6 @@ char* getAliasName(char* handledAlias, int aliasNameSize){
        return aliasName;
 }
 
-
 void displayAliases(){
     char c[1000];
     FILE *fptr;
@@ -64,14 +62,8 @@ void displayAliases(){
     char** splitAliases;
     char** split;
     char* commandToExecute;
-    
-    if ((fptr = fopen(ALIAS_FILEPATH, "r")) == NULL)
-    {
-        printf("Error! opening file");
-        // Program exits if file pointer returns NULL.
-        exit(1);         
-    }
-
+    fptr = fopen(ALIAS_FILEPATH, "r");
+    checkIfFilesExists(fptr);
     //reads text until newline 
     fscanf(fptr,"%[^\n]", c);
     splitAliases = str_split(c,'|');
@@ -136,7 +128,11 @@ void updateAliases(char** splitedBySpacesCommand){
     char* enteredAliasRelatedCommand;
     bool isSameAlias = false;
     bool isSameCommand = false;
-      
+     
+     
+    checkIfFilesExists(fptr);
+    checkIfFilesExists(aliasTmpFilePointer);
+    
     if(strlen(c) > 0){
       fscanf(fptr,"%[^\n]", c);
   
@@ -226,13 +222,13 @@ void updateAliases(char** splitedBySpacesCommand){
 
 }
 
-
 void handleAlias(char** splitedBySpacesCommand){
     char c[1000];
     FILE *fptr;
+    log_message("CommandExecutor.handleAlias","Checking if file empty ?");
     if(!fempty(ALIAS_FILEPATH)){
         // Gestion des alias
-        
+    log_message("CommandExecutor.handleAlias","Start reading");    
         if ((fptr = fopen(ALIAS_FILEPATH, "r")) == NULL)
         {
             printf("Error! opening file");
@@ -242,7 +238,6 @@ void handleAlias(char** splitedBySpacesCommand){
         
         // reads text until newline 
         fscanf(fptr,"%[^\n]", c);
-        
         modifyCommandDependingOnAliasDefined(c,splitedBySpacesCommand);
         fclose(fptr);
     }
@@ -280,7 +275,8 @@ void removeAlias(char** splitedBySpacesCommand){
     int count = 0;
     char* result;
     
-   
+   checkIfFilesExists(fptr);
+   checkIfFilesExists(aliasTmpFilePointer);
     log_message("CommandExecutor.removeAliase","Execution du la commande built in alias");
     log_message("CommandExecutor.removeAliase","Remplacement de la sortie standard par le descripteur du fichier");
     
