@@ -9,7 +9,6 @@
 #define ALIAS_FILEPATH "./data/alias/alias.txt"
 #define ALIAS_TMP_FILEPATH "./data/alias/aliasTmp.txt"
 
-
 char* getCommandName(char* handledAlias, int aliasNameIndex,int commandNameSize){
     char* aliasRelatedCommand = malloc(sizeof(char)*(commandNameSize-2));
     char currentCharGet = '\0';
@@ -275,8 +274,8 @@ void removeAlias(char** splitedBySpacesCommand){
     int count = 0;
     char* result;
     
-   checkIfFilesExists(fptr);
-   checkIfFilesExists(aliasTmpFilePointer);
+    checkIfFilesExists(fptr);
+    checkIfFilesExists(aliasTmpFilePointer);
     log_message("CommandExecutor.removeAliase","Execution du la commande built in alias");
     log_message("CommandExecutor.removeAliase","Remplacement de la sortie standard par le descripteur du fichier");
     
@@ -409,14 +408,14 @@ int getAliasNameSize(char* handledAlias){
 }
 
 int getCommandNameSize(char* handledAlias, int indexToStart){
-      int commandNameSize = 0;
-      int commandNameIndex = indexToStart;
-      char currentCharGet = '\0';
-      log_message("CommandExecutor.executeCommand","Getting command name size");
-      do{
-         currentCharGet = handledAlias[commandNameIndex];
-         commandNameIndex++;
-         commandNameSize ++ ;
-       }while(currentCharGet != '\0');
-       return commandNameSize;
+  int commandNameSize = 0;
+  int commandNameIndex = indexToStart;
+  char currentCharGet = '\0';
+  log_message("CommandExecutor.executeCommand","Getting command name size");
+  do{
+     currentCharGet = handledAlias[commandNameIndex];
+     commandNameIndex++;
+     commandNameSize ++ ;
+   }while(currentCharGet != '\0');
+   return commandNameSize;
 }

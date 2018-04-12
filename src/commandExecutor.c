@@ -155,7 +155,9 @@ int handle_command(Node* node)
   wait(&status); 
   }
   
-  checkIfCommandSucceeded(execReturnValue,node->command);
+  if(!ifStringContainsDot(node->command)){
+    checkIfCommandSucceeded(execReturnValue,node->command);
+  }
   // Get back to normal state
   dup2(standardInPutCopy ,1);
   log_message("CommandExecutor.executeCommand","Retour sur le thread normal.");

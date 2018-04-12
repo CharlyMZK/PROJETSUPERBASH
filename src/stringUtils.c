@@ -246,3 +246,18 @@ bool isEmptyString(char* string){
         return false;
     }
 }
+
+bool ifStringContainsDot(char* string){
+  int len=strlen(string);
+  int i = 0;
+  for(i=0;i<len;i++)
+    {
+        if(string[i]=='.')
+        {
+        return true;
+        
+        }
+    
+    }
+  return false;
+}
