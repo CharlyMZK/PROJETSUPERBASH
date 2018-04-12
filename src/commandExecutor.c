@@ -10,6 +10,7 @@
 #include <assert.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include<errno.h>
 #include <stdbool.h>
 #include "../include/treeUtils.h"
 #include "../include/builtInCommandUtils.h"
@@ -75,6 +76,7 @@ bool is_separator_appending_a_file(Node* node){
  */
 int handle_command(Node* node)
 {
+  int execReturnValue = 0;
   // If the node got < or << we are redirecting the output instead of executing command
   if(is_separator_appending_a_file(node)){
     log_message("CommandExecutor.handle_command","Appending to a file");
@@ -147,16 +149,25 @@ int handle_command(Node* node)
       log_string("CommandExecutor.executeCommand","with token ",splitedBySpacesCommand[0]);
       log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
       dup2(fileDescriptorValue ,1);
-      execvp(splitedBySpacesCommand[0],splitedBySpacesCommand);
+      execReturnValue = execvp(splitedBySpacesCommand[0],splitedBySpacesCommand);
     }
   int status;
   wait(&status); 
   }
   
+  checkIfCommandSucceeded(execReturnValue,node->command);
   // Get back to normal state
   dup2(standardInPutCopy ,1);
   log_message("CommandExecutor.executeCommand","Retour sur le thread normal.");
   empty_file(INPUT_FILEPATH);
   return true;
+}
+
+void checkIfCommandSucceeded(int execReturnValue, char* command){
+  if(execReturnValue == -1){
+       dprintf(1,"\nBash: %s: command not found\n",command);
+       perror(strerror(errno));
+       exit(0);
+   }
 }
 

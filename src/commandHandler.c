@@ -177,6 +177,14 @@ bool read_and_exec_tree(Node* treeCommand){
   return true;
 }
 
+void checkIfForkSuccessed(int forkReturnValue){
+   if(forkReturnValue == -1){
+       dprintf(1,"\nException occured : ");
+       perror(strerror(errno));
+       exit(0);
+   }
+}
+
 /**
  * Analyse la commande passé en paramètre et l'execute
  */
@@ -218,10 +226,3 @@ int create_and_execute_tree(char* command){
   return true;
 }
 
-void checkIfForkSuccessed(int forkReturnValue){
-   if(forkReturnValue == -1){
-       dprintf(1,"\nException occured : ");
-       perror(strerror(errno));
-       exit(0);
-   }
-}

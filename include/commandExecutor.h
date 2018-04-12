@@ -1,3 +1,4 @@
+void checkIfCommandSucceeded(int execReturnValue, char* command);
 
 char** build_command(Node * node);
  
