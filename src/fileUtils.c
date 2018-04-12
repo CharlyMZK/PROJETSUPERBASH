@@ -39,19 +39,20 @@ void delete_file(char* path){
  * renvoie true si le fichier path est vide
  */
 bool is_file_empty(char* path){
-  log_message("FileUtils.empty_file","Is this file empty ?");
+  log_message("FileUtils.is_file_empty","Is this file empty ?");
   int size = 0;
   FILE *fptr = fopen(path, "a");
+  checkIfFilesExists(fptr);
   if (NULL != fptr) {
     fseek (fptr, 0, SEEK_END);
     size = ftell(fptr);
 
     if (0 == size) {
-      log_message("FileUtils.empty_file","Yes");
+      log_message("FileUtils.is_file_empty","Yes");
         return true;
     }
   }
-  log_message("FileUtils.empty_file","No");
+  log_message("FileUtils.is_file_empty","No");
  return false;
 }
 
@@ -101,6 +102,7 @@ bool append_from_file_content_to_file(char* fromFile, char* toFile){
     char c;
     // Open one file for reading
     fptr1 = fopen(fromFile, "r");
+    checkIfFilesExists(fptr1);
     if (fptr1 == NULL)
     {
         log_string("FileUtils.switch_from_file_content_to_file","Cannot open file ",fromFile);
@@ -109,6 +111,7 @@ bool append_from_file_content_to_file(char* fromFile, char* toFile){
  
     // Open another file for writing
     fptr2 = fopen(toFile, "a+");
+     checkIfFilesExists(fptr2);
     if (fptr2 == NULL)
     {
         log_string("FileUtils.switch_from_file_content_to_file","Cannot open file ",toFile);
@@ -137,6 +140,7 @@ void display_file_content(char* path){
   log_message("FileUtils.display_file_content","Displaying file content..");
     // Open file
     fptr = fopen(path, "r");
+    checkIfFilesExists(fptr);
     if (fptr == NULL)
     {
         log_message("FileUtils.append_from_file_content_to_file","Cannot open file");
@@ -151,26 +155,4 @@ void display_file_content(char* path){
         c = fgetc(fptr);
     }
     fclose(fptr);
-}
-
-int fempty(char const *fname) 
-{
-    log_message("FileUtils.fempty","Is file empty?");
-	FILE *fdesc = fopen(fname,"r");
-	log_message("CommandExecutor.handleAlias","The file is opened, exist ?");
-	checkIfFilesExists(fdesc);
-	log_message("CommandExecutor.handleAlias","Is empty checked");
-	int ret = 0;
- 
-	if( fdesc )
-	{
-		(void)fgetc(fdesc);
-		if( feof(fdesc) )
-		{
-			ret = 1;
-		}
-		fclose(fdesc);
-	}
-	log_message("CommandExecutor.handleAlias","Returing fempty");
-	return ret;
 }

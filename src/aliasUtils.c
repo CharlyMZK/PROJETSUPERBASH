@@ -226,7 +226,7 @@ void handleAlias(char** splitedBySpacesCommand){
     char c[1000];
     FILE *fptr;
     log_message("CommandExecutor.handleAlias","Checking if file empty ?");
-    if(!fempty(ALIAS_FILEPATH)){
+    if(!is_file_empty(ALIAS_FILEPATH)){
         // Gestion des alias
     log_message("CommandExecutor.handleAlias","Start reading");    
         if ((fptr = fopen(ALIAS_FILEPATH, "r")) == NULL)

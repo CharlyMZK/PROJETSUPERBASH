@@ -45,7 +45,7 @@ char** build_command(Node * node)
  */
 bool write_node_in_file(Node* node){
   log_message("CommandExecutor.executeCommand","Ecriture dans un nouveau fichier..");
-    return switch_from_file_content_to_file(INPUT_FILEPATH,node->command);
+  return switch_from_file_content_to_file(INPUT_FILEPATH,node->command);
 }
 
 /**
@@ -53,7 +53,7 @@ bool write_node_in_file(Node* node){
  */
 bool append_node_in_file(Node* node){
   log_message("CommandExecutor.executeCommand","Ajout a la suite du fichier..");
-    return append_from_file_content_to_file(INPUT_FILEPATH,node->command);
+  return append_from_file_content_to_file(INPUT_FILEPATH,node->command);
 }
 
 /**
@@ -84,78 +84,60 @@ int handle_command(Node* node)
      write_node_in_file(node);
   }
   
- // Handling command
- char** splitedBySpacesCommand = build_command(node);
- 
- //Sauvegarde du file descripteur
- log_message("CommandExecutor.executeCommand","Sauvegarde du file descritor..");
- int standardInPutCopy  = dup(1);
+  // Handling command
+  char** splitedBySpacesCommand = build_command(node);
+  
+  //Sauvegarde du file descripteur
+  log_message("CommandExecutor.executeCommand","Sauvegarde du file descritor..");
+  int standardInPutCopy  = dup(1);
   
   //Début de l'écriture dans outputfile
   log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
   
-  
-  
+
   empty_file(OUTPUT_FILEPATH);
   int fileDescriptorValue  = open(OUTPUT_FILEPATH, O_RDWR | O_CREAT);
   
-log_message("CommandExecutor.executeCommand","Handle alias");
+  log_message("CommandExecutor.executeCommand","Handle alias");
   handleAlias(splitedBySpacesCommand);
-log_message("CommandExecutor.executeCommand","Start execute command");
+  log_message("CommandExecutor.executeCommand","Start execute command");
 
   //Executing custom command
-   if(!strcmp(splitedBySpacesCommand[0], "setenv"))
+  if(!strcmp(splitedBySpacesCommand[0], "setenv"))
   {
-    
     log_message("CommandExecutor.executeCommand","Start set env");
-      setenv(splitedBySpacesCommand[1],splitedBySpacesCommand[2],0);
-  }else
-  if(!strcmp(splitedBySpacesCommand[0], "alias"))
-  {
+    setenv(splitedBySpacesCommand[1],splitedBySpacesCommand[2],0);
+  }else if(!strcmp(splitedBySpacesCommand[0], "alias")) {
       if(splitedBySpacesCommand[1] == NULL){
           log_message("CommandExecutor.executeCommand","Display alias");
           displayAliases();
       }else{
           log_message("CommandExecutor.executeCommand","Update alias");
-        updateAliases(splitedBySpacesCommand);    
+          updateAliases(splitedBySpacesCommand);    
       }
-  }else
-  if(!strcmp(splitedBySpacesCommand[0], "unalias"))
-  {
-      
-          removeAlias(splitedBySpacesCommand);
-     
-  }else
-  if(!strcmp(splitedBySpacesCommand[0], "pwd"))
-  {
+  }else if(!strcmp(splitedBySpacesCommand[0], "unalias")) {
+      removeAlias(splitedBySpacesCommand);
+  }else if(!strcmp(splitedBySpacesCommand[0], "pwd")) {
     log_message("CommandExecutor.executeCommand","Execution du la commande built in pwd");
     log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
     dup2(fileDescriptorValue ,1);
     print_current_directory();
-  }
-  else if(!strcmp(splitedBySpacesCommand[0], "cd"))
-  {
+  } else if(!strcmp(splitedBySpacesCommand[0], "cd")) {
     log_message("CommandExecutor.executeCommand","Execution du la commande built in cd");
     log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
     dup2(fileDescriptorValue ,1);
     change_current_directory(splitedBySpacesCommand[1]);
-  }
-  else if(!strcmp(splitedBySpacesCommand[0], "echo"))
-  {
+  } else if(!strcmp(splitedBySpacesCommand[0], "echo")) {
     log_message("CommandExecutor.executeCommand","Execution du la commande built in echo");
     log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
     dup2(fileDescriptorValue ,1);
     echo(node);
-  }
-  else if(!strcmp(splitedBySpacesCommand[0], "exit"))
-  {
+  } else if(!strcmp(splitedBySpacesCommand[0], "exit")) {
     log_message("CommandExecutor.executeCommand","Execution du la commande built in exit");
     log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
     dup2(fileDescriptorValue ,1);
     exit(EXIT_SUCCESS);
-  }
-  else
-  {
+  } else{
     // Executing command from exec
     int forkId = fork();
     if(forkId == 0)
