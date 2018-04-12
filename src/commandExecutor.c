@@ -140,6 +140,7 @@ int handle_command(Node* node)
   } else{
     // Executing command from exec
     int forkId = fork();
+    checkIfForkSuccessed(forkId);
     if(forkId == 0)
     {
       log_string("CommandExecutor.executeCommand","Executing ",node->command);

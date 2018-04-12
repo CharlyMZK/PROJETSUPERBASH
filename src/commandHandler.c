@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include<errno.h>
 #include <unistd.h>
 #include "../include/treeUtils.h"
 #include "../include/commandHandler.h"
@@ -201,6 +202,7 @@ int create_and_execute_tree(char* command){
   {
     log_string("CommandHandler.create_and_execute_tree","lancement de la commande en arrière plan :",command);
     forkId = fork();
+    checkIfForkSuccessed(forkId);
     if(forkId)
       return true;
   }
@@ -214,4 +216,12 @@ int create_and_execute_tree(char* command){
   log_message("CommandExecutor.handle_command","Cleaning files..");
   empty_file(OUTPUT_FILEPATH);
   return true;
+}
+
+void checkIfForkSuccessed(int forkReturnValue){
+   if(forkReturnValue == -1){
+       dprintf(1,"\nException occured : ");
+       perror(strerror(errno));
+       exit(0);
+   }
 }
