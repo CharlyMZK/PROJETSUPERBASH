@@ -1,3 +1,4 @@
+#include <stdbool.h>
 /**
  * @brief noeud de l'arbre
  * 

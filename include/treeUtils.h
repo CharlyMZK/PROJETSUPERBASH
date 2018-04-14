@@ -12,6 +12,7 @@
 #define and_separator '&'
 #define higher_separator '>'
 #define lower_separator '<'
+#define continue_separator ';'
 
 Node* create_root(char* command, Node* leftChild, Node* rightChild);
 

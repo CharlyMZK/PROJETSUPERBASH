@@ -144,6 +144,7 @@ bool read_and_exec_tree(Node* treeCommand){
     
     if(read_and_exec_tree(treeCommand->leftChild)){
       log_message("CommandHandler.read_and_exec_tree","Leftchild is not null");  
+      
       if(treeCommand->command != NULL){
         log_string("CommandHandler.read_and_exec_tree","(Command not null ) Executing command",treeCommand->command);
         handle_command(treeCommand);
@@ -155,6 +156,10 @@ bool read_and_exec_tree(Node* treeCommand){
         if(treeCommand->separator != NULL && (treeCommand->separator[1] == lower_separator)){
            log_message("CommandHandler.read_and_exec_tree","Rightchild command is a file, he's not executed.");
            return true;
+         }
+         if(treeCommand->separator != NULL && (treeCommand->separator[1] == continue_separator)){
+           log_message("CommandHandler.read_and_exec_tree","Separator is continue, going to right child");
+           return read_and_exec_tree(treeCommand->rightChild);
          }
         log_message("CommandHandler.read_and_exec_tree","Command is null, its a separator");
         remove_space_at_beginning_and_end(treeCommand->separator);
