@@ -2,7 +2,7 @@
  * @file
  * contient les fonctions relative à l'utilisation de l'arbre
  */
-
+#include <typedef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
