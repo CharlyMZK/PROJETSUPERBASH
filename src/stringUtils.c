@@ -154,6 +154,58 @@ char** str_split(char* a_str, const char a_delim)
 }
 
 /**
+ * Split la chaine a_str avec le délimiteur a_delim, et donne la taille du tableau dans size
+ */
+char** str_split_size_array(char* a_str, const char a_delim, int * size)
+{
+    char** result    = 0;
+    size_t count     = 0;
+    char* tmp        = a_str;
+    char* last_comma = 0;
+    char delim[2];
+    delim[0] = a_delim;
+    delim[1] = 0;
+
+    /* Count how many elements will be extracted. */
+    while (*tmp)
+    {
+        if (a_delim == *tmp)
+        {
+            count++;
+            last_comma = tmp;
+        }
+        tmp++;
+    }
+
+    /* Add space for trailing token. */
+    count += last_comma < (a_str + strlen(a_str) - 1);
+
+    /* Add space for terminating null string so caller
+       knows where the list of returned strings ends. */
+    count++;
+
+    result = malloc(sizeof(char*) * count);
+
+    if (result)
+    {
+        size_t idx  = 0;
+        char* token = strtok(a_str, delim);
+
+        while (token)
+        {
+            assert(idx < count);
+            *(result + idx++) = strdup(token);
+            token = strtok(0, delim);
+        }
+        assert(idx == count - 1);
+        *(result + idx) = 0;
+    }
+    
+    *size = count;
+    return result;
+}
+
+/**
  * Créer un tableau d'arguments en séparant la chaine args pour chaque espace et en ajoutant la chaine path
  */
 char** str_split_and_add_path(char * args,char * path)
@@ -238,6 +290,10 @@ void removeChar(char *str, char garbage) {
     *dst = '\0';
 }
 
+
+/**
+ * Renvoie true si la string string est vide et faux sinon
+ */
 bool isEmptyString(char* string){
      if (string[0] == '\0')
     {
@@ -247,12 +303,33 @@ bool isEmptyString(char* string){
     }
 }
 
+/**
+ * Renvoie true si la chaine contient un .
+ */
 bool ifStringContainsDot(char* string){
   int len=strlen(string);
   int i = 0;
   for(i=0;i<len;i++)
     {
         if(string[i]=='.')
+        {
+        return true;
+        
+        }
+    
+    }
+  return false;
+}
+
+/**
+ * Renvoie true si la chaine contient un .
+ */
+bool ifStringContainsHyphen(char* string){
+  int len=strlen(string);
+  int i = 0;
+  for(i=0;i<len;i++)
+    {
+        if(string[i]=='-')
         {
         return true;
         

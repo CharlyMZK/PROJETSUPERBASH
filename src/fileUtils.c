@@ -13,6 +13,9 @@
 #include "../include/logUtils.h"
 #include "../include/stringUtils.h"
 
+/**
+ * Vérifie si le file fptr existe et gère l'erreur en cas d'échec
+ */
 void checkIfFilesExists(FILE *fptr){
    if(fptr == NULL){
        dprintf(1,"\nException occured : ");
@@ -94,6 +97,9 @@ bool switch_from_file_content_to_file(char* fromFile, char* toFile){
     return 1;
 }
 
+/**
+ * Ajoute le contenu du fichier fromFile au fichier toFile
+ */
 bool append_from_file_content_to_file(char* fromFile, char* toFile){
    log_message("FileUtils.append_from_file_content_to_file","Preparing input file ..");
    log_string("FileUtils.append_from_file_content_to_file","Copying from ",fromFile);

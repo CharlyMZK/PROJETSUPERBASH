@@ -16,6 +16,7 @@
 #include "../include/builtInCommandUtils.h"
 #include "../include/aliasUtils.h"
 #include "../include/commandExecutor.h"
+#include "../include/commandHandler.h"
 #include "../include/logUtils.h"
 #include "../include/stringUtils.h"
 #include "../include/fileUtils.h"
@@ -26,8 +27,7 @@
 /**
  * renvoie un tableau de string contenant la commande et ses paramètres 
  */
-char** build_command(Node * node)
-{
+char** build_command(Node * node){
   char** splitedBySpacesCommand;
   char * copyCommand = malloc(sizeof(char) * strlen(node->command));
   strcpy(copyCommand,node->command);
@@ -155,9 +155,12 @@ int handle_command(Node* node)
   wait(&status); 
   }
   
-  if(!ifStringContainsDot(node->command)){
+  if(ifStringContainsHyphen(node->command)){
+    log_message("CommandExecutor.executeCommand","Contains hyphen, handling option ");
+  }else if(!ifStringContainsDot(node->command)){
     checkIfCommandSucceeded(execReturnValue,node->command);
   }
+  
   // Get back to normal state
   dup2(standardInPutCopy ,1);
   log_message("CommandExecutor.executeCommand","Retour sur le thread normal.");
@@ -165,6 +168,9 @@ int handle_command(Node* node)
   return true;
 }
 
+/**
+ * Vérifie si la commande command à réussi et gère les erreurs en cas d'échec
+ */
 void checkIfCommandSucceeded(int execReturnValue, char* command){
   if(execReturnValue == -1){
        dprintf(1,"\nBash: %s: command not found\n",command);

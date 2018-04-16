@@ -99,6 +99,10 @@ Node* create_tree_from_command(char* command){
   return root;
 }
 
+/**
+ * Demande à l'utilisateur d'entrer du texte sur l'invit de commande
+ * stock le texte entré dans le noeud
+ */
 bool read_entered_parameters(Node* treeCommand){
   FILE *out = fopen(INPUT_FILEPATH, "a+");  
   char enteredString[255]= "";
@@ -147,6 +151,7 @@ bool read_and_exec_tree(Node* treeCommand){
       
       if(treeCommand->command != NULL){
         log_string("CommandHandler.read_and_exec_tree","(Command not null ) Executing command",treeCommand->command);
+        log_string("CommandHandler.read_and_exec_tree","(Both childs Null) Input value :",treeCommand->inputValue);
         handle_command(treeCommand);
         if(treeCommand->result != NULL && treeCommand->command != NULL){
           log_string("CommandHandler.read_and_exec_tree","Command was",treeCommand->command);
@@ -158,6 +163,8 @@ bool read_and_exec_tree(Node* treeCommand){
            return true;
          }
          if(treeCommand->separator != NULL && (treeCommand->separator[1] == continue_separator)){
+           remove_space_at_beginning_and_end(treeCommand->separator);
+           treeCommand->rightChild->inputValue = treeCommand->separator;
            log_message("CommandHandler.read_and_exec_tree","Separator is continue, going to right child");
            return read_and_exec_tree(treeCommand->rightChild);
          }
@@ -170,6 +177,7 @@ bool read_and_exec_tree(Node* treeCommand){
     }
   }else if(treeCommand->leftChild == NULL && treeCommand->rightChild == NULL){
     log_string("CommandHandler.read_and_exec_tree","(Both childs Null) Executing command",treeCommand->command);
+    log_string("CommandHandler.read_and_exec_tree","(Both childs Null) Input value :",treeCommand->inputValue);
     bool isExecuted = 0;
     isExecuted = handle_command(treeCommand);
     log_message("CommandHandler.read_and_exec_tree","This node is at the end of three, command executed.");
@@ -182,6 +190,9 @@ bool read_and_exec_tree(Node* treeCommand){
   return true;
 }
 
+/**
+ * Vérifie si le fork à réussi
+ */
 void checkIfForkSuccessed(int forkReturnValue){
    if(forkReturnValue == -1){
        dprintf(1,"\nException occured : ");

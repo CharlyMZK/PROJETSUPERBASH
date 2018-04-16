@@ -1,3 +1,8 @@
+/**
+ * @file
+ * contient les fonctions permettant de gérer les alias
+ */
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdbool.h>
@@ -10,6 +15,10 @@
 #define ALIAS_FILEPATH "./data/alias/alias.txt"
 #define ALIAS_TMP_FILEPATH "./data/alias/aliasTmp.txt"
 
+/**
+ * Renvoie la chaine de caractère de taille commandNameSize,en récupérant la fin de la chaine handedAlias 
+ * et commencant à l'index aaliasNameIndex 
+ */
 char* getCommandName(char* handledAlias, int aliasNameIndex,int commandNameSize){
     char* aliasRelatedCommand = malloc(sizeof(char)*(commandNameSize-2));
     char currentCharGet = '\0';
@@ -30,6 +39,9 @@ char* getCommandName(char* handledAlias, int aliasNameIndex,int commandNameSize)
     return aliasRelatedCommand;
 }
 
+/**
+ * Récupère le le début d'une string jusqu'à rencontrer le symbole =
+ */
 char* getAliasName(char* handledAlias, int aliasNameSize){
       char* aliasName = malloc(sizeof(char)*aliasNameSize);
       char currentCharGet = '\0';
@@ -48,6 +60,9 @@ char* getAliasName(char* handledAlias, int aliasNameSize){
        return aliasName;
 }
 
+/**
+ * Affiche les alias sauvegardé par le système
+ */
 void displayAliases(){
     char c[1000];
     FILE *fptr;
@@ -96,6 +111,9 @@ void displayAliases(){
   }
 }
 
+/**
+ * Met à jours les alias en fonction de la commande splitedBySpacesCommand
+ */
 void updateAliases(char** splitedBySpacesCommand){
     log_message("CommandExecutor.updateAliases","Execution du la commande built in alias");
     log_message("CommandExecutor.updateAliases","Remplacement de la sortie standard par le descripteur du fichier");
@@ -222,6 +240,9 @@ void updateAliases(char** splitedBySpacesCommand){
 
 }
 
+/**
+ * Gère l'alias 
+ */
 void handleAlias(char** splitedBySpacesCommand){
     char c[1000];
     FILE *fptr;
@@ -244,6 +265,9 @@ void handleAlias(char** splitedBySpacesCommand){
 
 }
 
+/**
+ * Supprime l'alias contenu dans splitedBySpacesCommand
+ */
 void removeAlias(char** splitedBySpacesCommand){
     
     // Init split actuel aliases vars
@@ -351,6 +375,9 @@ void removeAlias(char** splitedBySpacesCommand){
     empty_file(ALIAS_TMP_FILEPATH);
 }
 
+/**
+ * remplace une commande utilisant un alias par la commande défini dans l'alias
+ */
 void modifyCommandDependingOnAliasDefined(char* c, char** splitedBySpacesCommand){
     char** splitAliases = str_split(c,'|');
     int splitAliasesIndex = 0;
@@ -397,6 +424,9 @@ void modifyCommandDependingOnAliasDefined(char* c, char** splitedBySpacesCommand
   }
 }
 
+/**
+ * Renvoie le nombre de caractère présent avant la première occurence du caractère =
+ */
 int getAliasNameSize(char* handledAlias){
     char currentCharGet = '\0';
     int aliasNameSize = 0;
@@ -408,6 +438,9 @@ int getAliasNameSize(char* handledAlias){
     return aliasNameSize;
 }
 
+/**
+ * Renvoie le nombre de caractères présent après l'indexToStart dans la string handledAlias 
+ */
 int getCommandNameSize(char* handledAlias, int indexToStart){
   int commandNameSize = 0;
   int commandNameIndex = indexToStart;
