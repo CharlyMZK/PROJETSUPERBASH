@@ -34,6 +34,15 @@ $(GEXEC):
 
 doc:
 	doxygen $(DOC_DIR)/doxygen.conf
+	
+man:
+	sudo mkdir -p /usr/local/man/man3
+	sudo cp man/superbash /usr/local/man/man3/superbash.3
+	sudo cp man/superbash /usr/share/man/man3/superbash.3
+	sudo gzip /usr/local/man/man3/superbash.3
+	sudo gzip /usr/share/man/man3/superbash.3
+	#man /usr/local/man/man3/superbash.1.gz
+	man superbash
 
 gcov: $(GEXEC)
 	# generate some data for gcov by calling the generated binary with various options
@@ -59,4 +68,4 @@ mrproper: clean
 	rm -rf $(DOC_DIR)/html/
 	rm -rf $(GCOV_DIR)/*
 
-.PHONY: doc
+.PHONY: doc man

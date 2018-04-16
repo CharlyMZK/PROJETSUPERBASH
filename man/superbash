@@ -1,0 +1,17 @@
+.\" Manpage for superbash.
+.\" Contact us to correct errors or typos.
+.TH man 8 "01 January 2018" "1.0" "Superbash man page"
+.SH NAME
+superbash \- launch a cmd bash
+.SH SYNOPSIS
+superbash [cmd]
+.SH DESCRIPTION
+superbash is shell program launching a shell
+.SH OPTIONS
+The nuseradd does not take any options. However, you can supply a command.
+.SH SEE ALSO
+superbash cmd
+.SH BUGS
+No known bugs.
+.SH AUTHOR
+Bob & Charly
