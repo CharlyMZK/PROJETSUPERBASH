@@ -36,8 +36,10 @@ Node* create_root(char* command, Node* leftChild, Node* rightChild)
 	if(is_separator(command[1])){
 		log_string("TreeUtils.create_root","Creating a node with separator",command);
 		a->separator = command;
+		a->command = '\0';
 	}else{
 		log_string("TreeUtils.create_root","Creating a node with command",command);
+		a->separator = '\0';
 		a->command = command;	
 	}
 	

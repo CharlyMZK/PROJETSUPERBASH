@@ -89,8 +89,12 @@ int main(int argc, char *argv[])
 { 
   if(argv[1] == NULL){
 	  bash_loop();
-  }else{
-    create_and_execute_tree(argv[1]);
+  }else if(!strcmp (argv[1], "-c")){
+    create_and_execute_tree(argv[2]);
+  }else if(!ifStringContainsHyphen(argv[1])){
+    printf("\nWe don't execute any binary files, sorry !\n");
+  }else if(ifStringContainsHyphen(argv[1])){
+    printf("\nWe don't handle bash options sorry !\n");
   }
 	return EXIT_SUCCESS;
 }

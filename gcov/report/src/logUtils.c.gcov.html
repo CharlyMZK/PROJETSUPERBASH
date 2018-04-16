@@ -77,11 +77,11 @@
 <span class="lineNum">      15 </span>            : /**
 <a name="16"><span class="lineNum">      16 </span>            :  * Affiche [tag]: message si le mode verbose est activé</a>
 <span class="lineNum">      17 </span>            :  */
-<span class="lineNum">      18 </span><span class="lineCov">        212 : void log_message(const char* tag, const char* message) {</span>
+<span class="lineNum">      18 </span><span class="lineCov">         86 : void log_message(const char* tag, const char* message) {</span>
 <span class="lineNum">      19 </span>            :    if(VERBOSE == 1){
-<span class="lineNum">      20 </span><span class="lineCov">        212 :       printf(&quot;[%s]: %s \n&quot;, tag, message);</span>
+<span class="lineNum">      20 </span><span class="lineCov">         86 :       printf(&quot;[%s]: %s \n&quot;, tag, message);</span>
 <span class="lineNum">      21 </span>            :    }
-<span class="lineNum">      22 </span><span class="lineCov">        212 : }</span>
+<span class="lineNum">      22 </span><span class="lineCov">         86 : }</span>
 <span class="lineNum">      23 </span>            : 
 <span class="lineNum">      24 </span>            : /**
 <a name="25"><span class="lineNum">      25 </span>            :  * Affiche [tag]: message (parameter) si le mode verbose est activé</a>
@@ -95,42 +95,42 @@
 <span class="lineNum">      33 </span>            : /**
 <a name="34"><span class="lineNum">      34 </span>            :  * Affiche [tag]: message (parameter) si le mode verbose est activé</a>
 <span class="lineNum">      35 </span>            :  */ 
-<span class="lineNum">      36 </span><span class="lineCov">        118 : void log_string(const char* tag, const char* message,const char* parameter) {</span>
+<span class="lineNum">      36 </span><span class="lineCov">         40 : void log_string(const char* tag, const char* message,const char* parameter) {</span>
 <span class="lineNum">      37 </span>            :    if(VERBOSE == 1){
-<span class="lineNum">      38 </span><span class="lineCov">        118 :       printf(&quot;[%s]: %s ( %s ) \n&quot;, tag, message,parameter);</span>
+<span class="lineNum">      38 </span><span class="lineCov">         40 :       printf(&quot;[%s]: %s ( %s ) \n&quot;, tag, message,parameter);</span>
 <span class="lineNum">      39 </span>            :    }
-<span class="lineNum">      40 </span><span class="lineCov">        118 : }</span>
+<span class="lineNum">      40 </span><span class="lineCov">         40 : }</span>
 <span class="lineNum">      41 </span>            : 
 <span class="lineNum">      42 </span>            : /**
 <a name="43"><span class="lineNum">      43 </span>            :  * Affiche [tag]: message (parameter) si le mode verbose est activé</a>
 <span class="lineNum">      44 </span>            :  */ 
-<span class="lineNum">      45 </span><span class="lineCov">         22 : void log_char_value(const char* tag, const char* message, char parameter) {</span>
+<span class="lineNum">      45 </span><span class="lineCov">         10 : void log_char_value(const char* tag, const char* message, char parameter) {</span>
 <span class="lineNum">      46 </span>            :    if(VERBOSE == 1){
-<span class="lineNum">      47 </span><span class="lineCov">         22 :       printf(&quot;[%s]: %s ( %c ) \n&quot;, tag, message,parameter);</span>
+<span class="lineNum">      47 </span><span class="lineCov">         10 :       printf(&quot;[%s]: %s ( %c ) \n&quot;, tag, message,parameter);</span>
 <span class="lineNum">      48 </span>            :    }
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">         22 : }</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">         10 : }</span></a>
 <span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span><span class="lineCov">          6 : void log_tree(Node * node){</span>
+<span class="lineNum">      51 </span><span class="lineCov">          2 : void log_tree(Node * node){</span>
 <span class="lineNum">      52 </span>            :    if(VERBOSE == 1){
-<span class="lineNum">      53 </span><span class="lineCov">          6 :       print_prefix(0,node);</span>
+<span class="lineNum">      53 </span><span class="lineCov">          2 :       print_prefix(0,node);</span>
 <span class="lineNum">      54 </span>            :    }
-<span class="lineNum">      55 </span><span class="lineCov">          6 : }</span>
+<span class="lineNum">      55 </span><span class="lineCov">          2 : }</span>
 <span class="lineNum">      56 </span>            : 
 <span class="lineNum">      57 </span>            : /**
 <a name="58"><span class="lineNum">      58 </span>            :  * Log la commande command à la fin du fichier file</a>
 <span class="lineNum">      59 </span>            :  */
-<span class="lineNum">      60 </span><span class="lineCov">          6 : bool log_in_file(char * string, char * file)</span>
+<span class="lineNum">      60 </span><span class="lineCov">          2 : bool log_in_file(char * string, char * file)</span>
 <span class="lineNum">      61 </span>            : {
-<span class="lineNum">      62 </span><span class="lineCov">          6 :   FILE * pFile = fopen(file, &quot;a&quot;);</span>
-<span class="lineNum">      63 </span><span class="lineCov">          6 :   if(pFile == NULL)</span>
+<span class="lineNum">      62 </span><span class="lineCov">          2 :   FILE * pFile = fopen(file, &quot;a&quot;);</span>
+<span class="lineNum">      63 </span><span class="lineCov">          2 :   if(pFile == NULL)</span>
 <span class="lineNum">      64 </span>            :   {
 <span class="lineNum">      65 </span><span class="lineNoCov">          0 :     printf(&quot;Error opening file, impossible to log string \n&quot;);</span>
 <span class="lineNum">      66 </span><span class="lineNoCov">          0 :     return false;</span>
 <span class="lineNum">      67 </span>            :   }
-<span class="lineNum">      68 </span><span class="lineCov">          6 :   log_message(&quot;Superbash&quot;,&quot;Saving the string in the log file&quot;);</span>
-<span class="lineNum">      69 </span><span class="lineCov">          6 :   fprintf(pFile, &quot;%s \n&quot;,string);</span>
-<span class="lineNum">      70 </span><span class="lineCov">          6 :   fclose(pFile);</span>
-<span class="lineNum">      71 </span><span class="lineCov">          6 :   return true;</span>
+<span class="lineNum">      68 </span><span class="lineCov">          2 :   log_message(&quot;Superbash&quot;,&quot;Saving the string in the log file&quot;);</span>
+<span class="lineNum">      69 </span><span class="lineCov">          2 :   fprintf(pFile, &quot;%s \n&quot;,string);</span>
+<span class="lineNum">      70 </span><span class="lineCov">          2 :   fclose(pFile);</span>
+<span class="lineNum">      71 </span><span class="lineCov">          2 :   return true;</span>
 <span class="lineNum">      72 </span>            : }
 </pre>
       </td>

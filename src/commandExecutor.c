@@ -61,6 +61,7 @@ bool append_node_in_file(Node* node){
  * Return true si le séparateur est >
  */
 bool is_separator_redirecting_ouput(Node* node){
+  log_message("CommandHandler.handle_command","Checking if a seperator want to redirect output");
   return node->inputValue != NULL && (node->inputValue[0] == higher_separator); 
 }
 
@@ -68,6 +69,12 @@ bool is_separator_redirecting_ouput(Node* node){
  *  Return true si le séparateur est >>
  */
 bool is_separator_appending_a_file(Node* node){
+  log_message("CommandHandler.handle_command","Checking if a seperator want to append to a file");
+  if(node->inputValue == NULL){
+   log_message("CommandHandler.handle_command","Input value null");
+  }else{
+    log_message("CommandHandler.handle_command","Not null");
+  }
   return node->inputValue != NULL && (node->inputValue[0] == higher_separator && node->inputValue[1]== higher_separator); 
 }
 
@@ -77,66 +84,71 @@ bool is_separator_appending_a_file(Node* node){
 int handle_command(Node* node)
 {
   int execReturnValue = 0;
+  bool isRedirected = false;
+  log_message("CommandHandler.handle_command","Handling command, checking if < or <<");
   // If the node got < or << we are redirecting the output instead of executing command
   if(is_separator_appending_a_file(node)){
+    isRedirected = true;
     log_message("CommandExecutor.handle_command","Appending to a file");
     append_node_in_file(node);
   }else if(is_separator_redirecting_ouput(node)){
     log_message("CommandExecutor.handle_command","Writing to a file");
+    isRedirected = true;
      write_node_in_file(node);
   }
-  
+ 
+  log_message("CommandHandler.handle_command","Check ended, splitting command");
   // Handling command
   char** splitedBySpacesCommand = build_command(node);
   
   //Sauvegarde du file descripteur
-  log_message("CommandExecutor.executeCommand","Sauvegarde du file descritor..");
+  log_message("CommandExecutor.handle_command","Sauvegarde du file descritor..");
   int standardInPutCopy  = dup(1);
   
   //Début de l'écriture dans outputfile
-  log_message("CommandExecutor.executeCommand","Création du fichier et ouverture..");
+  log_message("CommandExecutor.handle_command","Création du fichier et ouverture..");
   
 
   empty_file(OUTPUT_FILEPATH);
   int fileDescriptorValue  = open(OUTPUT_FILEPATH, O_RDWR | O_CREAT);
   
-  log_message("CommandExecutor.executeCommand","Handle alias");
+  log_message("CommandExecutor.handle_command","Handle alias");
   handleAlias(splitedBySpacesCommand);
-  log_message("CommandExecutor.executeCommand","Start execute command");
+  log_message("CommandExecutor.handle_command","Start execute command");
 
   //Executing custom command
   if(!strcmp(splitedBySpacesCommand[0], "setenv"))
   {
-    log_message("CommandExecutor.executeCommand","Start set env");
+    log_message("CommandExecutor.handle_command","Start set env");
     setenv(splitedBySpacesCommand[1],splitedBySpacesCommand[2],0);
   }else if(!strcmp(splitedBySpacesCommand[0], "alias")) {
       if(splitedBySpacesCommand[1] == NULL){
-          log_message("CommandExecutor.executeCommand","Display alias");
+          log_message("CommandExecutor.handle_command","Display alias");
           displayAliases();
       }else{
-          log_message("CommandExecutor.executeCommand","Update alias");
+          log_message("CommandExecutor.handle_command","Update alias");
           updateAliases(splitedBySpacesCommand);    
       }
   }else if(!strcmp(splitedBySpacesCommand[0], "unalias")) {
       removeAlias(splitedBySpacesCommand);
   }else if(!strcmp(splitedBySpacesCommand[0], "pwd")) {
-    log_message("CommandExecutor.executeCommand","Execution du la commande built in pwd");
-    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+    log_message("CommandExecutor.handle_command","Execution du la commande built in pwd");
+    log_message("CommandExecutor.handle_command","Remplacement de la sortie standard par le descripteur du fichier");
     dup2(fileDescriptorValue ,1);
     print_current_directory();
   } else if(!strcmp(splitedBySpacesCommand[0], "cd")) {
-    log_message("CommandExecutor.executeCommand","Execution du la commande built in cd");
-    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+    log_message("CommandExecutor.handle_command","Execution du la commande built in cd");
+    log_message("CommandExecutor.handle_command","Remplacement de la sortie standard par le descripteur du fichier");
     dup2(fileDescriptorValue ,1);
     change_current_directory(splitedBySpacesCommand[1]);
   } else if(!strcmp(splitedBySpacesCommand[0], "echo")) {
-    log_message("CommandExecutor.executeCommand","Execution du la commande built in echo");
-    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+    log_message("CommandExecutor.handle_command","Execution du la commande built in echo");
+    log_message("CommandExecutor.handle_command","Remplacement de la sortie standard par le descripteur du fichier");
     dup2(fileDescriptorValue ,1);
     echo(node);
   } else if(!strcmp(splitedBySpacesCommand[0], "exit")) {
-    log_message("CommandExecutor.executeCommand","Execution du la commande built in exit");
-    log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+    log_message("CommandExecutor.handle_command","Execution du la commande built in exit");
+    log_message("CommandExecutor.handle_command","Remplacement de la sortie standard par le descripteur du fichier");
     dup2(fileDescriptorValue ,1);
     exit(EXIT_SUCCESS);
   } else{
@@ -145,26 +157,32 @@ int handle_command(Node* node)
     checkIfForkSuccessed(forkId);
     if(forkId == 0)
     {
-      log_string("CommandExecutor.executeCommand","Executing ",node->command);
-      log_string("CommandExecutor.executeCommand","with token ",splitedBySpacesCommand[0]);
-      log_message("CommandExecutor.executeCommand","Remplacement de la sortie standard par le descripteur du fichier");
+      log_string("CommandExecutor.handle_command","Executing ",node->command);
+      log_string("CommandExecutor.handle_command","with token ",splitedBySpacesCommand[0]);
+      log_message("CommandExecutor.handle_command","Remplacement de la sortie standard par le descripteur du fichier");
       dup2(fileDescriptorValue ,1);
       execReturnValue = execvp(splitedBySpacesCommand[0],splitedBySpacesCommand);
+      log_message("CommandExecutor.handle_command","Executed");
     }
   int status;
   wait(&status); 
   }
   
   if(ifStringContainsHyphen(node->command)){
-    log_message("CommandExecutor.executeCommand","Contains hyphen, handling option ");
-  }else if(!ifStringContainsDot(node->command)){
+    log_message("CommandExecutor.handle_command","Contains hyphen, handling option ");
+  }else if(!isRedirected){
     checkIfCommandSucceeded(execReturnValue,node->command);
   }
-  
   // Get back to normal state
+  if(errno == 0){
+    node->success = true;
+  }else{
+    node->success = false;
+  }
   dup2(standardInPutCopy ,1);
-  log_message("CommandExecutor.executeCommand","Retour sur le thread normal.");
+  log_message("CommandExecutor.handle_command","Retour sur le thread normal.");
   empty_file(INPUT_FILEPATH);
+  log_message("CommandExecutor.handle_command","INPUT FILE EMPTIED.");
   return true;
 }
 

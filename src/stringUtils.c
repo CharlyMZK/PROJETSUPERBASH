@@ -25,6 +25,7 @@ char *substr(char *src,int pos,int len) {
     dest = (char *) malloc(len+1);        
     strncpy(dest,src+pos,len);            
   }                                       
+  dest[len] = '\0';
   log_string("StringUtils.substr","String cut",dest);
   return dest;                            
 }

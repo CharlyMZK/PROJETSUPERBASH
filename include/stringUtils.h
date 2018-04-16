@@ -14,8 +14,16 @@ char** str_split_and_add_path(char * args,char * path);
 
 char** str_split(char* a_str, const char a_delim);
 
+char** str_split_size_array(char* a_str, const char a_delim, int * size);
+
 int string_contain_and_at_end(char * command);
 
 void remove_newline_ch(char *line);
 
 void removeChar(char *str, char garbage);
+
+bool ifStringContainsDot(char* string);
+
+bool isEmptyString(char* string);
+
+bool ifStringContainsHyphen(char* string);

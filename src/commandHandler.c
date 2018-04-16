@@ -44,12 +44,23 @@ Node* create_tree_from_command(char* command){
     if(is_separator(command[index])){
       // If caracter get is a separator, truncating command in two string, the first one ( separator ) with the separator string
       // And the other one with the truncated command after the separator
+      
+      log_message("CommandHandler.create_tree_from_command","Getting separator..");
       separator = substr(command,index-1,2);
       truncateLength = lastSeparatorPosition - (index+1);
-      truncatedCommand = substr(command,index+1,truncateLength);
-      remove_space_at_beginning_and_end(truncatedCommand);
-      log_string("CommandHandler.create_tree_from_command","Separator found",separator);
-      log_value("CommandHandler.create_tree_from_command","Truncating after separator with length",truncateLength);
+      log_message("CommandHandler.create_tree_from_command","Getting command..");
+      if(truncateLength > 0){
+        truncatedCommand = substr(command,index+1,truncateLength);
+        remove_space_at_beginning_and_end(truncatedCommand);
+        log_string("CommandHandler.create_tree_from_command","Separator found",separator);
+        log_value("CommandHandler.create_tree_from_command","Truncating after separator with length",truncateLength);
+      }else{
+            log_string("CommandHandler.create_tree_from_command","Separator found",separator);
+            log_message("CommandHandler.create_tree_from_command","But length is 0");
+            printf(">");
+            truncatedCommand = read_console_line();
+      }
+    
       
       // Then creates a node with both
       if(actualUsedNode == NULL){ 
@@ -93,6 +104,7 @@ Node* create_tree_from_command(char* command){
     actualUsedNode->rightChild = create_root(substr(firstCommand,0,lastSeparatorPosition),NULL,NULL);
   }
   log_string("CommandHandler.create_tree_from_command","Root command",root->command);
+  log_string("CommandHandler.create_tree_from_command","Root separator",root->separator);
   log_message("CommandHandler.create_tree_from_command","Tree created.");
   log_message("CommandHandler.create_tree_from_command","Printing prefix..");
   log_tree(root);
@@ -158,16 +170,54 @@ bool read_and_exec_tree(Node* treeCommand){
           log_string("CommandHandler.read_and_exec_tree","Result is ",treeCommand->result);
         }
       }else{
+        // Gestion de < 
         if(treeCommand->separator != NULL && (treeCommand->separator[1] == lower_separator)){
            log_message("CommandHandler.read_and_exec_tree","Rightchild command is a file, he's not executed.");
            return true;
          }
+         // Gestion de ;
          if(treeCommand->separator != NULL && (treeCommand->separator[1] == continue_separator)){
            remove_space_at_beginning_and_end(treeCommand->separator);
            treeCommand->rightChild->inputValue = treeCommand->separator;
+           display_file_content(OUTPUT_FILEPATH);
            log_message("CommandHandler.read_and_exec_tree","Separator is continue, going to right child");
            return read_and_exec_tree(treeCommand->rightChild);
          }
+         // Gestion du &&
+         if(treeCommand->separator != NULL && (treeCommand->separator[0] == and_separator) && (treeCommand->separator[1] == and_separator)){
+           log_message("CommandHandler.read_and_exec_tree","Its a && separator, handling it..");
+           log_value("CommandHandler.read_and_exec_tree","Previous command successed ?",treeCommand->leftChild->success);
+           if(treeCommand->leftChild->success){
+              treeCommand->success = true;
+              log_message("CommandHandler.read_and_exec_tree","Yes, executing following");
+              display_file_content(OUTPUT_FILEPATH);
+              remove_space_at_beginning_and_end(treeCommand->separator);
+              treeCommand->rightChild->inputValue = treeCommand->separator;
+              switch_from_file_content_to_file(OUTPUT_FILEPATH,INPUT_FILEPATH);
+              return read_and_exec_tree(treeCommand->rightChild);
+           }else{
+             treeCommand->success = false;
+             return true;
+           }
+         }
+         // Gestion du ||
+         if(treeCommand->separator != NULL && (treeCommand->separator[0] == pipe_separator) && (treeCommand->separator[1] == pipe_separator)){
+            log_message("CommandHandler.read_and_exec_tree","Its a || separator, handling it..");
+            log_value("CommandHandler.read_and_exec_tree","Previous command successed ?",treeCommand->leftChild->success);
+            if(treeCommand->leftChild->success){
+            treeCommand->success = false;
+            return true;
+           }else{
+             treeCommand->success = true;
+              log_message("CommandHandler.read_and_exec_tree","Yes, executing following");
+              display_file_content(OUTPUT_FILEPATH);
+              remove_space_at_beginning_and_end(treeCommand->separator);
+              treeCommand->rightChild->inputValue = treeCommand->separator;
+              switch_from_file_content_to_file(OUTPUT_FILEPATH,INPUT_FILEPATH);
+              return read_and_exec_tree(treeCommand->rightChild);
+           }
+         }
+         
         log_message("CommandHandler.read_and_exec_tree","Command is null, its a separator");
         remove_space_at_beginning_and_end(treeCommand->separator);
         treeCommand->rightChild->inputValue = treeCommand->separator;
@@ -175,15 +225,16 @@ bool read_and_exec_tree(Node* treeCommand){
         return read_and_exec_tree(treeCommand->rightChild);
       }
     }
+    
   }else if(treeCommand->leftChild == NULL && treeCommand->rightChild == NULL){
     log_string("CommandHandler.read_and_exec_tree","(Both childs Null) Executing command",treeCommand->command);
-    log_string("CommandHandler.read_and_exec_tree","(Both childs Null) Input value :",treeCommand->inputValue);
+    log_message("CommandHandler.read_and_exec_tree","Avant display ");
+  
     bool isExecuted = 0;
     isExecuted = handle_command(treeCommand);
     log_message("CommandHandler.read_and_exec_tree","This node is at the end of three, command executed.");
     if(treeCommand->result != NULL && treeCommand->command != NULL){
       log_string("CommandHandler.read_and_exec_tree","Command was",treeCommand->command);
-      log_string("CommandHandler.read_and_exec_tree","Result is ",treeCommand->result);
     }
     return isExecuted;
   }
@@ -239,6 +290,7 @@ int create_and_execute_tree(char* command){
   }
   log_message("CommandExecutor.handle_command","Cleaning files..");
   empty_file(OUTPUT_FILEPATH);
+  clean(treeCommand);
   return true;
 }
 
