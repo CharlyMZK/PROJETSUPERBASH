@@ -1,0 +1,98 @@
+ls 
+ls 
+ls 
+ls 
+ls 
+alias 
+t 
+alias t='ps' 
+t 
+alias t='ls' 
+t 
+alias t='ps' 
+t 
+alias 
+alias 
+alias 
+alias 
+alais 
+alias 
+alias 
+alias 
+alias 
+alias 
+alias 
+alais 
+alias 
+alias 
+alias 
+alias 
+alias 
+alias 
+alias 
+alias 
+alias 
+alias 
+alias 
+alias 
+alias t='ls' 
+alias 
+alias 
+t 
+ls 
+ls 
+alias 
+t 
+alias b='ls' 
+b 
+ps 
+ls 
+ls 
+ls 
+efz 
+l 
+efze 
+adazd 
+efz 
+ls 
+alias 
+t 
+b 
+ls > t.txt 
+make 
+clear 
+make 
+ls > p.txt 
+ls > pa.txt 
+ls > new.txt 
+pwd 
+alias 
+ls 
+date 
+ls 
+ls ; ls 
+ls 
+ls;ls 
+ls ; ls 
+ls ; ls 
+ls ; ls 
+ls 
+ls ; ls 
+ls | grep ^src 
+ls | grep 
+ls ; ls 
+ls 
+ls ; ls 
+ls ; ls 
+ls 
+ls ; ls 
+ls ; ls 
+ls ; ls 
+ls ; ls 
+ls ; ls 
+ls 
+clear 
+ls ; ls 
+ls ; ls 
+ls ; ls 
+ls ; ls 
