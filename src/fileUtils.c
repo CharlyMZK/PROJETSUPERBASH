@@ -19,6 +19,8 @@
 void checkIfFilesExists(FILE *fptr){
    if(fptr == NULL){
        dprintf(1,"\nException occured : ");
+       perror( "Error opening file" );
+       printf( "Error code opening file: %d\n", errno );
        perror(strerror(errno));
        exit(0);
    }
@@ -28,7 +30,10 @@ void checkIfFilesExists(FILE *fptr){
  * Vide le fichier path
  */
 void empty_file(char* path){
-  fclose(fopen(path, "w"));
+  printf("%s \n",path);
+  FILE * file = fopen(path, "w");
+  checkIfFilesExists(file);
+  fclose(file);
 }
 
 /**
@@ -43,6 +48,7 @@ void delete_file(char* path){
  */
 bool is_file_empty(char* path){
   log_message("FileUtils.is_file_empty","Is this file empty ?");
+  printf("%s \n",path);
   int size = 0;
   FILE *fptr = fopen(path, "a");
   checkIfFilesExists(fptr);

@@ -12,8 +12,8 @@
 #include "../include/aliasUtils.h"
 #include "../include/logUtils.h"
 #include "../include/fileUtils.h"
-#define ALIAS_FILEPATH "./data/alias/alias.txt"
-#define ALIAS_TMP_FILEPATH "./data/alias/aliasTmp.txt"
+#define ALIAS_FILEPATH "/tmp/alias.txt"
+#define ALIAS_TMP_FILEPATH "/tmp/aliasTmp.txt"
 
 /**
  * Renvoie la chaine de caractère de taille commandNameSize,en récupérant la fin de la chaine handedAlias 

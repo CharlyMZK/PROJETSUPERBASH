@@ -16,8 +16,8 @@
 #include "../include/logUtils.h"
 #include "../include/stringUtils.h"
 #define LSH_RL_BUFSIZE 1024
-#define OUTPUT_FILEPATH "./data/global/tmpOutputFile"
-#define INPUT_FILEPATH "./data/global/tmpInputFile"
+#define OUTPUT_FILEPATH "/tmp/tmpOutputFile"
+#define INPUT_FILEPATH "/tmp/tmpInputFile"
 #define LOG_FILEPATH "./data/log/command.txt"
 
 /**

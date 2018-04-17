@@ -21,8 +21,8 @@
 #include "../include/stringUtils.h"
 #include "../include/fileUtils.h"
 #define LSH_RL_BUFSIZE 1024
-#define OUTPUT_FILEPATH "./data/global/tmpOutputFile"
-#define INPUT_FILEPATH "./data/global/tmpInputFile"
+#define OUTPUT_FILEPATH "/tmp/tmpOutputFile"
+#define INPUT_FILEPATH "/tmp/tmpInputFile"
 
 /**
  * renvoie un tableau de string contenant la commande et ses paramètres 
@@ -181,6 +181,7 @@ int handle_command(Node* node)
   }
   dup2(standardInPutCopy ,1);
   log_message("CommandExecutor.handle_command","Retour sur le thread normal.");
+
   empty_file(INPUT_FILEPATH);
   log_message("CommandExecutor.handle_command","INPUT FILE EMPTIED.");
   return true;
