@@ -204,7 +204,7 @@ bool read_and_exec_tree(Node* treeCommand){
          if(treeCommand->separator != NULL && (treeCommand->separator[0] == pipe_separator) && (treeCommand->separator[1] == pipe_separator)){
             log_message("CommandHandler.read_and_exec_tree","Its a || separator, handling it..");
             log_value("CommandHandler.read_and_exec_tree","Previous command successed ?",treeCommand->leftChild->success);
-            if(treeCommand->leftChild->success){
+            if(!treeCommand->leftChild->success){
             treeCommand->success = false;
             return true;
            }else{
