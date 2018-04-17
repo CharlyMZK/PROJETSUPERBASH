@@ -30,7 +30,6 @@ void checkIfFilesExists(FILE *fptr){
  * Vide le fichier path
  */
 void empty_file(char* path){
-  printf("%s \n",path);
   FILE * file = fopen(path, "w");
   checkIfFilesExists(file);
   fclose(file);

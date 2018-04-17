@@ -18,7 +18,7 @@
 #define LSH_RL_BUFSIZE 1024
 #define OUTPUT_FILEPATH "/tmp/tmpOutputFile"
 #define INPUT_FILEPATH "/tmp/tmpInputFile"
-#define LOG_FILEPATH "./data/log/command.txt"
+#define LOG_FILEPATH "/tmp/command.txt"
 
 /**
  * Créer un arbre à partir de la commande passé en paramètre
@@ -193,7 +193,7 @@ bool read_and_exec_tree(Node* treeCommand){
               display_file_content(OUTPUT_FILEPATH);
               remove_space_at_beginning_and_end(treeCommand->separator);
               treeCommand->rightChild->inputValue = treeCommand->separator;
-              switch_from_file_content_to_file(OUTPUT_FILEPATH,INPUT_FILEPATH);
+              //switch_from_file_content_to_file(OUTPUT_FILEPATH,INPUT_FILEPATH);
               return read_and_exec_tree(treeCommand->rightChild);
            }else{
              treeCommand->success = false;
