@@ -193,7 +193,7 @@ bool read_and_exec_tree(Node* treeCommand){
               display_file_content(OUTPUT_FILEPATH);
               remove_space_at_beginning_and_end(treeCommand->separator);
               treeCommand->rightChild->inputValue = treeCommand->separator;
-              //switch_from_file_content_to_file(OUTPUT_FILEPATH,INPUT_FILEPATH);
+              switch_from_file_content_to_file(OUTPUT_FILEPATH,INPUT_FILEPATH);
               return read_and_exec_tree(treeCommand->rightChild);
            }else{
              treeCommand->success = false;
@@ -204,7 +204,7 @@ bool read_and_exec_tree(Node* treeCommand){
          if(treeCommand->separator != NULL && (treeCommand->separator[0] == pipe_separator) && (treeCommand->separator[1] == pipe_separator)){
             log_message("CommandHandler.read_and_exec_tree","Its a || separator, handling it..");
             log_value("CommandHandler.read_and_exec_tree","Previous command successed ?",treeCommand->leftChild->success);
-            if(!treeCommand->leftChild->success){
+            if(treeCommand->leftChild->success){
             treeCommand->success = false;
             return true;
            }else{

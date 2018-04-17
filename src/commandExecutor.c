@@ -85,6 +85,7 @@ int handle_command(Node* node)
 {
   int execReturnValue = 0;
   bool isRedirected = false;
+  bool useExecvp = false;
   log_message("CommandHandler.handle_command","Handling command, checking if < or <<");
   // If the node got < or << we are redirecting the output instead of executing command
   if(is_separator_appending_a_file(node)){
@@ -162,23 +163,33 @@ int handle_command(Node* node)
       log_message("CommandExecutor.handle_command","Remplacement de la sortie standard par le descripteur du fichier");
       dup2(fileDescriptorValue ,1);
       execReturnValue = execvp(splitedBySpacesCommand[0],splitedBySpacesCommand);
+      exit(1);
       log_message("CommandExecutor.handle_command","Executed");
     }
-  int status;
-  wait(&status); 
+    int status = 0;
+    wait(&status); 
+    if(status != 0)
+      node->success = false;
+    else
+      node->success = true;
+    useExecvp = true;
   }
-  
+
   if(ifStringContainsHyphen(node->command)){
     log_message("CommandExecutor.handle_command","Contains hyphen, handling option ");
   }else if(!isRedirected){
     checkIfCommandSucceeded(execReturnValue,node->command);
   }
   // Get back to normal state
-  if(errno == 0){
-    node->success = true;
-  }else{
-    node->success = false;
+  if(!useExecvp)
+  {
+    if(errno == 0){
+      node->success = true;
+    }else{
+      node->success = false;
+    }
   }
+
   dup2(standardInPutCopy ,1);
   log_message("CommandExecutor.handle_command","Retour sur le thread normal.");
 
