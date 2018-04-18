@@ -9,7 +9,7 @@
 #include <time.h>
 #include "../include/treeUtils.h"
 #include "../include/logUtils.h"
-#define VERBOSE 1
+#define VERBOSE 0
 #define LOGGER_H
 
 /**

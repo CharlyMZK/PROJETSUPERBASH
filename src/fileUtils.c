@@ -47,7 +47,6 @@ void delete_file(char* path){
  */
 bool is_file_empty(char* path){
   log_message("FileUtils.is_file_empty","Is this file empty ?");
-  printf("%s \n",path);
   int size = 0;
   FILE *fptr = fopen(path, "a");
   checkIfFilesExists(fptr);

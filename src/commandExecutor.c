@@ -102,14 +102,13 @@ int handle_command(Node* node)
   // Handling command
   char** splitedBySpacesCommand = build_command(node);
   
-  //Sauvegarde du file descripteur
+  // Save file descriptor
   log_message("CommandExecutor.handle_command","Sauvegarde du file descritor..");
   int standardInPutCopy  = dup(1);
   
-  //Début de l'écriture dans outputfile
   log_message("CommandExecutor.handle_command","Création du fichier et ouverture..");
   
-
+  // Empty and open output file
   empty_file(OUTPUT_FILEPATH);
   int fileDescriptorValue  = open(OUTPUT_FILEPATH, O_RDWR | O_CREAT);
   
@@ -117,7 +116,7 @@ int handle_command(Node* node)
   handleAlias(splitedBySpacesCommand);
   log_message("CommandExecutor.handle_command","Start execute command");
 
-  //Executing custom command
+  // Checking if it's a custom  command and executing its
   if(!strcmp(splitedBySpacesCommand[0], "setenv"))
   {
     log_message("CommandExecutor.handle_command","Start set env");
@@ -175,11 +174,10 @@ int handle_command(Node* node)
     useExecvp = true;
   }
 
-  if(ifStringContainsHyphen(node->command)){
-    log_message("CommandExecutor.handle_command","Contains hyphen, handling option ");
-  }else if(!isRedirected){
+  if(!isRedirected){
     checkIfCommandSucceeded(execReturnValue,node->command);
   }
+  
   // Get back to normal state
   if(!useExecvp)
   {
@@ -190,9 +188,11 @@ int handle_command(Node* node)
     }
   }
 
+  // Getting back on input
   dup2(standardInPutCopy ,1);
   log_message("CommandExecutor.handle_command","Retour sur le thread normal.");
 
+  //Emptying file
   empty_file(INPUT_FILEPATH);
   log_message("CommandExecutor.handle_command","INPUT FILE EMPTIED.");
   return true;

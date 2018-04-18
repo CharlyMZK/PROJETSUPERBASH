@@ -77,19 +77,24 @@ void displayAliases(){
     char** splitAliases;
     char** split;
     char* commandToExecute;
+    
+    //Opening alias files
     fptr = fopen(ALIAS_FILEPATH, "r");
     checkIfFilesExists(fptr);
-    //reads text until newline 
+    
+    //Reads text until newline 
     fscanf(fptr,"%[^\n]", c);
     splitAliases = str_split(c,'|');
-  
+    
+    //Get slit alias size
     while(splitAliases[splitAliasesSize] != NULL){
       splitAliasesSize++;
     }
   
+    //Checking if there is aliases
     if(splitAliasesSize > 0){
         log_message("CommandExecutor.modifyCommandDependingOnAliasDefined","Traitement des alias");
-
+        //Displaying aliases
         while(splitAliases[splitAliasesIndex] != NULL){
             log_string("CommandExecutor.modifyCommandDependingOnAliasDefined","Alias traité",splitAliases[splitAliasesIndex]);
             handledAlias = splitAliases[splitAliasesIndex];
@@ -102,7 +107,6 @@ void displayAliases(){
             log_string("CommandExecutor.modifyCommandDependingOnAliasDefined","Alias name",aliasName);
             printf("\nalias %s='%s'",aliasName,aliasRelatedCommand);
         }
-        
         printf("\n");
         split = str_split(c,'=');
         commandToExecute = split[1];
@@ -368,9 +372,11 @@ void removeAlias(char** splitedBySpacesCommand){
   
     }
     
+    //Closings files
     fclose(fptr);
     fclose(aliasTmpFilePointer);
     
+    //Handling files
     switch_from_file_content_to_file(ALIAS_TMP_FILEPATH,ALIAS_FILEPATH);
     empty_file(ALIAS_TMP_FILEPATH);
 }
@@ -391,10 +397,12 @@ void modifyCommandDependingOnAliasDefined(char* c, char** splitedBySpacesCommand
     char** split;
     char* commandToExecute;
     
+    //Getting split alias size
     while(splitAliases[splitAliasesSize] != NULL){
         splitAliasesSize++;
     }
-  
+    
+    //Checking if there is some alias
     if(splitAliasesSize > 0){  
         log_message("CommandExecutor.modifyCommandDependingOnAliasDefined","Traitement des alias");
         while(splitAliases[splitAliasesIndex] != NULL){
@@ -415,7 +423,6 @@ void modifyCommandDependingOnAliasDefined(char* c, char** splitedBySpacesCommand
           splitedBySpacesCommand[0] = aliasRelatedCommand;
         }
     }
-  
     split = str_split(c,'=');
     commandToExecute = split[1];
     removeChar(commandToExecute,'\'');
